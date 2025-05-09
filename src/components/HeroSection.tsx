@@ -1,18 +1,43 @@
 
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const HeroSection = () => {
+  const { t, dir } = useLanguage();
+
+  const serviceLogos = [
+    { 
+      name: 'Netflix', 
+      logo: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png",
+      bgColor: "bg-black"
+    },
+    {
+      name: 'Spotify',
+      logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png",
+      bgColor: "bg-black"
+    },
+    {
+      name: 'Prime Video',
+      logo: "https://m.media-amazon.com/images/G/01/digital/video/acquisition/logo/pv_logo_white._CB548637580_.png",
+      bgColor: "bg-[#00A8E1]"
+    },
+    {
+      name: 'Shahid VIP',
+      logo: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Mbc_Shahid_logo.svg",
+      bgColor: "bg-[#7C3AED]"
+    }
+  ];
+
   return (
     <div className="bg-gradient-to-br from-navy to-navy/90 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="space-y-6 animate-fade-in">
             <h1 className="text-4xl md:text-5xl font-bold font-heading">
-              Premium Digital Subscriptions <span className="text-teal">Delivered Instantly</span>
+              {t("hero.title")} <span className="text-teal">{t("hero.subtitle")}</span>
             </h1>
             <p className="text-lg text-gray-200">
-              Get access to Netflix, Spotify, Amazon Prime Video, Shahid VIP and more at unbeatable prices. 
-              Instant delivery via WhatsApp.
+              {t("hero.subtitle")}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
               <Button 
@@ -20,7 +45,7 @@ const HeroSection = () => {
                 size="lg"
                 asChild
               >
-                <a href="#products">Browse Products</a>
+                <a href="#products">{t("hero.cta")}</a>
               </Button>
               <Button 
                 variant="outline" 
@@ -28,7 +53,7 @@ const HeroSection = () => {
                 size="lg"
                 asChild
               >
-                <a href="#contact">Contact Us</a>
+                <a href="#contact">{t("nav.contact")}</a>
               </Button>
             </div>
             
@@ -59,17 +84,16 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-teal/30 rounded-2xl rotate-6"></div>
               <div className="relative bg-white p-6 rounded-2xl shadow-xl">
                 <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { name: 'Netflix', color: 'bg-red-600' },
-                    { name: 'Spotify', color: 'bg-green-600' },
-                    { name: 'Prime Video', color: 'bg-blue-700' },
-                    { name: 'Shahid VIP', color: 'bg-purple-600' }
-                  ].map((service, index) => (
+                  {serviceLogos.map((service, index) => (
                     <div 
                       key={index}
-                      className={`${service.color} h-24 rounded-lg flex items-center justify-center shadow-md card-hover`}
+                      className={`${service.bgColor} h-24 rounded-lg flex items-center justify-center shadow-md card-hover`}
                     >
-                      <span className="font-bold text-white">{service.name}</span>
+                      <img 
+                        src={service.logo} 
+                        alt={service.name} 
+                        className="max-h-12 max-w-[80%] object-contain"
+                      />
                     </div>
                   ))}
                 </div>

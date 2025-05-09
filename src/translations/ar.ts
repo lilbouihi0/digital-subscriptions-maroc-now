@@ -46,4 +46,17 @@ export const arabicTranslations = {
   // Footer
   "footer.rights": "جميع الحقوق محفوظة",
   "footer.companyName": "ديجي سبس",
+
+  // Spinner
+  "spinner.tryYourLuck": "اربح جوائز",
+  "spinner.spinToWin": "أدر العجلة واحصل على خصومات",
+  "spinner.spin": "أدر الآن",
+  "spinner.spinning": "جاري الدوران...",
+  "spinner.congratulations": "تهانينا!",
+  "spinner.youWon": "لقد ربحت",
+  "spinner.contactUs": "تواصل معنا عبر واتساب للحصول على جائزتك.",
+  "spinner.tryAgain": "حاول مرة أخرى",
+  "spinner.betterLuck": "حظاً أوفر في المرة القادمة!",
+  "spinner.claim": "المطالبة عبر واتساب",
+  "spinner.claimMessage": "مرحباً! لقد ربحت خصماً من عجلة الحظ: ",
 };

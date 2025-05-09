@@ -37,7 +37,7 @@ const ProductCard = ({
     } else {
       // Default behavior for products without duration options
       window.open(
-        `https://wa.me/+212000000000?text=I'm%20interested%20in%20the%20${name}%20subscription`,
+        `https://wa.me/+212614566647?text=I'm%20interested%20in%20the%20${name}%20subscription`,
         "_blank"
       );
     }
@@ -49,7 +49,7 @@ const ProductCard = ({
     
     // Open WhatsApp with the selected duration
     window.open(
-      `https://wa.me/+212000000000?text=I'm%20interested%20in%20the%20${name}%20${option.duration}%20subscription%20for%20${option.price}%20MAD`,
+      `https://wa.me/+212614566647?text=I'm%20interested%20in%20the%20${name}%20${option.duration}%20subscription%20for%20${option.price}%20MAD`,
       "_blank"
     );
   };

@@ -46,4 +46,17 @@ export const frenchTranslations = {
   // Footer
   "footer.rights": "Tous droits réservés",
   "footer.companyName": "DigiSubs",
+
+  // Spinner
+  "spinner.tryYourLuck": "Tournez & Gagnez",
+  "spinner.spinToWin": "Tournez La Roue & Gagnez Des Réductions",
+  "spinner.spin": "Tourner Maintenant",
+  "spinner.spinning": "En cours...",
+  "spinner.congratulations": "Félicitations!",
+  "spinner.youWon": "Vous avez gagné",
+  "spinner.contactUs": "Contactez-nous sur WhatsApp pour réclamer votre prix.",
+  "spinner.tryAgain": "Réessayez",
+  "spinner.betterLuck": "Meilleure chance la prochaine fois!",
+  "spinner.claim": "Réclamer via WhatsApp",
+  "spinner.claimMessage": "Bonjour! J'ai gagné une réduction avec votre roue: ",
 };

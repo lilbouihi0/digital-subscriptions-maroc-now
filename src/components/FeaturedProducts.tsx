@@ -12,31 +12,26 @@ const FeaturedProducts = () => {
   
   const productDurations: Record<string, DurationOption[]> = {
     "Netflix": [
-      { duration: "1 Month", price: 89 },
       { duration: "3 Months", price: 120 },
       { duration: "6 Months", price: 200 },
       { duration: "12 Months", price: 300 }
     ],
     "Spotify Premium": [
-      { duration: "1 Month", price: 49 },
       { duration: "3 Months", price: 60 },
       { duration: "6 Months", price: 100 },
       { duration: "12 Months", price: 200 }
     ],
     "Amazon Prime": [
-      { duration: "1 Month", price: 79 },
       { duration: "3 Months", price: 60 },
       { duration: "6 Months", price: 100 },
       { duration: "12 Months", price: 150 }
     ],
     "Shahid VIP": [
-      { duration: "1 Month", price: 69 },
       { duration: "3 Months", price: 80 },
       { duration: "6 Months", price: 150 },
       { duration: "12 Months", price: 200 }
     ],
     "Shahid VIP Sport": [
-      { duration: "1 Month", price: 99 },
       { duration: "3 Months", price: 120 },
       { duration: "6 Months", price: 200 },
       { duration: "12 Months", price: 300 }
@@ -48,9 +43,9 @@ const FeaturedProducts = () => {
       id: 1,
       name: "Netflix",
       logo: "https://upload.wikimedia.org/wikipedia/commons/7/7a/Logonetflix.png",
-      price: 89,
-      oldPrice: 129,
-      duration: "1 Month",
+      price: 120,
+      oldPrice: 150,
+      duration: "3 Months",
       category: "streaming",
       bgColor: "bg-black"
     },
@@ -58,8 +53,8 @@ const FeaturedProducts = () => {
       id: 2,
       name: "Spotify Premium",
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Spotify_logo_with_text.svg/1200px-Spotify_logo_with_text.svg.png",
-      price: 49,
-      duration: "1 Month",
+      price: 60,
+      duration: "3 Months",
       category: "music",
       bgColor: "bg-black"
     },
@@ -67,9 +62,9 @@ const FeaturedProducts = () => {
       id: 3,
       name: "Amazon Prime",
       logo: "https://m.media-amazon.com/images/G/01/digital/video/acquisition/logo/pv_logo_white._CB548637580_.png",
-      price: 79,
-      oldPrice: 99,
-      duration: "1 Month",
+      price: 60,
+      oldPrice: 80,
+      duration: "3 Months",
       category: "streaming",
       bgColor: "bg-[#00A8E1]"
     },
@@ -77,8 +72,8 @@ const FeaturedProducts = () => {
       id: 4,
       name: "Shahid VIP",
       logo: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Mbc_Shahid_logo.svg",
-      price: 69,
-      duration: "1 Month",
+      price: 80,
+      duration: "3 Months",
       category: "streaming",
       bgColor: "bg-[#7C3AED]"
     },
@@ -86,8 +81,8 @@ const FeaturedProducts = () => {
       id: 5,
       name: "Shahid VIP Sport",
       logo: "https://upload.wikimedia.org/wikipedia/commons/1/1e/Mbc_Shahid_logo.svg",
-      price: 99,
-      duration: "1 Month",
+      price: 120,
+      duration: "3 Months",
       category: "streaming",
       bgColor: "bg-[#10B981]"
     }

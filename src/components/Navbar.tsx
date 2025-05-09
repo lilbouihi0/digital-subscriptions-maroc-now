@@ -25,14 +25,16 @@ const Navbar = () => {
           </div>
           
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="nav-link font-medium">{t("nav.home")}</a>
-            <a href="#products" className="nav-link font-medium">{t("nav.products")}</a>
-            <a href="#faq" className="nav-link font-medium">{t("nav.faq")}</a>
-            <a href="#contact" className="nav-link font-medium">{t("nav.contact")}</a>
+          <div className="hidden md:flex items-center">
+            <div className={`flex ${language === 'ar' ? 'space-x-0 gap-8 flex-row-reverse' : 'space-x-8'}`}>
+              <a href="/" className="nav-link font-medium">{t("nav.home")}</a>
+              <a href="#products" className="nav-link font-medium">{t("nav.products")}</a>
+              <a href="#faq" className="nav-link font-medium">{t("nav.faq")}</a>
+              <a href="#contact" className="nav-link font-medium">{t("nav.contact")}</a>
+            </div>
             
             {/* Language switcher */}
-            <div className="relative ml-4">
+            <div className={`relative ${language === 'ar' ? 'mr-8' : 'ml-8'}`}>
               <select 
                 className="appearance-none bg-transparent border border-gray-300 rounded-md pl-3 pr-8 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
                 value={language}

@@ -46,4 +46,17 @@ export const englishTranslations = {
   // Footer
   "footer.rights": "All rights reserved",
   "footer.companyName": "DigiSubs",
+  
+  // Spinner
+  "spinner.tryYourLuck": "Spin & Win",
+  "spinner.spinToWin": "Spin The Wheel & Win Discounts",
+  "spinner.spin": "Spin Now",
+  "spinner.spinning": "Spinning...",
+  "spinner.congratulations": "Congratulations!",
+  "spinner.youWon": "You won",
+  "spinner.contactUs": "Contact us on WhatsApp to claim your prize.",
+  "spinner.tryAgain": "Try Again",
+  "spinner.betterLuck": "Better luck next time!",
+  "spinner.claim": "Claim via WhatsApp",
+  "spinner.claimMessage": "Hello! I won a discount from your spin wheel: ",
 };
