@@ -95,6 +95,7 @@ export default {
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],
 				heading: ['Poppins', 'sans-serif'],
+				arabic: ['Noto Sans Arabic', 'sans-serif'],
 			},
 			boxShadow: {
 				'card': '0 4px 20px -2px rgba(0, 0, 0, 0.1)',

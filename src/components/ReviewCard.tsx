@@ -1,5 +1,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ReviewCardProps {
   name: string;
@@ -10,8 +11,10 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = ({ name, date, rating, text, productBought }: ReviewCardProps) => {
+  const { t, dir } = useLanguage();
+  
   return (
-    <Card className="border-0 shadow-card h-full">
+    <Card className="border-0 shadow-card h-full" dir={dir}>
       <CardContent className="p-6">
         <div className="flex items-center gap-2 mb-4">
           {/* Stars based on rating */}
@@ -36,7 +39,7 @@ const ReviewCard = ({ name, date, rating, text, productBought }: ReviewCardProps
         <div className="flex justify-between items-center">
           <div className="font-medium text-navy">{name}</div>
           <div className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-600">
-            Bought: {productBought}
+            {t("products.bought")} {productBought}
           </div>
         </div>
       </CardContent>

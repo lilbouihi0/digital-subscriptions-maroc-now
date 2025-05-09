@@ -2,14 +2,20 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { language, setLanguage, t, dir } = useLanguage();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(e.target.value as "en" | "ar" | "fr");
+  };
 
   return (
-    <nav className="bg-white sticky top-0 z-50 shadow-sm">
+    <nav className="bg-white sticky top-0 z-50 shadow-sm" dir={dir}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -20,15 +26,17 @@ const Navbar = () => {
           
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="/" className="nav-link font-medium">Home</a>
-            <a href="#products" className="nav-link font-medium">Products</a>
-            <a href="#faq" className="nav-link font-medium">FAQ</a>
-            <a href="#contact" className="nav-link font-medium">Contact</a>
+            <a href="/" className="nav-link font-medium">{t("nav.home")}</a>
+            <a href="#products" className="nav-link font-medium">{t("nav.products")}</a>
+            <a href="#faq" className="nav-link font-medium">{t("nav.faq")}</a>
+            <a href="#contact" className="nav-link font-medium">{t("nav.contact")}</a>
             
             {/* Language switcher */}
             <div className="relative ml-4">
               <select 
                 className="appearance-none bg-transparent border border-gray-300 rounded-md pl-3 pr-8 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal"
+                value={language}
+                onChange={handleLanguageChange}
               >
                 <option value="en">English</option>
                 <option value="ar">العربية</option>
@@ -65,34 +73,36 @@ const Navbar = () => {
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-teal rounded-md"
               onClick={toggleMenu}
             >
-              Home
+              {t("nav.home")}
             </a>
             <a 
               href="#products" 
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-teal rounded-md"
               onClick={toggleMenu}
             >
-              Products
+              {t("nav.products")}
             </a>
             <a 
               href="#faq" 
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-teal rounded-md"
               onClick={toggleMenu}
             >
-              FAQ
+              {t("nav.faq")}
             </a>
             <a 
               href="#contact" 
               className="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 hover:text-teal rounded-md"
               onClick={toggleMenu}
             >
-              Contact
+              {t("nav.contact")}
             </a>
             <div className="px-3 py-2">
-              <label htmlFor="mobile-language" className="block text-sm font-medium text-gray-700">Language</label>
+              <label htmlFor="mobile-language" className="block text-sm font-medium text-gray-700">{t("products.selectDuration")}</label>
               <select 
                 id="mobile-language"
                 className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-teal focus:outline-none focus:ring-teal border"
+                value={language}
+                onChange={handleLanguageChange}
               >
                 <option value="en">English</option>
                 <option value="ar">العربية</option>

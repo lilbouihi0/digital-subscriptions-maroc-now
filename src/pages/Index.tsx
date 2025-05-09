@@ -6,8 +6,11 @@ import ReviewCard from '../components/ReviewCard';
 import TrustBadges from '../components/TrustBadges';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import Footer from '../components/Footer';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Index = () => {
+  const { t, dir } = useLanguage();
+  
   const reviews = [
     {
       name: "Mohammed A.",
@@ -40,20 +43,20 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" dir={dir}>
       <Navbar />
       <HeroSection />
       <FeaturedProducts />
       
       {/* Customer Reviews Section */}
-      <div className="py-16 bg-white">
+      <div className="py-16 bg-white" dir={dir}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-navy mb-4">
-              What Our Customers Say
+              {t("reviews.title")}
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Don't just take our word for it. Check out what our satisfied customers have to say.
+              {t("reviews.subtitle")}
             </p>
           </div>
           
@@ -73,38 +76,38 @@ const Index = () => {
       </div>
       
       {/* FAQ Section */}
-      <div id="faq" className="py-16 bg-gray-50">
+      <div id="faq" className="py-16 bg-gray-50" dir={dir}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold font-heading text-navy mb-4">
-              Frequently Asked Questions
+              {t("faq.title")}
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Find answers to common questions about our services and products.
+              {t("faq.subtitle")}
             </p>
           </div>
           
           <div className="max-w-3xl mx-auto divide-y divide-gray-200">
             {[
               {
-                q: "How does the delivery process work?",
-                a: "After completing your payment, you'll receive your account credentials via WhatsApp within 5-10 minutes. We'll provide clear instructions on how to access and use your subscription."
+                q: t("faq.q1"),
+                a: t("faq.a1")
               },
               {
-                q: "Are these accounts shared or private?",
-                a: "These are shared accounts but configured in a way that ensures your profile remains separate from others. Each user gets their own profile, watchlist, and recommendations."
+                q: t("faq.q2"),
+                a: t("faq.a2")
               },
               {
-                q: "How long will my subscription last?",
-                a: "The duration depends on the package you purchase. We offer monthly, quarterly, and annual subscription options. The subscription period is clearly indicated on each product."
+                q: t("faq.q3"),
+                a: t("faq.a3")
               },
               {
-                q: "What payment methods do you accept?",
-                a: "We accept credit/debit cards, bank transfers, and mobile payment options common in Morocco like CIH Pay, CMI, and M-Wallet."
+                q: t("faq.q4"),
+                a: t("faq.a4")
               },
               {
-                q: "What if I encounter issues with my account?",
-                a: "Our customer support team is available 24/7 via WhatsApp. Simply message us, and we'll resolve your issue or provide a replacement account if necessary."
+                q: t("faq.q5"),
+                a: t("faq.a5")
               }
             ].map((faq, index) => (
               <div key={index} className="py-5">
