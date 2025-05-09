@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useLanguage } from "../contexts/LanguageContext";
-import { WhatsApp } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const prizes = [
@@ -155,7 +155,7 @@ const SpinnerWheel: React.FC = () => {
                   onClick={handleClaim}
                   className="mt-4 bg-green-500 hover:bg-green-600 flex items-center gap-2"
                 >
-                  <WhatsApp size={18} />
+                  <MessageCircle size={18} />
                   {t("spinner.claim")}
                 </Button>
               </div>
