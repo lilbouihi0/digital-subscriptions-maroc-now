@@ -1,12 +1,13 @@
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export interface DurationOption {
   duration: string;
   price: number;
+  originalPrice?: number;
 }
 
 interface DurationDialogProps {
@@ -49,6 +50,9 @@ const DurationDialog = ({
             <img src={productLogo} alt={productName} className="h-12 object-contain" />
             <span>{t("products.selectDuration")}</span>
           </DialogTitle>
+          <DialogDescription className="text-center text-sm text-gray-500">
+            {t("products.selectDurationDesc")}
+          </DialogDescription>
         </DialogHeader>
         
         <div className="grid gap-4 py-4">
@@ -62,7 +66,16 @@ const DurationDialog = ({
               onClick={() => handleOptionSelect(option)}
             >
               <div className="font-medium">{option.duration}</div>
-              <div className="font-bold text-teal">{option.price} MAD</div>
+              <div className="flex flex-col items-end">
+                {option.originalPrice && option.originalPrice > option.price ? (
+                  <>
+                    <div className="font-bold text-teal">{option.price} MAD</div>
+                    <div className="text-sm text-gray-500 line-through">{option.originalPrice} MAD</div>
+                  </>
+                ) : (
+                  <div className="font-bold text-teal">{option.price} MAD</div>
+                )}
+              </div>
             </div>
           ))}
         </div>

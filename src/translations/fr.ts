@@ -22,6 +22,7 @@ export const frenchTranslations = {
   "products.instantDelivery": "Livraison Instantanée",
   "products.bought": "Acheté:",
   "products.selectDuration": "Sélectionner la durée",
+  "products.selectDurationDesc": "Choisissez votre durée d'abonnement préférée ci-dessous",
   "products.confirm": "Confirmer",
   "products.cancel": "Annuler",
   
@@ -49,12 +50,13 @@ export const frenchTranslations = {
 
   // Spinner
   "spinner.tryYourLuck": "Tournez & Gagnez",
-  "spinner.spinToWin": "Tournez La Roue & Gagnez Des Réductions",
+  "spinner.spinToWin": "Tournez La Roue & Gagnez Des Récompenses",
+  "spinner.spinDescription": "Tournez la roue pour avoir une chance de gagner des réductions et des récompenses",
   "spinner.spin": "Tourner Maintenant",
   "spinner.spinning": "En cours...",
   "spinner.congratulations": "Félicitations!",
   "spinner.youWon": "Vous avez gagné",
-  "spinner.contactUs": "Contactez-nous sur WhatsApp pour réclamer votre prix.",
+  "spinner.contactUs": "Contacter Support",
   "spinner.tryAgain": "Réessayez",
   "spinner.betterLuck": "Meilleure chance la prochaine fois!",
   "spinner.claim": "Réclamer via WhatsApp",
@@ -63,5 +65,17 @@ export const frenchTranslations = {
   "spinner.comeBackTomorrow": "Revenez demain",
   "spinner.nextSpin": "Prochain tour disponible dans",
   "spinner.uniqueCode": "Votre code unique",
-  "spinner.tryAgainTomorrow": "Vous pourrez réessayer demain!"
+  "spinner.tryAgainTomorrow": "Vous pourrez réessayer demain!",
+  "spinner.applyReward": "Appliquer Récompense",
+  "spinner.cashback10": "🎁 Gagnez 10% Remboursement",
+  "spinner.cashback20": "💰 Gagnez 20% Remboursement",
+  "spinner.freeAccount": "🔥 Compte Gratuit",
+  "spinner.discount10": "🎉 10% Réduction",
+  "spinner.discount5": "🤑 5% Réduction",
+  "spinner.tryAgainFiller": "🔄 Réessayez",
+  "spinner.offerValid48": "Offre valable pendant 48 heures seulement",
+  "spinner.offerExpires": "L'offre expire dans",
+  "spinner.expired": "Expiré",
+  "spinner.rewardApplied": "Récompense Appliquée",
+  "spinner.rewardAppliedDesc": "Votre réduction ou remboursement a été appliqué à tous les produits"
 };

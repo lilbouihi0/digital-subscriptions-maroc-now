@@ -22,6 +22,7 @@ export const englishTranslations = {
   "products.instantDelivery": "Instant Delivery",
   "products.bought": "Bought:",
   "products.selectDuration": "Select Duration",
+  "products.selectDurationDesc": "Choose your preferred subscription duration below",
   "products.confirm": "Confirm",
   "products.cancel": "Cancel",
   
@@ -49,12 +50,13 @@ export const englishTranslations = {
   
   // Spinner
   "spinner.tryYourLuck": "Spin & Win",
-  "spinner.spinToWin": "Spin The Wheel & Win Discounts",
+  "spinner.spinToWin": "Spin The Wheel & Win Rewards",
+  "spinner.spinDescription": "Spin the wheel for a chance to win amazing discounts and rewards",
   "spinner.spin": "Spin Now",
   "spinner.spinning": "Spinning...",
   "spinner.congratulations": "Congratulations!",
   "spinner.youWon": "You won",
-  "spinner.contactUs": "Contact us on WhatsApp to claim your prize.",
+  "spinner.contactUs": "Contact Support",
   "spinner.tryAgain": "Try Again",
   "spinner.betterLuck": "Better luck next time!",
   "spinner.claim": "Claim via WhatsApp",
@@ -63,5 +65,17 @@ export const englishTranslations = {
   "spinner.comeBackTomorrow": "Come back tomorrow",
   "spinner.nextSpin": "Next spin available in",
   "spinner.uniqueCode": "Your unique code",
-  "spinner.tryAgainTomorrow": "You can try spinning again tomorrow!"
+  "spinner.tryAgainTomorrow": "You can try spinning again tomorrow!",
+  "spinner.applyReward": "Apply Reward",
+  "spinner.cashback10": "🎁 Win 10% Cash Back",
+  "spinner.cashback20": "💰 Win 20% Cash Back",
+  "spinner.freeAccount": "🔥 Free Account",
+  "spinner.discount10": "🎉 10% OFF",
+  "spinner.discount5": "🤑 5% OFF",
+  "spinner.tryAgainFiller": "🔄 Try Again",
+  "spinner.offerValid48": "Offer valid for 48 hours only",
+  "spinner.offerExpires": "Offer expires in",
+  "spinner.expired": "Expired",
+  "spinner.rewardApplied": "Reward Applied",
+  "spinner.rewardAppliedDesc": "Your discount or cashback has been applied to all products"
 };

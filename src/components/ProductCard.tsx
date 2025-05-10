@@ -31,9 +31,14 @@ const ProductCard = ({
   const { t, dir } = useLanguage();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedDuration, setSelectedDuration] = useState<DurationOption | null>(null);
-  const [currentWin, setCurrentWin] = useState<{ prize: string; code: string } | null>(null);
+  const [currentWin, setCurrentWin] = useState<{ 
+    prize: string; 
+    code: string;
+    expiryDate?: string;
+  } | null>(null);
   const [discountedPrice, setDiscountedPrice] = useState<number | null>(null);
   const [cashBack, setCashBack] = useState<number | null>(null);
+  const [isExpired, setIsExpired] = useState(false);
 
   // Check for any active discounts from spinner wins
   useEffect(() => {
@@ -41,6 +46,18 @@ const ProductCard = ({
     if (winData) {
       try {
         const parsedWin = JSON.parse(winData);
+        
+        // Check if the reward has expired
+        if (parsedWin.expiryDate) {
+          const expiryTime = new Date(parsedWin.expiryDate).getTime();
+          const currentTime = new Date().getTime();
+          
+          if (currentTime > expiryTime) {
+            setIsExpired(true);
+            return;
+          }
+        }
+        
         setCurrentWin(parsedWin);
         
         // Calculate discounted price if applicable
@@ -68,7 +85,7 @@ const ProductCard = ({
   const handleOpenDialog = () => {
     if (durationOptions && durationOptions.length > 0) {
       // Apply discounts to all duration options if applicable
-      if (currentWin && currentWin.prize.includes('OFF')) {
+      if (currentWin && !isExpired && currentWin.prize.includes('OFF')) {
         const percentMatch = currentWin.prize.match(/(\d+)%\s*OFF/i);
         if (percentMatch && percentMatch[1]) {
           const discountPercentage = parseInt(percentMatch[1], 10);
@@ -78,9 +95,6 @@ const ProductCard = ({
             originalPrice: option.price,
             price: Math.round(option.price * (1 - discountPercentage / 100))
           }));
-          
-          setIsDialogOpen(true);
-          return;
         }
       }
       setIsDialogOpen(true);
@@ -89,7 +103,7 @@ const ProductCard = ({
       let messageText = `I'm interested in the ${name} subscription`;
       
       // Add discount code if applicable
-      if (currentWin && currentWin.prize !== 'Try Again') {
+      if (currentWin && !isExpired && currentWin.prize !== 'Try Again') {
         messageText += ` with my promo code: ${currentWin.code}`;
       }
       
@@ -108,8 +122,18 @@ const ProductCard = ({
     let messageText = `I'm interested in the ${name} ${option.duration} subscription for ${option.price} MAD`;
     
     // Add discount code if applicable
-    if (currentWin && currentWin.prize !== 'Try Again') {
+    if (currentWin && !isExpired && currentWin.prize !== 'Try Again') {
       messageText += ` with my promo code: ${currentWin.code}`;
+      
+      // Add cashback details if applicable
+      if (currentWin.prize.includes('Cash Back')) {
+        const percentMatch = currentWin.prize.match(/(\d+)%\s*Cash Back/i);
+        if (percentMatch && percentMatch[1]) {
+          const cashBackPercentage = parseInt(percentMatch[1], 10);
+          const cashBackAmount = Math.round(option.price * cashBackPercentage / 100);
+          messageText += ` (${cashBackAmount} MAD cashback)`;
+        }
+      }
     }
     
     // Open WhatsApp with the selected duration
@@ -143,7 +167,7 @@ const ProductCard = ({
           <div className="flex justify-between items-end mb-4">
             <div>
               <div className="flex items-center gap-2">
-                {discountedPrice ? (
+                {discountedPrice && !isExpired ? (
                   <>
                     <span className="text-2xl font-bold text-navy">{discountedPrice} MAD</span>
                     <span className="text-sm text-gray-500 line-through">{price} MAD</span>
@@ -151,7 +175,7 @@ const ProductCard = ({
                 ) : (
                   <span className="text-2xl font-bold text-navy">
                     {price} MAD
-                    {cashBack && (
+                    {cashBack && !isExpired && (
                       <span className="ml-2 text-sm text-green-600 flex items-center">
                         <CirclePercent size={16} className="mr-1" />
                         +{cashBack} MAD cashback
@@ -164,7 +188,7 @@ const ProductCard = ({
                 )}
               </div>
               
-              {currentWin && currentWin.prize.includes('OFF') && (
+              {currentWin && !isExpired && currentWin.prize.includes('OFF') && (
                 <div className="mt-2">
                   <Badge variant="outline" className="bg-indigo-100 text-indigo-800 border-indigo-200">
                     {currentWin.prize} Applied
@@ -172,7 +196,7 @@ const ProductCard = ({
                 </div>
               )}
               
-              {currentWin && currentWin.prize.includes('Cash Back') && (
+              {currentWin && !isExpired && currentWin.prize.includes('Cash Back') && (
                 <div className="mt-2">
                   <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
                     {currentWin.prize} Applied
@@ -210,7 +234,7 @@ const ProductCard = ({
         onClose={() => setIsDialogOpen(false)}
         productName={name}
         options={durationOptions.map(option => {
-          if (currentWin && currentWin.prize.includes('OFF')) {
+          if (currentWin && !isExpired && currentWin.prize.includes('OFF')) {
             const percentMatch = currentWin.prize.match(/(\d+)%\s*OFF/i);
             if (percentMatch && percentMatch[1]) {
               const discountPercentage = parseInt(percentMatch[1], 10);
@@ -226,7 +250,7 @@ const ProductCard = ({
         })}
         onSelect={handleSelectDuration}
         productLogo={logo}
-        winCode={currentWin?.code}
+        winCode={currentWin && !isExpired ? currentWin.code : undefined}
       />
     </>
   );

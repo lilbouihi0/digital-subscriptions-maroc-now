@@ -22,6 +22,7 @@ export const arabicTranslations = {
   "products.instantDelivery": "توصيل فوري",
   "products.bought": "تم شراء:",
   "products.selectDuration": "اختر المدة",
+  "products.selectDurationDesc": "اختر مدة الاشتراك المفضلة لديك أدناه",
   "products.confirm": "تأكيد",
   "products.cancel": "إلغاء",
   
@@ -49,12 +50,13 @@ export const arabicTranslations = {
 
   // Spinner
   "spinner.tryYourLuck": "اربح جوائز",
-  "spinner.spinToWin": "أدر العجلة واحصل على خصومات",
+  "spinner.spinToWin": "أدر العجلة واحصل على مكافآت",
+  "spinner.spinDescription": "أدر العجلة للحصول على فرصة للفوز بخصومات ومكافآت مذهلة",
   "spinner.spin": "أدر الآن",
   "spinner.spinning": "جاري الدوران...",
   "spinner.congratulations": "تهانينا!",
   "spinner.youWon": "لقد ربحت",
-  "spinner.contactUs": "تواصل معنا عبر واتساب للحصول على جائزتك.",
+  "spinner.contactUs": "اتصل بالدعم",
   "spinner.tryAgain": "حاول مرة أخرى",
   "spinner.betterLuck": "حظاً أوفر في المرة القادمة!",
   "spinner.claim": "المطالبة عبر واتساب",
@@ -63,5 +65,17 @@ export const arabicTranslations = {
   "spinner.comeBackTomorrow": "عد غداً",
   "spinner.nextSpin": "الدورة التالية متاحة في",
   "spinner.uniqueCode": "رمزك الفريد",
-  "spinner.tryAgainTomorrow": "يمكنك المحاولة مرة أخرى غداً!"
+  "spinner.tryAgainTomorrow": "يمكنك المحاولة مرة أخرى غداً!",
+  "spinner.applyReward": "تطبيق المكافأة",
+  "spinner.cashback10": "🎁 اربح 10% استرداد نقدي",
+  "spinner.cashback20": "💰 اربح 20% استرداد نقدي",
+  "spinner.freeAccount": "🔥 حساب مجاني",
+  "spinner.discount10": "🎉 خصم 10%",
+  "spinner.discount5": "🤑 خصم 5%",
+  "spinner.tryAgainFiller": "🔄 حاول مرة أخرى",
+  "spinner.offerValid48": "العرض صالح لمدة 48 ساعة فقط",
+  "spinner.offerExpires": "ينتهي العرض في",
+  "spinner.expired": "منتهي الصلاحية",
+  "spinner.rewardApplied": "تم تطبيق المكافأة",
+  "spinner.rewardAppliedDesc": "تم تطبيق الخصم أو الاسترداد النقدي على جميع المنتجات"
 };
