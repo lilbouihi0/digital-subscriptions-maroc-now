@@ -1,9 +1,10 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { CirclePercent } from "lucide-react";
 import DurationDialog, { DurationOption } from "./DurationDialog";
 
 interface ProductCardProps {
@@ -30,14 +31,66 @@ const ProductCard = ({
   const { t, dir } = useLanguage();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedDuration, setSelectedDuration] = useState<DurationOption | null>(null);
+  const [currentWin, setCurrentWin] = useState<{ prize: string; code: string } | null>(null);
+  const [discountedPrice, setDiscountedPrice] = useState<number | null>(null);
+  const [cashBack, setCashBack] = useState<number | null>(null);
+
+  // Check for any active discounts from spinner wins
+  useEffect(() => {
+    const winData = localStorage.getItem('currentWin');
+    if (winData) {
+      try {
+        const parsedWin = JSON.parse(winData);
+        setCurrentWin(parsedWin);
+        
+        // Calculate discounted price if applicable
+        if (parsedWin.prize.includes('OFF')) {
+          const percentMatch = parsedWin.prize.match(/(\d+)%\s*OFF/i);
+          if (percentMatch && percentMatch[1]) {
+            const discountPercentage = parseInt(percentMatch[1], 10);
+            const newPrice = price * (1 - discountPercentage / 100);
+            setDiscountedPrice(Math.round(newPrice));
+          }
+        } else if (parsedWin.prize === 'Cash Back') {
+          // Set cash back amount to 10% of the price
+          setCashBack(Math.round(price * 0.1));
+        }
+      } catch (e) {
+        console.error('Error parsing win data:', e);
+      }
+    }
+  }, [price]);
 
   const handleOpenDialog = () => {
     if (durationOptions && durationOptions.length > 0) {
+      // Apply discounts to all duration options if applicable
+      if (currentWin && currentWin.prize.includes('OFF')) {
+        const percentMatch = currentWin.prize.match(/(\d+)%\s*OFF/i);
+        if (percentMatch && percentMatch[1]) {
+          const discountPercentage = parseInt(percentMatch[1], 10);
+          
+          const updatedOptions = durationOptions.map(option => ({
+            ...option,
+            originalPrice: option.price,
+            price: Math.round(option.price * (1 - discountPercentage / 100))
+          }));
+          
+          setIsDialogOpen(true);
+          return;
+        }
+      }
       setIsDialogOpen(true);
     } else {
       // Default behavior for products without duration options
+      let messageText = `I'm interested in the ${name} subscription`;
+      
+      // Add discount code if applicable
+      if (currentWin && currentWin.prize !== 'Try Again') {
+        messageText += ` with my promo code: ${currentWin.code}`;
+      }
+      
       window.open(
-        `https://wa.me/+212614566647?text=I'm%20interested%20in%20the%20${name}%20subscription`,
+        `https://wa.me/+212614566647?text=${encodeURIComponent(messageText)}`,
         "_blank"
       );
     }
@@ -47,9 +100,17 @@ const ProductCard = ({
     setSelectedDuration(option);
     setIsDialogOpen(false);
     
+    // Build WhatsApp message
+    let messageText = `I'm interested in the ${name} ${option.duration} subscription for ${option.price} MAD`;
+    
+    // Add discount code if applicable
+    if (currentWin && currentWin.prize !== 'Try Again') {
+      messageText += ` with my promo code: ${currentWin.code}`;
+    }
+    
     // Open WhatsApp with the selected duration
     window.open(
-      `https://wa.me/+212614566647?text=I'm%20interested%20in%20the%20${name}%20${option.duration}%20subscription%20for%20${option.price}%20MAD`,
+      `https://wa.me/+212614566647?text=${encodeURIComponent(messageText)}`,
       "_blank"
     );
   };
@@ -74,11 +135,34 @@ const ProductCard = ({
           <div className="flex justify-between items-end mb-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-2xl font-bold text-navy">{price} MAD</span>
-                {oldPrice && (
+                {discountedPrice ? (
+                  <>
+                    <span className="text-2xl font-bold text-navy">{discountedPrice} MAD</span>
+                    <span className="text-sm text-gray-500 line-through">{price} MAD</span>
+                  </>
+                ) : (
+                  <span className="text-2xl font-bold text-navy">
+                    {price} MAD
+                    {cashBack && (
+                      <span className="ml-2 text-sm text-green-600 flex items-center">
+                        <CirclePercent size={16} className="mr-1" />
+                        +{cashBack} MAD cashback
+                      </span>
+                    )}
+                  </span>
+                )}
+                {!discountedPrice && oldPrice && (
                   <span className="text-sm text-gray-500 line-through">{oldPrice} MAD</span>
                 )}
               </div>
+              
+              {currentWin && currentWin.prize.includes('OFF') && (
+                <div className="mt-2">
+                  <Badge variant="outline" className="bg-indigo-100 text-indigo-800 border-indigo-200">
+                    {currentWin.prize} Applied
+                  </Badge>
+                </div>
+              )}
             </div>
             <Badge 
               variant="outline" 
@@ -106,9 +190,24 @@ const ProductCard = ({
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         productName={name}
-        options={durationOptions || []}
+        options={durationOptions.map(option => {
+          if (currentWin && currentWin.prize.includes('OFF')) {
+            const percentMatch = currentWin.prize.match(/(\d+)%\s*OFF/i);
+            if (percentMatch && percentMatch[1]) {
+              const discountPercentage = parseInt(percentMatch[1], 10);
+              const discountedPrice = Math.round(option.price * (1 - discountPercentage / 100));
+              return {
+                ...option,
+                originalPrice: option.price,
+                price: discountedPrice
+              };
+            }
+          }
+          return option;
+        })}
         onSelect={handleSelectDuration}
         productLogo={logo}
+        winCode={currentWin?.code}
       />
     </>
   );

@@ -3,18 +3,26 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { useLanguage } from "../contexts/LanguageContext";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, CirclePercent, Gift } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-const prizes = [
-  "10% OFF",
-  "15% OFF",
-  "20% OFF",
-  "Free Month",
-  "5% OFF",
-  "Try Again",
-  "25% OFF",
-  "50% OFF",
+// Define the segments with their probabilities
+interface PrizeSegment {
+  value: string;
+  label: string; 
+  probability: number;
+  color: string;
+}
+
+const prizes: PrizeSegment[] = [
+  { value: "10% OFF", label: "10% OFF", probability: 5, color: "#4338CA" },
+  { value: "15% OFF", label: "15% OFF", probability: 5, color: "#1E40AF" },
+  { value: "20% OFF", label: "20% OFF", probability: 20, color: "#4338CA" },
+  { value: "Free Month", label: "Free Month", probability: 10, color: "#1E40AF" },
+  { value: "5% OFF", label: "5% OFF", probability: 5, color: "#4338CA" },
+  { value: "Try Again", label: "Try Again", probability: 40, color: "#1E40AF" },
+  { value: "25% OFF", label: "25% OFF", probability: 10, color: "#4338CA" },
+  { value: "Cash Back", label: "Cash Back", probability: 5, color: "#1E40AF" },
 ];
 
 const SpinnerWheel: React.FC = () => {
@@ -23,20 +31,70 @@ const SpinnerWheel: React.FC = () => {
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prize, setPrize] = useState<string | null>(null);
+  const [spinCode, setSpinCode] = useState<string>("");
+  const [hasSpunToday, setHasSpunToday] = useState(false);
   const wheelRef = useRef<HTMLDivElement>(null);
+  
+  // Check if user has already spun today
+  useEffect(() => {
+    const lastSpinDate = localStorage.getItem('lastSpinDate');
+    const today = new Date().toDateString();
+    
+    if (lastSpinDate === today) {
+      setHasSpunToday(true);
+    }
+    
+    // Show popup for first-time visitors
+    const hasVisitedBefore = localStorage.getItem('hasVisitedBefore');
+    if (!hasVisitedBefore) {
+      setTimeout(() => {
+        setIsOpen(true);
+        localStorage.setItem('hasVisitedBefore', 'true');
+      }, 2000);
+    }
+  }, []);
+
+  // Generate a random spin based on probabilities
+  const getRandomPrizeIndex = () => {
+    const totalProbability = prizes.reduce((sum, prize) => sum + prize.probability, 0);
+    let random = Math.random() * totalProbability;
+    
+    for (let i = 0; i < prizes.length; i++) {
+      if (random < prizes[i].probability) {
+        return i;
+      }
+      random -= prizes[i].probability;
+    }
+    
+    return 0; // Default to first prize if something goes wrong
+  };
+
+  // Generate unique win code
+  const generateWinCode = (selectedPrize: string) => {
+    const timestamp = new Date().getTime().toString(36);
+    const randomChars = Math.random().toString(36).substring(2, 6).toUpperCase();
+    const prizeCode = selectedPrize.replace(/[^A-Z0-9]/gi, '').substring(0, 3).toUpperCase();
+    
+    return `WIN-${prizeCode}-${randomChars}-${timestamp}`;
+  };
 
   const spinWheel = () => {
-    if (isSpinning) return;
+    if (isSpinning || hasSpunToday) return;
     
     setPrize(null);
     setIsSpinning(true);
+    
+    // Save today's date as last spin date
+    const today = new Date().toDateString();
+    localStorage.setItem('lastSpinDate', today);
+    setHasSpunToday(true);
     
     // Random spin between 5 and 10 full rotations
     const spinCount = 5 + Math.random() * 5;
     const baseRotation = 360 * spinCount;
     
-    // Add random offset for prize position (0-7 prizes, each 45 degrees)
-    const prizeIndex = Math.floor(Math.random() * 8);
+    // Get prize index based on probability
+    const prizeIndex = getRandomPrizeIndex();
     const prizeOffset = prizeIndex * 45;
     
     // Set final rotation (add to current to always increase)
@@ -46,10 +104,21 @@ const SpinnerWheel: React.FC = () => {
     // Determine prize after spin
     setTimeout(() => {
       setIsSpinning(false);
-      const selectedPrize = prizes[prizeIndex];
+      const selectedPrize = prizes[prizeIndex].value;
       setPrize(selectedPrize);
       
+      // Generate unique code for the win
       if (selectedPrize !== "Try Again") {
+        const code = generateWinCode(selectedPrize);
+        setSpinCode(code);
+        
+        // Store the win in localStorage
+        localStorage.setItem('currentWin', JSON.stringify({
+          prize: selectedPrize,
+          code: code,
+          date: new Date().toISOString()
+        }));
+        
         toast({
           title: t("spinner.congratulations"),
           description: `${t("spinner.youWon")} ${selectedPrize}! ${t("spinner.contactUs")}`,
@@ -67,14 +136,27 @@ const SpinnerWheel: React.FC = () => {
   const handleClaim = () => {
     if (!prize || prize === "Try Again") return;
     
-    // Open WhatsApp with pre-filled message
-    const text = `${t("spinner.claimMessage")} ${prize}!`;
+    // Open WhatsApp with pre-filled message including the win code
+    const text = `${t("spinner.claimMessage")} ${prize}! ${t("spinner.codeMessage")}: ${spinCode}`;
     window.open(
       `https://wa.me/+212614566647?text=${encodeURIComponent(text)}`,
       "_blank"
     );
     
     setIsOpen(false);
+  };
+
+  const timeUntilNextSpin = () => {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    
+    const timeLeft = tomorrow.getTime() - now.getTime();
+    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    
+    return `${hours}h ${minutes}m`;
   };
 
   return (
@@ -90,21 +172,21 @@ const SpinnerWheel: React.FC = () => {
       </Button>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-md" dir={dir}>
+        <DialogContent className="max-w-md bg-white" dir={dir}>
           <DialogHeader>
-            <DialogTitle className="text-center text-xl font-bold">
+            <DialogTitle className="text-center text-2xl font-bold text-navy">
               {t("spinner.spinToWin")}
             </DialogTitle>
           </DialogHeader>
           
-          <div className="relative flex justify-center py-6">
-            {/* Spinner Wheel */}
-            <div className="relative w-64 h-64">
+          <div className="relative flex flex-col items-center justify-center py-8">
+            {/* Spinner Wheel Container */}
+            <div className="relative w-72 h-72 mx-auto">
               {/* Pointer Triangle */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-2 w-0 h-0 
-                border-l-[12px] border-l-transparent 
-                border-b-[24px] border-b-red-500 
-                border-r-[12px] border-r-transparent z-10" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-4 w-0 h-0 
+                border-l-[16px] border-l-transparent 
+                border-b-[30px] border-b-red-500 
+                border-r-[16px] border-r-transparent z-10" />
                 
               {/* Wheel */}
               <div 
@@ -112,7 +194,8 @@ const SpinnerWheel: React.FC = () => {
                 className="w-full h-full rounded-full border-4 border-navy overflow-hidden transition-transform duration-5000 ease-out"
                 style={{ 
                   transform: `rotate(${rotation}deg)`,
-                  transitionDuration: isSpinning ? '5s' : '0s'
+                  transitionDuration: isSpinning ? '5s' : '0s',
+                  boxShadow: '0 0 15px rgba(0,0,0,0.2)'
                 }}
               >
                 {prizes.map((prize, i) => (
@@ -123,34 +206,50 @@ const SpinnerWheel: React.FC = () => {
                       transform: `rotate(${i * 45}deg)`,
                       transformOrigin: 'center',
                       clipPath: 'polygon(50% 50%, 50% 0, 100% 0, 100% 50%)',
-                      backgroundColor: i % 2 === 0 ? '#4338CA' : '#1E40AF'
+                      backgroundColor: prize.color
                     }}
                   >
                     <div 
                       className="absolute top-[15%] left-[70%] -translate-x-1/2 -translate-y-1/2 text-white font-bold transform -rotate-[67.5deg]"
-                      style={{ fontSize: prize.length > 6 ? '0.8rem' : '1rem' }}
+                      style={{ fontSize: prize.label.length > 6 ? '0.8rem' : '1rem' }}
                     >
-                      {prize}
+                      {prize.label}
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-          
-          <div className="flex flex-col items-center gap-4">
+            
+            {/* Spin button centered */}
             <Button 
               onClick={spinWheel} 
-              className="bg-teal hover:bg-teal/90 text-white font-bold py-2 px-8"
-              disabled={isSpinning}
+              className="mt-8 bg-teal hover:bg-teal/90 text-white font-bold py-3 px-10 rounded-full text-lg shadow-lg transform transition-transform hover:scale-105"
+              disabled={isSpinning || hasSpunToday}
+              size="lg"
             >
-              {isSpinning ? t("spinner.spinning") : t("spinner.spin")}
+              {isSpinning ? t("spinner.spinning") : hasSpunToday ? t("spinner.comeBackTomorrow") : t("spinner.spin")}
             </Button>
             
+            {hasSpunToday && !prize && (
+              <div className="mt-4 text-center">
+                <p className="text-sm text-gray-600">{t("spinner.nextSpin")}: {timeUntilNextSpin()}</p>
+              </div>
+            )}
+          </div>
+          
+          <div className="flex flex-col items-center gap-4 mt-2">
             {prize && prize !== "Try Again" && (
-              <div className="text-center">
-                <p className="font-bold mb-2">{t("spinner.congratulations")}</p>
-                <p>{t("spinner.youWon")} <span className="text-teal font-bold">{prize}</span>!</p>
+              <div className="text-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-lg text-white animate-pulse">
+                <p className="font-bold text-xl mb-2">{t("spinner.congratulations")}</p>
+                <div className="flex items-center justify-center gap-2 text-lg">
+                  {prize.includes("OFF") && <CirclePercent className="text-yellow-300" />}
+                  {prize.includes("Free") && <Gift className="text-yellow-300" />}
+                  <p>{t("spinner.youWon")} <span className="font-bold text-xl">{prize}</span>!</p>
+                </div>
+                <div className="mt-3 bg-white/20 p-2 rounded-lg">
+                  <p className="text-xs mb-1">{t("spinner.uniqueCode")}:</p>
+                  <code className="bg-white/30 text-white px-2 py-1 rounded font-mono text-sm">{spinCode}</code>
+                </div>
                 <Button 
                   onClick={handleClaim}
                   className="mt-4 bg-green-500 hover:bg-green-600 flex items-center gap-2"
@@ -162,7 +261,10 @@ const SpinnerWheel: React.FC = () => {
             )}
             
             {prize === "Try Again" && (
-              <p className="text-center text-gray-600">{t("spinner.betterLuck")}</p>
+              <div className="text-center p-4 rounded-lg border border-gray-200">
+                <p className="text-xl font-semibold text-gray-600">{t("spinner.betterLuck")}</p>
+                <p className="mt-2 text-gray-500">{t("spinner.tryAgainTomorrow")}</p>
+              </div>
             )}
           </div>
           
