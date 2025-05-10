@@ -59,4 +59,9 @@ export const englishTranslations = {
   "spinner.betterLuck": "Better luck next time!",
   "spinner.claim": "Claim via WhatsApp",
   "spinner.claimMessage": "Hello! I won a discount from your spin wheel: ",
+  "spinner.codeMessage": "My code is",
+  "spinner.comeBackTomorrow": "Come back tomorrow",
+  "spinner.nextSpin": "Next spin available in",
+  "spinner.uniqueCode": "Your unique code",
+  "spinner.tryAgainTomorrow": "You can try spinning again tomorrow!"
 };

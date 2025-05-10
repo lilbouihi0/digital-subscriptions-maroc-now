@@ -16,6 +16,7 @@ interface DurationDialogProps {
   options: DurationOption[];
   onSelect: (option: DurationOption) => void;
   productLogo: string;
+  winCode?: string;
 }
 
 const DurationDialog = ({
@@ -24,7 +25,8 @@ const DurationDialog = ({
   productName,
   options,
   onSelect,
-  productLogo
+  productLogo,
+  winCode
 }: DurationDialogProps) => {
   const { t, dir } = useLanguage();
   

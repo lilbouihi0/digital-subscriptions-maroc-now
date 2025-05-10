@@ -59,4 +59,9 @@ export const arabicTranslations = {
   "spinner.betterLuck": "حظاً أوفر في المرة القادمة!",
   "spinner.claim": "المطالبة عبر واتساب",
   "spinner.claimMessage": "مرحباً! لقد ربحت خصماً من عجلة الحظ: ",
+  "spinner.codeMessage": "رمز الخصم الخاص بي هو",
+  "spinner.comeBackTomorrow": "عد غداً",
+  "spinner.nextSpin": "الدورة التالية متاحة في",
+  "spinner.uniqueCode": "رمزك الفريد",
+  "spinner.tryAgainTomorrow": "يمكنك المحاولة مرة أخرى غداً!"
 };

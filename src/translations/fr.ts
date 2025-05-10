@@ -59,4 +59,9 @@ export const frenchTranslations = {
   "spinner.betterLuck": "Meilleure chance la prochaine fois!",
   "spinner.claim": "Réclamer via WhatsApp",
   "spinner.claimMessage": "Bonjour! J'ai gagné une réduction avec votre roue: ",
+  "spinner.codeMessage": "Mon code est",
+  "spinner.comeBackTomorrow": "Revenez demain",
+  "spinner.nextSpin": "Prochain tour disponible dans",
+  "spinner.uniqueCode": "Votre code unique",
+  "spinner.tryAgainTomorrow": "Vous pourrez réessayer demain!"
 };
