@@ -131,3 +131,27 @@
     @apply bg-navy/10 text-navy text-sm font-semibold px-3 py-1.5 rounded-full;
   }
 }
+
+/* Custom animation for slow spin */
+@keyframes spin-slow {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 60s linear infinite;
+}
+
+/* Wheel spin transition */
+.duration-5000 {
+  transition-duration: 5000ms;
+}
+
+/* Enhance easing for wheel spins */
+.ease-out {
+  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
