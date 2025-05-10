@@ -15,18 +15,16 @@ interface PrizeSegment {
 }
 
 const prizes: PrizeSegment[] = [
-  { value: "10% OFF", label: "10% OFF", probability: 5, color: "#4338CA" },
-  { value: "15% OFF", label: "15% OFF", probability: 5, color: "#1E40AF" },
-  { value: "20% OFF", label: "20% OFF", probability: 20, color: "#4338CA" },
-  { value: "Free Month", label: "Free Month", probability: 10, color: "#1E40AF" },
-  { value: "5% OFF", label: "5% OFF", probability: 5, color: "#4338CA" },
-  { value: "Try Again", label: "Try Again", probability: 40, color: "#1E40AF" },
-  { value: "25% OFF", label: "25% OFF", probability: 10, color: "#4338CA" },
-  { value: "Cash Back", label: "Cash Back", probability: 5, color: "#1E40AF" },
+  { value: "10% Cash Back", label: "10% Cash Back", probability: 20, color: "#4338CA" },
+  { value: "20% Cash Back", label: "20% Cash Back", probability: 20, color: "#1E40AF" },
+  { value: "Free Account", label: "Free Account", probability: 10, color: "#3B82F6" },
+  { value: "10% OFF", label: "10% OFF", probability: 5, color: "#8B5CF6" },
+  { value: "5% OFF", label: "5% OFF", probability: 5, color: "#6366F1" },
+  { value: "Try Again", label: "Try Again", probability: 40, color: "#9CA3AF" },
 ];
 
 const SpinnerWheel: React.FC = () => {
-  const { t, dir } = useLanguage();
+  const { t, dir, language } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -74,8 +72,9 @@ const SpinnerWheel: React.FC = () => {
     const timestamp = new Date().getTime().toString(36);
     const randomChars = Math.random().toString(36).substring(2, 6).toUpperCase();
     const prizeCode = selectedPrize.replace(/[^A-Z0-9]/gi, '').substring(0, 3).toUpperCase();
+    const lang = language.toUpperCase();
     
-    return `WIN-${prizeCode}-${randomChars}-${timestamp}`;
+    return `WIN-${prizeCode}-${randomChars}-${timestamp}-${lang}`;
   };
 
   const spinWheel = () => {
@@ -95,7 +94,7 @@ const SpinnerWheel: React.FC = () => {
     
     // Get prize index based on probability
     const prizeIndex = getRandomPrizeIndex();
-    const prizeOffset = prizeIndex * 45;
+    const prizeOffset = prizeIndex * (360 / prizes.length);
     
     // Set final rotation (add to current to always increase)
     const newRotation = rotation + baseRotation + prizeOffset;
@@ -195,7 +194,7 @@ const SpinnerWheel: React.FC = () => {
                 style={{ 
                   transform: `rotate(${rotation}deg)`,
                   transitionDuration: isSpinning ? '5s' : '0s',
-                  boxShadow: '0 0 15px rgba(0,0,0,0.2)'
+                  boxShadow: '0 4px 30px rgba(0,0,0,0.3)'
                 }}
               >
                 {prizes.map((prize, i) => (
@@ -203,35 +202,42 @@ const SpinnerWheel: React.FC = () => {
                     key={i}
                     className="absolute w-full h-full"
                     style={{
-                      transform: `rotate(${i * 45}deg)`,
+                      transform: `rotate(${i * (360 / prizes.length)}deg)`,
                       transformOrigin: 'center',
                       clipPath: 'polygon(50% 50%, 50% 0, 100% 0, 100% 50%)',
                       backgroundColor: prize.color
                     }}
                   >
                     <div 
-                      className="absolute top-[15%] left-[70%] -translate-x-1/2 -translate-y-1/2 text-white font-bold transform -rotate-[67.5deg]"
-                      style={{ fontSize: prize.label.length > 6 ? '0.8rem' : '1rem' }}
+                      className="absolute top-[15%] left-[70%] -translate-x-1/2 -translate-y-1/2 text-white font-bold transform"
+                      style={{ 
+                        fontSize: prize.label.length > 9 ? '0.7rem' : prize.label.length > 6 ? '0.8rem' : '1rem',
+                        transform: `rotate(${90 - (360 / prizes.length) / 2}deg)`
+                      }}
                     >
                       {prize.label}
                     </div>
                   </div>
                 ))}
+                
+                {/* Center button */}
+                <Button 
+                  onClick={spinWheel} 
+                  disabled={isSpinning || hasSpunToday}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-teal to-blue-600 hover:from-teal/90 hover:to-blue-700 text-white font-bold rounded-full text-md shadow-lg z-20 w-20 h-20 flex items-center justify-center"
+                >
+                  {isSpinning ? 
+                    <div className="animate-spin h-6 w-6 border-t-2 border-white rounded-full"/> : 
+                    hasSpunToday ? 
+                    <div className="text-xs">{t("spinner.comeBackTomorrow")}</div> : 
+                    t("spinner.spin")
+                  }
+                </Button>
               </div>
             </div>
             
-            {/* Spin button centered */}
-            <Button 
-              onClick={spinWheel} 
-              className="mt-8 bg-teal hover:bg-teal/90 text-white font-bold py-3 px-10 rounded-full text-lg shadow-lg transform transition-transform hover:scale-105"
-              disabled={isSpinning || hasSpunToday}
-              size="lg"
-            >
-              {isSpinning ? t("spinner.spinning") : hasSpunToday ? t("spinner.comeBackTomorrow") : t("spinner.spin")}
-            </Button>
-            
             {hasSpunToday && !prize && (
-              <div className="mt-4 text-center">
+              <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">{t("spinner.nextSpin")}: {timeUntilNextSpin()}</p>
               </div>
             )}
@@ -242,13 +248,13 @@ const SpinnerWheel: React.FC = () => {
               <div className="text-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4 rounded-lg text-white animate-pulse">
                 <p className="font-bold text-xl mb-2">{t("spinner.congratulations")}</p>
                 <div className="flex items-center justify-center gap-2 text-lg">
-                  {prize.includes("OFF") && <CirclePercent className="text-yellow-300" />}
+                  {prize.includes("Cash Back") && <CirclePercent className="text-yellow-300" />}
                   {prize.includes("Free") && <Gift className="text-yellow-300" />}
                   <p>{t("spinner.youWon")} <span className="font-bold text-xl">{prize}</span>!</p>
                 </div>
                 <div className="mt-3 bg-white/20 p-2 rounded-lg">
                   <p className="text-xs mb-1">{t("spinner.uniqueCode")}:</p>
-                  <code className="bg-white/30 text-white px-2 py-1 rounded font-mono text-sm">{spinCode}</code>
+                  <code className="bg-white/30 text-white px-2 py-1 rounded font-mono text-sm break-all">{spinCode}</code>
                 </div>
                 <Button 
                   onClick={handleClaim}

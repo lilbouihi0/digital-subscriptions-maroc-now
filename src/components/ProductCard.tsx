@@ -51,9 +51,13 @@ const ProductCard = ({
             const newPrice = price * (1 - discountPercentage / 100);
             setDiscountedPrice(Math.round(newPrice));
           }
-        } else if (parsedWin.prize === 'Cash Back') {
-          // Set cash back amount to 10% of the price
-          setCashBack(Math.round(price * 0.1));
+        } else if (parsedWin.prize.includes('Cash Back')) {
+          // Get percentage from prize text (e.g. "10% Cash Back")
+          const percentMatch = parsedWin.prize.match(/(\d+)%\s*Cash Back/i);
+          if (percentMatch && percentMatch[1]) {
+            const cashBackPercentage = parseInt(percentMatch[1], 10);
+            setCashBack(Math.round(price * cashBackPercentage / 100));
+          }
         }
       } catch (e) {
         console.error('Error parsing win data:', e);
@@ -117,7 +121,11 @@ const ProductCard = ({
 
   return (
     <>
-      <Card className="overflow-hidden card-hover border-0 shadow-card" dir={dir}>
+      <Card 
+        className="overflow-hidden card-hover border-0 shadow-card cursor-pointer" 
+        dir={dir}
+        onClick={handleOpenDialog}
+      >
         <div className={`${bgColor} h-40 flex items-center justify-center p-6`}>
           <img 
             src={logo} 
@@ -163,6 +171,14 @@ const ProductCard = ({
                   </Badge>
                 </div>
               )}
+              
+              {currentWin && currentWin.prize.includes('Cash Back') && (
+                <div className="mt-2">
+                  <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
+                    {currentWin.prize} Applied
+                  </Badge>
+                </div>
+              )}
             </div>
             <Badge 
               variant="outline" 
@@ -179,7 +195,10 @@ const ProductCard = ({
         <CardFooter className="px-6 pb-6 pt-0">
           <Button 
             className="w-full bg-teal hover:bg-teal/90"
-            onClick={handleOpenDialog}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleOpenDialog();
+            }}
           >
             {t("products.buyNow")}
           </Button>
