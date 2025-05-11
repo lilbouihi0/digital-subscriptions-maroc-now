@@ -26,6 +26,7 @@ const SpinnerWheel: React.FC = () => {
   const [hasSpunToday, setHasSpunToday] = useState(false);
   const [expiryDate, setExpiryDate] = useState<string | null>(null);
   const [tickSound, setTickSound] = useState<HTMLAudioElement | null>(null);
+  const [hasExtraSpinToday, setHasExtraSpinToday] = useState(false); // New state for tracking extra spin
   const wheelRef = useRef<HTMLDivElement>(null);
   
   // Define prizes based on the current language
@@ -94,9 +95,15 @@ const SpinnerWheel: React.FC = () => {
   useEffect(() => {
     const lastSpinDate = localStorage.getItem('lastSpinDate');
     const today = new Date().toDateString();
+    const hasExtraSpin = localStorage.getItem('hasExtraSpin') === 'true';
     
     if (lastSpinDate === today) {
       setHasSpunToday(true);
+      setHasExtraSpinToday(hasExtraSpin);
+    } else {
+      // Reset extra spin state for a new day
+      localStorage.removeItem('hasExtraSpin');
+      setHasExtraSpinToday(false);
     }
     
     // Show popup for first-time visitors
@@ -173,8 +180,56 @@ const SpinnerWheel: React.FC = () => {
     });
   };
 
+  // Function to handle the spin result
+  const handleSpinResult = (prizeIndex: number) => {
+    const selectedPrize = prizes[prizeIndex].value;
+    setPrize(selectedPrize);
+    
+    // If user got "Try Again", allow them to spin one more time
+    if (selectedPrize === "Try Again") {
+      setHasSpunToday(false);
+      setHasExtraSpinToday(true);
+      localStorage.setItem('hasExtraSpin', 'true');
+      
+      toast({
+        title: t("spinner.tryAgain"),
+        description: t("spinner.oneMoreChance"),
+        variant: "default"
+      });
+    } else {
+      // For other prizes, generate code and save win
+      const code = generateWinCode(selectedPrize);
+      setSpinCode(code);
+      
+      // Set expiry date (48 hours from now)
+      const expiryDate = new Date();
+      expiryDate.setHours(expiryDate.getHours() + 48);
+      const expiryDateString = expiryDate.toISOString();
+      setExpiryDate(expiryDateString);
+      
+      // Store the win in localStorage
+      localStorage.setItem('currentWin', JSON.stringify({
+        prize: selectedPrize,
+        code: code,
+        date: new Date().toISOString(),
+        expiryDate: expiryDateString
+      }));
+      
+      // Trigger confetti animation for winning
+      triggerConfetti();
+      
+      toast({
+        title: t("spinner.congratulations"),
+        description: `${t("spinner.youWon")} ${selectedPrize}! ${t("spinner.offerValid48")}`,
+      });
+    }
+  };
+
   const spinWheel = () => {
-    if (isSpinning || hasSpunToday) return;
+    if (isSpinning) return;
+    
+    // Only check for hasSpunToday if user hasn't already used their extra spin
+    if (hasSpunToday && hasExtraSpinToday) return;
     
     setPrize(null);
     setIsSpinning(true);
@@ -203,42 +258,8 @@ const SpinnerWheel: React.FC = () => {
     setTimeout(() => {
       setIsSpinning(false);
       clearInterval(tickInterval);
-      const selectedPrize = prizes[prizeIndex].value;
-      setPrize(selectedPrize);
       
-      // Generate unique code for the win
-      if (selectedPrize !== "Try Again") {
-        const code = generateWinCode(selectedPrize);
-        setSpinCode(code);
-        
-        // Set expiry date (48 hours from now)
-        const expiryDate = new Date();
-        expiryDate.setHours(expiryDate.getHours() + 48);
-        const expiryDateString = expiryDate.toISOString();
-        setExpiryDate(expiryDateString);
-        
-        // Store the win in localStorage
-        localStorage.setItem('currentWin', JSON.stringify({
-          prize: selectedPrize,
-          code: code,
-          date: new Date().toISOString(),
-          expiryDate: expiryDateString
-        }));
-        
-        // Trigger confetti animation for winning
-        triggerConfetti();
-        
-        toast({
-          title: t("spinner.congratulations"),
-          description: `${t("spinner.youWon")} ${selectedPrize}! ${t("spinner.offerValid48")}`,
-        });
-      } else {
-        toast({
-          title: t("spinner.tryAgain"),
-          description: t("spinner.betterLuck"),
-          variant: "destructive"
-        });
-      }
+      handleSpinResult(prizeIndex);
     }, 5000); // Match this with the CSS animation duration
   };
 
@@ -351,7 +372,7 @@ const SpinnerWheel: React.FC = () => {
                     }}
                   >
                     <div 
-                      className="absolute top-[15%] left-[70%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex items-center gap-1 transition-opacity"
+                      className="absolute top-[15%] left-[70%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center transition-opacity"
                       style={{ 
                         fontSize: prize.label.length > 9 ? '0.7rem' : prize.label.length > 6 ? '0.8rem' : '1rem',
                         transform: `rotate(${90 - (360 / prizes.length) / 2}deg)`,
@@ -359,7 +380,7 @@ const SpinnerWheel: React.FC = () => {
                       }}
                     >
                       {prize.icon}
-                      {prize.label}
+                      <span className="text-center whitespace-nowrap">{prize.label}</span>
                     </div>
                   </div>
                 ))}
@@ -368,7 +389,7 @@ const SpinnerWheel: React.FC = () => {
               {/* Center button - enlarged and enhanced */}
               <Button 
                 onClick={spinWheel} 
-                disabled={isSpinning || hasSpunToday}
+                disabled={isSpinning || (hasSpunToday && hasExtraSpinToday)}
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
                   bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700
                   text-white font-bold rounded-full shadow-lg z-20 w-24 h-24
@@ -377,7 +398,7 @@ const SpinnerWheel: React.FC = () => {
               >
                 {isSpinning ? 
                   <div className="animate-spin h-8 w-8 border-t-2 border-white rounded-full"/> : 
-                  hasSpunToday ? 
+                  hasSpunToday && hasExtraSpinToday ? 
                   <div className="text-xs flex flex-col items-center">
                     <span>{t("spinner.comeBackTomorrow")}</span>
                     <span className="text-xs mt-1 opacity-80">{timeUntilNextSpin()}</span>
@@ -393,10 +414,18 @@ const SpinnerWheel: React.FC = () => {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-4 border-dashed border-white/30 animate-spin-slow" style={{ animationDuration: '120s' }}></div>
             </div>
             
-            {hasSpunToday && !prize && (
+            {hasSpunToday && hasExtraSpinToday && !prize && (
               <div className="mt-6 text-center">
                 <p className="text-sm bg-white/50 px-4 py-2 rounded-full shadow-inner">
                   {t("spinner.nextSpin")}: <span className="font-semibold text-indigo-700">{timeUntilNextSpin()}</span>
+                </p>
+              </div>
+            )}
+
+            {hasSpunToday && !hasExtraSpinToday && !isSpinning && !prize && (
+              <div className="mt-6 text-center">
+                <p className="text-sm bg-white/50 px-4 py-2 rounded-full shadow-inner">
+                  {t("spinner.youHaveExtraSpin")}
                 </p>
               </div>
             )}
@@ -433,13 +462,6 @@ const SpinnerWheel: React.FC = () => {
                   <MessageCircle size={18} />
                   {t("spinner.contactUs")}
                 </Button>
-              </div>
-            )}
-            
-            {prize === "Try Again" && (
-              <div className="text-center p-4 rounded-lg border border-gray-200 bg-white/80 backdrop-blur-sm shadow-inner">
-                <p className="text-xl font-semibold text-gray-600">{t("spinner.betterLuck")}</p>
-                <p className="mt-2 text-gray-500">{t("spinner.tryAgainTomorrow")}</p>
               </div>
             )}
           </div>

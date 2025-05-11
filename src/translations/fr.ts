@@ -77,5 +77,7 @@ export const frenchTranslations = {
   "spinner.offerExpires": "L'offre expire dans",
   "spinner.expired": "Expiré",
   "spinner.rewardApplied": "Récompense Appliquée",
-  "spinner.rewardAppliedDesc": "Votre réduction ou remboursement a été appliqué à tous les produits"
+  "spinner.rewardAppliedDesc": "Votre réduction ou remboursement a été appliqué à tous les produits",
+  "spinner.oneMoreChance": "Vous avez un tour supplémentaire! Tentez votre chance à nouveau!",
+  "spinner.youHaveExtraSpin": "Vous avez un tour supplémentaire! Cliquez sur le bouton pour l'utiliser"
 };

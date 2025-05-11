@@ -77,5 +77,7 @@ export const arabicTranslations = {
   "spinner.offerExpires": "ينتهي العرض في",
   "spinner.expired": "منتهي الصلاحية",
   "spinner.rewardApplied": "تم تطبيق المكافأة",
-  "spinner.rewardAppliedDesc": "تم تطبيق الخصم أو الاسترداد النقدي على جميع المنتجات"
+  "spinner.rewardAppliedDesc": "تم تطبيق الخصم أو الاسترداد النقدي على جميع المنتجات",
+  "spinner.oneMoreChance": "لديك دورة إضافية! حاول حظك مرة أخرى!",
+  "spinner.youHaveExtraSpin": "لديك دورة إضافية! انقر على الزر لاستخدامها"
 };

@@ -77,5 +77,7 @@ export const englishTranslations = {
   "spinner.offerExpires": "Offer expires in",
   "spinner.expired": "Expired",
   "spinner.rewardApplied": "Reward Applied",
-  "spinner.rewardAppliedDesc": "Your discount or cashback has been applied to all products"
+  "spinner.rewardAppliedDesc": "Your discount or cashback has been applied to all products",
+  "spinner.oneMoreChance": "You've got one more spin! Try your luck again!",
+  "spinner.youHaveExtraSpin": "You have an extra spin! Click the button to use it"
 };
