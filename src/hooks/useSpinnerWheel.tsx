@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from "../contexts/LanguageContext";
 import { BadgeDollarSign, Gift, Tag, RotateCw } from "lucide-react";
 import confetti from 'canvas-confetti';

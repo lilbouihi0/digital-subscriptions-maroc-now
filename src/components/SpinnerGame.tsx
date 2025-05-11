@@ -1,9 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useLanguage } from "../contexts/LanguageContext";
-import { BadgeDollarSign, Gift, Tag, RotateCw } from "lucide-react";
 import { useSpinnerWheel } from "@/hooks/useSpinnerWheel";
 import SpinnerWheel from "./spinner/SpinnerWheel";
 import SpinnerReward from "./spinner/SpinnerReward";
