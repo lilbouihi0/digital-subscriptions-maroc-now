@@ -142,15 +142,23 @@ export const useSpinnerWheel = () => {
   // Precise angle calculation for visual alignment
   const calculatePrizeAngle = (prizeIndex: number) => {
     const segmentSize = 360 / prizes.length;
+    
+    // This is the center position of each segment
+    // For a wheel with 6 segments starting with segment 0 at the top (0 degrees),
+    // the centers would be at angles: 0, 60, 120, 180, 240, 300 degrees
+    // But since the pointer is at the top (0 deg), we need to rotate the wheel in the opposite direction
+    
     // Calculate the center angle of the prize segment
     const segmentCenter = prizeIndex * segmentSize;
     
     // Add a small random offset within the segment for realism
     // Keep the offset small enough to ensure we stay within the correct segment
-    const randomOffset = (Math.random() * 0.5 + 0.25) * segmentSize * 0.5; 
+    const maxOffset = segmentSize * 0.3; // 30% of segment size for realism but ensure it stays in segment
+    const randomOffset = (Math.random() * 2 - 1) * maxOffset; 
     
-    // Return precise angle that will ensure pointer lands on the correct prize
-    return segmentSize - segmentCenter - randomOffset;
+    // In CSS rotation, clockwise is positive, so we need to add the full circle (360) and negate the angle
+    // This ensures the correct segment is at the top (pointer position)
+    return 360 - (segmentCenter + randomOffset);
   };
 
   // Generate unique win code
@@ -247,12 +255,10 @@ export const useSpinnerWheel = () => {
     
     // Random spin between 5 and 8 full rotations plus the prize angle
     const spinCount = 5 + Math.random() * 3;
-    const baseRotation = 360 * spinCount;
+    const finalRotation = 360 * spinCount + prizeAngle;
     
-    // Set final rotation (add to current to always increase)
-    // Add the prize angle to ensure pointer lands correctly on prize
-    const newRotation = rotation + baseRotation + prizeAngle;
-    setRotation(newRotation);
+    // Set final rotation value
+    setRotation(finalRotation);
     
     // Play tick sound during spinning
     const tickInterval = setInterval(playTickSound, 100);
@@ -261,6 +267,9 @@ export const useSpinnerWheel = () => {
     setTimeout(() => {
       setIsSpinning(false);
       clearInterval(tickInterval);
+      
+      // Log for testing in dev mode
+      console.log(`Spin test - Prize index: ${prizeIndex}, Prize: ${prizes[prizeIndex].value}, Final angle: ${finalRotation % 360}°`);
       
       handleSpinResult(prizeIndex);
     }, 5000); // Match this with the CSS animation duration

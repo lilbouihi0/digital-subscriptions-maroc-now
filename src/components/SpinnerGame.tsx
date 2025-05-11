@@ -44,7 +44,7 @@ const SpinnerGame: React.FC = () => {
       return <div className="animate-spin h-8 w-8 border-t-2 border-white rounded-full" />;
     } else if (hasSpunToday && hasExtraSpinToday) {
       return (
-        <div className="text-xs flex flex-col items-center">
+        <div className="text-sm flex flex-col items-center">
           <span>{t("spinner.comeBackTomorrow")}</span>
           <span className="text-xs mt-1 opacity-80">{timeUntilNextSpin()}</span>
         </div>
@@ -52,7 +52,7 @@ const SpinnerGame: React.FC = () => {
     } else {
       return (
         <div className="flex flex-col items-center">
-          <span>{t("spinner.spin")}</span>
+          <span className="text-xl">{t("spinner.spin")}</span>
           <span className="text-xs mt-1 opacity-80">🎁</span>
         </div>
       );
@@ -72,7 +72,7 @@ const SpinnerGame: React.FC = () => {
       </Button>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-xl bg-gradient-to-br from-indigo-50 to-purple-50" dir={dir}>
+        <DialogContent className="max-w-3xl bg-gradient-to-br from-indigo-50 to-purple-50" dir={dir}>
           <DialogHeader>
             <DialogTitle className="text-center text-2xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
               {t("spinner.spinToWin")}
