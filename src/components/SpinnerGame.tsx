@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -71,7 +72,7 @@ const SpinnerGame: React.FC = () => {
       </Button>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-md bg-gradient-to-br from-indigo-50 to-purple-50" dir={dir}>
+        <DialogContent className="max-w-xl bg-gradient-to-br from-indigo-50 to-purple-50" dir={dir}>
           <DialogHeader>
             <DialogTitle className="text-center text-2xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
               {t("spinner.spinToWin")}
@@ -81,7 +82,7 @@ const SpinnerGame: React.FC = () => {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="relative flex flex-col items-center justify-center py-6">
+          <div className="relative flex flex-col items-center justify-center py-4">
             {/* Outer glow effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 opacity-20 rounded-full blur-xl transform scale-90"></div>
             

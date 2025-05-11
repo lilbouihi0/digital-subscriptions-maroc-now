@@ -19,12 +19,12 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   spinText,
 }) => {
   return (
-    <div className="relative w-72 h-72 mx-auto">
+    <div className="relative w-80 h-80 mx-auto">
       {/* Pointer Triangle */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-4 w-0 h-0 
-        border-l-[16px] border-l-transparent 
-        border-b-[30px] border-b-red-500 
-        border-r-[16px] border-r-transparent z-10 drop-shadow-lg" />
+        border-l-[18px] border-l-transparent 
+        border-b-[32px] border-b-red-500 
+        border-r-[18px] border-r-transparent z-10 drop-shadow-lg" />
         
       {/* Wheel */}
       <div 
@@ -49,13 +49,15 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             <div 
               className="absolute top-[15%] left-[70%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center transition-opacity"
               style={{ 
-                fontSize: prize.label.length > 9 ? '0.7rem' : prize.label.length > 6 ? '0.8rem' : '1rem',
+                fontSize: prize.label.length > 9 ? '0.75rem' : prize.label.length > 6 ? '0.85rem' : '1rem',
                 transform: `rotate(${90 - (360 / prizes.length) / 2}deg)`,
-                textShadow: '0 1px 2px rgba(0,0,0,0.5)'
+                textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+                width: '60px',
+                textAlign: 'center',
               }}
             >
               {prize.icon}
-              <span className="text-center whitespace-nowrap">{prize.label}</span>
+              <span className="text-center whitespace-pre-wrap mt-1">{prize.label}</span>
             </div>
           </div>
         ))}
@@ -67,7 +69,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
         disabled={spinDisabled}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
           bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700
-          text-white font-bold rounded-full shadow-lg z-20 w-24 h-24
+          text-white font-bold rounded-full shadow-lg z-20 w-28 h-28
           flex flex-col items-center justify-center border-4 border-white/30
           transition-transform hover:scale-105 disabled:opacity-70 disabled:hover:scale-100"
       >
@@ -75,7 +77,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       </button>
       
       {/* Decorative dots around the center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-4 border-dashed border-white/30 animate-spin-slow" style={{ animationDuration: '120s' }}></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 rounded-full border-4 border-dashed border-white/30 animate-spin-slow" style={{ animationDuration: '120s' }}></div>
     </div>
   );
 };

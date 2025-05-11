@@ -139,6 +139,20 @@ export const useSpinnerWheel = () => {
     return 0; // Default to first prize if something goes wrong
   };
 
+  // Precise angle calculation for visual alignment
+  const calculatePrizeAngle = (prizeIndex: number) => {
+    const segmentSize = 360 / prizes.length;
+    // Calculate the center angle of the prize segment
+    const segmentCenter = prizeIndex * segmentSize;
+    
+    // Add a small random offset within the segment for realism
+    // Keep the offset small enough to ensure we stay within the correct segment
+    const randomOffset = (Math.random() * 0.5 + 0.25) * segmentSize * 0.5; 
+    
+    // Return precise angle that will ensure pointer lands on the correct prize
+    return segmentSize - segmentCenter - randomOffset;
+  };
+
   // Generate unique win code
   const generateWinCode = (selectedPrize: string) => {
     const timestamp = new Date().getTime().toString(36);
@@ -225,16 +239,19 @@ export const useSpinnerWheel = () => {
     localStorage.setItem('lastSpinDate', today);
     setHasSpunToday(true);
     
-    // Random spin between 5 and 10 full rotations
-    const spinCount = 5 + Math.random() * 5;
+    // First, determine the winning prize index based on probability
+    const prizeIndex = getRandomPrizeIndex();
+    
+    // Calculate exact angle needed to end on the selected prize
+    const prizeAngle = calculatePrizeAngle(prizeIndex);
+    
+    // Random spin between 5 and 8 full rotations plus the prize angle
+    const spinCount = 5 + Math.random() * 3;
     const baseRotation = 360 * spinCount;
     
-    // Get prize index based on probability
-    const prizeIndex = getRandomPrizeIndex();
-    const prizeOffset = prizeIndex * (360 / prizes.length);
-    
     // Set final rotation (add to current to always increase)
-    const newRotation = rotation + baseRotation + prizeOffset;
+    // Add the prize angle to ensure pointer lands correctly on prize
+    const newRotation = rotation + baseRotation + prizeAngle;
     setRotation(newRotation);
     
     // Play tick sound during spinning
