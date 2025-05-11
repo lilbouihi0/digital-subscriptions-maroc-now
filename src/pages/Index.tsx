@@ -5,7 +5,7 @@ import FeaturedProducts from '../components/FeaturedProducts';
 import ReviewCard from '../components/ReviewCard';
 import TrustBadges from '../components/TrustBadges';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
-import SpinnerWheel from '../components/SpinnerWheel'; // Import the new component
+import SpinnerGame from '../components/SpinnerGame'; // Updated import
 import Footer from '../components/Footer';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -125,7 +125,7 @@ const Index = () => {
       <TrustBadges />
       <Footer />
       <FloatingWhatsApp />
-      <SpinnerWheel /> {/* Add the spinner wheel component */}
+      <SpinnerGame /> {/* Updated component name */}
     </div>
   );
 };
