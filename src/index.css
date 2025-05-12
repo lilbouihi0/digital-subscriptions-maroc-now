@@ -151,7 +151,8 @@
   transition-duration: 5000ms;
 }
 
-/* Enhance easing for wheel spins */
-.ease-out {
-  transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+/* easeOutCubic function for smooth wheel spins */
+.ease-cubic-out {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
