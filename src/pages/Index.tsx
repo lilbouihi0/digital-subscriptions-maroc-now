@@ -6,6 +6,7 @@ import ReviewCard from '../components/ReviewCard';
 import TrustBadges from '../components/TrustBadges';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
 import Footer from '../components/Footer';
+import SpinWheel from '../components/spin-wheel/SpinWheel';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Index = () => {
@@ -124,6 +125,7 @@ const Index = () => {
       <TrustBadges />
       <Footer />
       <FloatingWhatsApp />
+      <SpinWheel />
     </div>
   );
 };
