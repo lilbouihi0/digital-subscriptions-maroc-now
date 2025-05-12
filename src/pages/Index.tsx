@@ -5,7 +5,6 @@ import FeaturedProducts from '../components/FeaturedProducts';
 import ReviewCard from '../components/ReviewCard';
 import TrustBadges from '../components/TrustBadges';
 import FloatingWhatsApp from '../components/FloatingWhatsApp';
-import SpinnerGame from '../components/SpinnerGame'; // Updated import
 import Footer from '../components/Footer';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -125,7 +124,6 @@ const Index = () => {
       <TrustBadges />
       <Footer />
       <FloatingWhatsApp />
-      <SpinnerGame /> {/* Updated component name */}
     </div>
   );
 };
