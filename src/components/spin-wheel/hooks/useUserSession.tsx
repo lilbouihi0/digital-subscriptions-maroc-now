@@ -1,9 +1,11 @@
 
 import { useState, useEffect } from 'react';
+import { hasSpunToday } from '@/utils/twilioService';
 
 export const useUserSession = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [hasSpun, setHasSpun] = useState(false);
   
   // Check if user is already verified
   useEffect(() => {
@@ -13,6 +15,13 @@ export const useUserSession = () => {
     if (phoneVerified) {
       setIsVerified(true);
       setPhoneNumber(savedPhone);
+      
+      // Check if user has spun today
+      if (savedPhone) {
+        hasSpunToday(savedPhone)
+          .then(result => setHasSpun(result))
+          .catch(err => console.error('Error checking spin status:', err));
+      }
     }
   }, []);
   
@@ -20,6 +29,8 @@ export const useUserSession = () => {
     isVerified,
     setIsVerified,
     phoneNumber,
-    setPhoneNumber
+    setPhoneNumber,
+    hasSpun,
+    setHasSpun
   };
 };

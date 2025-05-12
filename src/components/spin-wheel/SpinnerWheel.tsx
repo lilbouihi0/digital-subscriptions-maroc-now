@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
 interface SpinnerWheelProps {
   prizes: {
@@ -15,7 +15,6 @@ interface SpinnerWheelProps {
   spinDisabled: boolean;
   spinText: React.ReactNode;
   dir: "ltr" | "rtl";
-  onTickSound: () => void;
 }
 
 const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
@@ -26,35 +25,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   spinDisabled,
   spinText,
   dir,
-  onTickSound,
 }) => {
-  const lastRotationRef = useRef(0);
-  
-  // Play tick sound at intervals during spinning
-  useEffect(() => {
-    let tickInterval: NodeJS.Timeout | null = null;
-    
-    if (isSpinning && onTickSound) {
-      // Play tick sound every time wheel passes a segment
-      tickInterval = setInterval(() => {
-        // Calculate current rotation in degrees, accounting for multiple rotations
-        const currentRotationDegrees = (rotation % 360);
-        const lastRotationDegrees = (lastRotationRef.current % 360);
-        
-        // If we've passed a segment boundary (every 60 degrees)
-        if (Math.floor(currentRotationDegrees / 60) !== Math.floor(lastRotationDegrees / 60)) {
-          onTickSound();
-        }
-        
-        lastRotationRef.current = rotation;
-      }, 50); // Check frequently for smooth sound
-    }
-    
-    return () => {
-      if (tickInterval) clearInterval(tickInterval);
-    };
-  }, [isSpinning, rotation, onTickSound]);
-
   return (
     <div className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px] mx-auto">
       {/* Pointer Triangle */}

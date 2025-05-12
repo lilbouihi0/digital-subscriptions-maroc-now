@@ -8,9 +8,8 @@ import PhoneVerification from './PhoneVerification';
 import SpinnerWheel from './SpinnerWheel';
 import PrizeDisplay from './PrizeDisplay';
 import { usePrizeData } from './hooks/usePrizeData';
-import { useSpinLogic } from './hooks/useSpinLogic';
-import { useAudio } from './hooks/useAudio';
 import { useUserSession } from './hooks/useUserSession';
+import { useSpinServerLogic } from '@/hooks/useSpinServerLogic';
 
 const SpinWheel: React.FC = () => {
   const { t, dir, language } = useLanguage();
@@ -21,30 +20,23 @@ const SpinWheel: React.FC = () => {
     isVerified, 
     setIsVerified, 
     phoneNumber, 
-    setPhoneNumber 
+    setPhoneNumber,
+    hasSpun,
+    setHasSpun
   } = useUserSession();
   
   // Prize data
   const { prizes } = usePrizeData();
   
-  // Spin wheel logic
+  // Server-side spin logic
   const { 
-    rotation, 
     isSpinning, 
     prize, 
-    spinWheel, 
-    hasSpunToday, 
-    hasExtraSpinToday,
-    timeUntilNextSpin,
-    spinCode,
-    expiryDate,
-    formatTimeRemaining,
-    handleApplyReward,
-    handleClaim
-  } = useSpinLogic(prizes);
-  
-  // Audio effects
-  const { playTickSound, playWinSound, playTryAgainSound } = useAudio();
+    rotation, 
+    handleSpin,
+    applyDiscount,
+    claimFreeAccount
+  } = useSpinServerLogic(phoneNumber);
   
   // Show popup for first-time visitors
   useEffect(() => {
@@ -57,6 +49,20 @@ const SpinWheel: React.FC = () => {
     }
   }, []);
   
+  // Format time remaining until next day
+  const timeUntilNextSpin = () => {
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    
+    const timeLeft = tomorrow.getTime() - now.getTime();
+    const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    
+    return `${hours}h ${minutes}m`;
+  };
+  
   // Prepare spin button content
   const getSpinButtonContent = () => {
     if (isSpinning) {
@@ -64,7 +70,7 @@ const SpinWheel: React.FC = () => {
         <div className="animate-spin h-8 w-8 border-t-2 border-white rounded-full mb-2" />
         <span className="text-sm">{t("spinner.spinning")}</span>
       </div>;
-    } else if (hasSpunToday && hasExtraSpinToday) {
+    } else if (hasSpun) {
       return (
         <div className="text-sm flex flex-col items-center">
           <span>{t("spinner.comeBackTomorrow")}</span>
@@ -78,6 +84,13 @@ const SpinWheel: React.FC = () => {
           <span className="text-xs mt-1 opacity-80">🎁</span>
         </div>
       );
+    }
+  };
+
+  // Handle wheel spin
+  const onSpin = () => {
+    if (isVerified && !isSpinning && !hasSpun) {
+      handleSpin();
     }
   };
 
@@ -114,21 +127,26 @@ const SpinWheel: React.FC = () => {
                 prizes={prizes}
                 rotation={rotation}
                 isSpinning={isSpinning}
-                onSpin={spinWheel}
-                spinDisabled={isSpinning || (hasSpunToday && hasExtraSpinToday)}
+                onSpin={onSpin}
+                spinDisabled={isSpinning || hasSpun}
                 spinText={getSpinButtonContent()}
                 dir={dir}
-                onTickSound={playTickSound}
               />
               
               {/* Prize display */}
-              {prize && prize !== "Try Again" && (
+              {prize && (
                 <PrizeDisplay
-                  prize={prize}
-                  spinCode={spinCode}
-                  formatTimeRemaining={formatTimeRemaining}
-                  onApplyReward={handleApplyReward}
-                  onClaimReward={() => handleClaim(() => setIsOpen(false))}
+                  prize={prize.name}
+                  prizeType={prize.type}
+                  spinCode={prize.code || ''}
+                  value={prize.value}
+                  expiresAt={prize.expiresAt}
+                  onApplyReward={() => {
+                    if (prize.type === 'discount') {
+                      applyDiscount();
+                    }
+                  }}
+                  onClaimReward={claimFreeAccount}
                 />
               )}
             </div>

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { toast } from "@/hooks/use-toast";
+import { sendVerificationCode, verifyCode } from '@/utils/twilioService';
 
 interface PhoneVerificationProps {
   phoneNumber: string;
@@ -21,10 +22,28 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
   const [step, setStep] = useState<'phone' | 'otp'>('phone');
   const [isLoading, setIsLoading] = useState(false);
   const [otp, setOtp] = useState('');
-  const [expectedOtp, setExpectedOtp] = useState('');
   const [otpError, setOtpError] = useState('');
   
   const phoneInputRef = useRef<HTMLInputElement>(null);
+  
+  // Format phone number to E.164 format for Twilio
+  const formatPhoneNumber = (phone: string): string => {
+    // Remove all non-digit characters
+    let digits = phone.replace(/\D/g, '');
+    
+    // If number doesn't start with +, add the country code (assume Morocco +212)
+    if (!phone.startsWith('+')) {
+      // If number starts with 0, remove it and add country code
+      if (digits.startsWith('0')) {
+        digits = digits.substring(1);
+      }
+      
+      // Add Morocco country code
+      return `+212${digits}`;
+    }
+    
+    return phone;
+  };
   
   // Handle phone input
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +52,7 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
     setPhoneNumber(value);
   };
   
-  // Send verification code
+  // Send verification code via Twilio
   const handleSendCode = async () => {
     setIsLoading(true);
     
@@ -49,34 +68,27 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
     }
     
     try {
-      // Generate a random 6-digit verification code
-      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-      setExpectedOtp(verificationCode);
+      // Format phone number for Twilio
+      const formattedPhone = formatPhoneNumber(phoneNumber);
       
-      // In a real application, you would send this via API
-      // For now, we'll simulate it
-      console.log(`Would send verification code ${verificationCode} to ${phoneNumber}`);
+      // Send verification code using Twilio
+      const success = await sendVerificationCode(formattedPhone);
       
-      // Simulate WhatsApp message with verification code
-      setTimeout(() => {
+      if (success) {
         toast({
           title: t("spinner.codeSent"),
           description: t("spinner.checkWhatsApp"),
         });
-        
-        // In a real app, this would be sent via WhatsApp API
-        // For demo purposes, we'll show it in a toast
-        setTimeout(() => {
-          toast({
-            title: t("spinner.verificationCode"),
-            description: `${t("spinner.yourCode")}: ${verificationCode}`,
-            variant: "default"
-          });
-          setIsLoading(false);
-          setStep('otp');
-        }, 1000);
-      }, 1500);
-      
+        setIsLoading(false);
+        setStep('otp');
+      } else {
+        toast({
+          title: t("spinner.error"),
+          description: t("spinner.sendError"),
+          variant: "destructive"
+        });
+        setIsLoading(false);
+      }
     } catch (error) {
       console.error('Error sending verification code:', error);
       toast({
@@ -88,13 +100,19 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
     }
   };
   
-  // Verify OTP code
-  const handleVerifyOtp = () => {
+  // Verify OTP code with Twilio
+  const handleVerifyOtp = async () => {
     setIsLoading(true);
     setOtpError('');
     
-    setTimeout(() => {
-      if (otp === expectedOtp) {
+    try {
+      // Format phone number for Twilio
+      const formattedPhone = formatPhoneNumber(phoneNumber);
+      
+      // Verify OTP code using Twilio
+      const isValid = await verifyCode(formattedPhone, otp);
+      
+      if (isValid) {
         // Success! Phone verified
         toast({
           title: t("spinner.verified"),
@@ -116,7 +134,15 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
         });
       }
       setIsLoading(false);
-    }, 1000);
+    } catch (error) {
+      console.error('Error verifying code:', error);
+      toast({
+        title: t("spinner.error"),
+        description: t("spinner.verificationError"),
+        variant: "destructive"
+      });
+      setIsLoading(false);
+    }
   };
   
   // Focus input on mount
