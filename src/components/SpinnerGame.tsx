@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
@@ -368,7 +367,7 @@ const SpinnerGame: React.FC = () => {
     } else {
       return (
         <div className="flex flex-col items-center">
-          <span className="text-xl">{dir === 'ar' ? 'اضغط للدوران 🎁' : t("spinner.spin")}</span>
+          <span className="text-xl">{language === 'ar' ? 'اضغط للدوران 🎁' : t("spinner.spin")}</span>
           <span className="text-xs mt-1 opacity-80">🎁</span>
         </div>
       );
