@@ -35,6 +35,7 @@ const config = {
           900: "#312E81",
         },
         navy: "#1f2b52",
+        teal: "hsl(165 96% 28%)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -75,8 +76,9 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        arabic: ["Cairo", "sans-serif"],
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        arabic: ["Noto Sans Arabic", "sans-serif"],
+        sans: ["Inter", ...fontFamily.sans],
+        heading: ["Poppins", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
