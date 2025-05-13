@@ -128,13 +128,12 @@ function dispatch(action: Action) {
   })
 }
 
-// Define Toast type without optional id to match the Action type
 type Toast = Omit<ToasterToast, "id">
 
 function toast(props: Toast) {
   const id = genId()
 
-  const update = (props: ToasterToast) =>
+  const update = (props: Partial<ToasterToast>) =>
     dispatch({
       type: "UPDATE_TOAST",
       toast: { ...props, id },
