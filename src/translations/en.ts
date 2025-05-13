@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   "products": {
     "title": "Our Products",
@@ -16,6 +17,15 @@ export const englishTranslations = {
     "relatedProducts": "Related Products",
     "noProductsFound": "No products found.",
     "searchProducts": "Search Products",
+    "selectDuration": "Select Duration",
+    "selectDurationDesc": "Choose how long you would like to subscribe",
+    "buyNow": "Buy Now",
+    "instantDelivery": "Instant Delivery",
+    "bought": "Bought",
+    "streaming": "Streaming",
+    "music": "Music",
+    "all": "All",
+    "subtitle": "Discover premium digital subscriptions"
   },
   "cart": {
     "title": "Shopping Cart",
@@ -307,6 +317,18 @@ export const englishTranslations = {
     "freeAccount": "Free Account",
     "discount10": "10% Discount",
     "discount5": "5% Discount",
-    "tryAgainFiller": "Try Again"
+    "tryAgainFiller": "Try Again",
+    "invalidOtp": "Invalid verification code"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "faq": "FAQ",
+    "contact": "Contact Us"
+  },
+  "hero": {
+    "title": "Premium Digital Subscriptions",
+    "subtitle": "Get instant access to your favorite streaming and music platforms",
+    "cta": "Explore Products"
   }
-};
+}
