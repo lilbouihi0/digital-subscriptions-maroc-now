@@ -6,12 +6,10 @@ import { frenchTranslations } from "../translations/fr";
 
 type Language = "en" | "ar" | "fr";
 
-type TranslationKey = keyof typeof englishTranslations;
-
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: TranslationKey) => string;
+  t: (key: string) => string;
   dir: "ltr" | "rtl";
 }
 
@@ -24,7 +22,7 @@ const translations = {
 export const LanguageContext = createContext<LanguageContextType>({
   language: "en",
   setLanguage: () => {},
-  t: (key: TranslationKey) => "",
+  t: (key: string) => "",
   dir: "ltr",
 });
 
@@ -38,8 +36,34 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     document.body.className = lang === "ar" ? "font-arabic" : "";
   };
 
-  const t = (key: TranslationKey): string => {
-    return translations[language][key] || translations["en"][key] || key;
+  // Updated translation function that handles nested keys
+  const t = (key: string): string => {
+    // Get the current language translation object
+    const translationObj = translations[language] || translations["en"];
+    
+    // Handle nested keys like "products.title"
+    const keyParts = key.split('.');
+    let result: any = translationObj;
+    
+    // Traverse the nested structure
+    for (const part of keyParts) {
+      if (result && typeof result === 'object' && part in result) {
+        result = result[part];
+      } else {
+        // Fallback to English if missing
+        let fallback = translations["en"];
+        for (const fallbackPart of keyParts) {
+          if (fallback && typeof fallback === 'object' && fallbackPart in fallback) {
+            fallback = fallback[fallbackPart];
+          } else {
+            return key; // Key not found even in fallback
+          }
+        }
+        return typeof fallback === 'string' ? fallback : key;
+      }
+    }
+    
+    return typeof result === 'string' ? result : key;
   };
 
   const dir = language === "ar" ? "rtl" : "ltr";
