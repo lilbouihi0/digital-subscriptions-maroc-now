@@ -1,59 +1,9 @@
 
 /**
- * Twilio Verify Service Integration
+ * Twilio Service Integration
+ * Note: Phone verification (sendVerificationCode, verifyCode) has been migrated to Firebase.
+ * These functions are removed from here.
  */
-
-// Create a function to send verification code
-export async function sendVerificationCode(phoneNumber: string): Promise<boolean> {
-  try {
-    // Make API call to our Supabase Edge Function that will call Twilio
-    const response = await fetch('/api/verify-send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ phoneNumber }),
-    });
-    
-    const data = await response.json();
-    
-    if (!response.ok) {
-      console.error('Error sending verification code:', data.message || data.error);
-      return false;
-    }
-    
-    return data.success === true;
-  } catch (error) {
-    console.error('Failed to send verification code:', error);
-    return false;
-  }
-}
-
-// Create a function to verify the code
-export async function verifyCode(phoneNumber: string, code: string): Promise<boolean> {
-  try {
-    // Make API call to our Supabase Edge Function that will verify with Twilio
-    const response = await fetch('/api/verify-check', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ phoneNumber, code }),
-    });
-    
-    const data = await response.json();
-    
-    if (!response.ok) {
-      console.error('Error verifying code:', data.message || data.error);
-      return false;
-    }
-    
-    return data.valid === true;
-  } catch (error) {
-    console.error('Failed to verify code:', error);
-    return false;
-  }
-}
 
 // Create a function to spin and get prize (server-side logic)
 export async function spinWheel(phoneNumber: string): Promise<any> {
@@ -151,3 +101,4 @@ export async function redeemCode(code: string, adminKey: string): Promise<any> {
     throw error;
   }
 }
+
