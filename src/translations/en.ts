@@ -39,7 +39,7 @@ export const englishTranslations = {
     "emptyCart": "Your cart is empty.",
     "continueShopping": "Continue Shopping",
     "confirmRemove": "Are you sure you want to remove this item from your cart?",
-    "remove": "Remove",
+    "remove": "Remove"
   },
   "checkout": {
     "title": "Checkout",
@@ -130,7 +130,7 @@ export const englishTranslations = {
     "selected": "selected",
     "items": "items",
     "noResults": "No results found.",
-    "clearFilters": "Clear Filters",
+    "clearFilters": "Clear Filters"
   },
   "admin": {
     "dashboard": "Dashboard",
