@@ -77,7 +77,7 @@ export const englishTranslations = {
     "invalidCardNumber": "Invalid card number",
     "invalidExpiryDate": "Invalid expiry date",
     "invalidCVV": "Invalid CVV",
-    "sameAsShippingAddress": "Same as shipping address",
+    "sameAsShippingAddress": "Same as shipping address"
   },
   "common": {
     "search": "Search",
