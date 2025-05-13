@@ -128,13 +128,11 @@ function dispatch(action: Action) {
   })
 }
 
-// Fix: Modified the Toast type to allow id as an optional property
-type Toast = Omit<ToasterToast, "id"> & {
-  id?: string
-}
+// Define Toast type without optional id to match the Action type
+type Toast = Omit<ToasterToast, "id">
 
 function toast(props: Toast) {
-  const id = props.id || genId()
+  const id = genId()
 
   const update = (props: ToasterToast) =>
     dispatch({
@@ -148,7 +146,6 @@ function toast(props: Toast) {
     type: "ADD_TOAST",
     toast: {
       ...props,
-      id,
       open: true,
       onOpenChange: (open) => {
         if (!open) dismiss()
