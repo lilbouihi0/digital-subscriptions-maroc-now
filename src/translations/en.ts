@@ -1,3 +1,4 @@
+
 export const englishTranslations = {
   "products": {
     "title": "Our Products",
@@ -270,38 +271,8 @@ export const englishTranslations = {
     "orderStatusUpdatedSuccessfully": "Order status updated successfully.",
     "orderDetailsUpdatedSuccessfully": "Order details updated successfully.",
     "customerDetailsUpdatedSuccessfully": "Customer details updated successfully.",
-    "customerPasswordUpdatedSuccessfully": "Customer password updated successfully.",
-    "customerNotesUpdatedSuccessfully": "Customer notes updated successfully.",
-    "customerNotesCreatedSuccessfully": "Customer notes created successfully.",
-    "customerNotesDeletedSuccessfully": "Customer notes deleted successfully.",
-    "customerNotesUpdatedSuccessfully": "Customer notes updated successfully.",
-    "customerNotesDetailsUpdatedSuccessfully": "Customer notes details updated successfully.",
-    "customerNotesDetailsCreatedSuccessfully": "Customer notes details created successfully.",
-    "customerNotesDetailsDeletedSuccessfully": "Customer notes details deleted successfully.",
-    "customerNotesDetailsUpdatedSuccessfully": "Customer notes details updated successfully.",
-    "customerNotesDetailsDetailsUpdatedSuccessfully": "Customer notes details details updated successfully.",
-    "customerNotesDetailsDetailsCreatedSuccessfully": "Customer notes details details created successfully.",
-    "customerNotesDetailsDetailsDeletedSuccessfully": "Customer notes details details deleted successfully.",
-    "customerNotesDetailsDetailsUpdatedSuccessfully": "Customer notes details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsCreatedSuccessfully": "Customer notes details details details created successfully.",
-    "customerNotesDetailsDetailsDetailsDeletedSuccessfully": "Customer notes details details details deleted successfully.",
-    "customerNotesDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsCreatedSuccessfully": "Customer notes details details details details created successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDeletedSuccessfully": "Customer notes details details details details deleted successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsCreatedSuccessfully": "Customer notes details details details details details created successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsDeletedSuccessfully": "Customer notes details details details details details deleted successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsDetailsCreatedSuccessfully": "Customer notes details details details details details details created successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsDetailsDeletedSuccessfully": "Customer notes details details details details details details deleted successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsDetailsDetailsUpdatedSuccessfully": "Customer notes details details details details details details details updated successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsDetailsDetailsCreatedSuccessfully": "Customer notes details details details details details details details created successfully.",
-    "customerNotesDetailsDetailsDetailsDetailsDetailsDetailsDetailsDeletedSuccessfully": "Customer notes details details details details details details details deleted successfully.",
+    "customerPasswordUpdatedSuccessfully": "Customer password updated successfully."
+    // Removed duplicate nested properties that were causing TS1117 errors
   },
   "spinner": {
     "tryYourLuck": "Try Your Luck",
@@ -339,8 +310,6 @@ export const englishTranslations = {
     "claimReward": "Claim Reward",
     "applyReward": "Apply Reward",
     "discountApplied": "Discount Applied",
-    "discountAppliedDesc": "Your {value} discount has been applied to your cart.",
-    "continueShopping": "Continue Shopping",
     "error": "Error",
     "invalidPhone": "Please enter a valid phone number",
     "sendError": "Error sending verification code. Please try again.",
@@ -349,10 +318,15 @@ export const englishTranslations = {
     "verificationFailed": "Verification Failed",
     "wrongCode": "The code you entered is incorrect. Please try again.",
     "verificationError": "Error verifying code. Please try again.",
-    "invalidOtp": "Please enter a valid code",
     "sending": "Sending...",
     "verifying": "Verifying...",
     "spinFailed": "Failed to spin the wheel. Please try again.",
-    "discountAppliedDesc": "Your {value} discount has been applied."
+    "discountAppliedDesc": "Your {value} discount has been applied.",
+    "cashback10": "10% Cashback",
+    "cashback20": "20% Cashback",
+    "freeAccount": "Free Account",
+    "discount10": "10% Discount",
+    "discount5": "5% Discount",
+    "tryAgainFiller": "Try Again"
   }
 };

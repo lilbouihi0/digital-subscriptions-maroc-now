@@ -122,8 +122,8 @@ export const usePhoneVerification = ({
         
         onVerified();
       } else {
-        // Invalid OTP
-        setOtpError(translations.invalidOtp);
+        // Invalid OTP - Using wrongCode instead of invalidOtp which doesn't exist
+        setOtpError(translations.wrongCode);
         toast({
           title: translations.verificationFailed,
           description: translations.wrongCode,
