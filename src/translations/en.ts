@@ -243,7 +243,6 @@ export const englishTranslations = {
     "passwordUpdated": "Password updated successfully.",
     "customerCreated": "Customer created successfully.",
     "createCustomer": "Create Customer",
-    "customerDetails": "Customer Details",
     "customerOrders": "Customer Orders",
     "noCustomerOrdersFound": "No orders found for this customer.",
     "customerSince": "Customer Since",

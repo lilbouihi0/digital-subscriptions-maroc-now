@@ -128,11 +128,12 @@ function dispatch(action: Action) {
   })
 }
 
-interface Toast extends Omit<ToasterToast, "id"> {
+// Fix: Modified the Toast type to allow id as an optional property
+type Toast = Omit<ToasterToast, "id"> & {
   id?: string
 }
 
-function toast({ ...props }: Toast) {
+function toast(props: Toast) {
   const id = props.id || genId()
 
   const update = (props: ToasterToast) =>
@@ -183,4 +184,3 @@ function useToast() {
 }
 
 export { useToast, toast }
-
