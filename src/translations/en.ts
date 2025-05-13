@@ -1,4 +1,3 @@
-
 export const englishTranslations = {
   "products": {
     "title": "Our Products",
@@ -253,26 +252,7 @@ export const englishTranslations = {
     "noteUpdated": "Note updated successfully.",
     "noteDetails": "Note Details",
     "noNotesFound": "No notes found.",
-    "noteCreated": "Note created successfully.",
-    "noteUpdatedSuccessfully": "Note updated successfully.",
-    "noteDeletedSuccessfully": "Note deleted successfully.",
-    "customerCreatedSuccessfully": "Customer created successfully.",
-    "customerUpdatedSuccessfully": "Customer updated successfully.",
-    "customerDeletedSuccessfully": "Customer deleted successfully.",
-    "productCreatedSuccessfully": "Product created successfully.",
-    "productUpdatedSuccessfully": "Product updated successfully.",
-    "productDeletedSuccessfully": "Product deleted successfully.",
-    "categoryCreatedSuccessfully": "Category created successfully.",
-    "categoryUpdatedSuccessfully": "Category updated successfully.",
-    "categoryDeletedSuccessfully": "Category deleted successfully.",
-    "orderCreatedSuccessfully": "Order created successfully.",
-    "orderUpdatedSuccessfully": "Order updated successfully.",
-    "orderDeletedSuccessfully": "Order deleted successfully.",
-    "orderStatusUpdatedSuccessfully": "Order status updated successfully.",
-    "orderDetailsUpdatedSuccessfully": "Order details updated successfully.",
-    "customerDetailsUpdatedSuccessfully": "Customer details updated successfully.",
-    "customerPasswordUpdatedSuccessfully": "Customer password updated successfully."
-    // Removed duplicate nested properties that were causing TS1117 errors
+    "noteCreated": "Note created successfully."
   },
   "spinner": {
     "tryYourLuck": "Try Your Luck",

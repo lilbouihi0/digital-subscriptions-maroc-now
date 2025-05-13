@@ -30,7 +30,17 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
     verificationFailed: t("spinner.verificationFailed"),
     wrongCode: t("spinner.wrongCode"),
     verificationError: t("spinner.verificationError"),
-    // Note: We're no longer passing invalidOtp since it's not used in the hook
+    // Add the missing translations required by PhoneInput component
+    enterPhone: t("spinner.enterPhone"),
+    phoneVerificationNeeded: t("spinner.phoneVerificationNeeded"),
+    sendVerificationCode: t("spinner.sendVerificationCode"),
+    sending: t("spinner.sending"),
+    // Add the missing translations required by OtpInput component
+    enterCode: t("spinner.enterCode"),
+    codeSentTo: t("spinner.codeSentTo"),
+    changePhone: t("spinner.changePhone"),
+    verifyCode: t("spinner.verifyCode"),
+    verifying: t("spinner.verifying"),
   };
   
   const {
