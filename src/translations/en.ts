@@ -330,5 +330,23 @@ export const englishTranslations = {
     "title": "Premium Digital Subscriptions",
     "subtitle": "Get instant access to your favorite streaming and music platforms",
     "cta": "Explore Products"
+  },
+  "reviews": {
+    "title": "What Our Customers Say",
+    "subtitle": "Read authentic reviews from our satisfied customers"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to the most common questions about our products and services",
+    "q1": "How do I receive my subscription after purchase?",
+    "a1": "You will receive your subscription details via email and WhatsApp immediately after your payment is confirmed.",
+    "q2": "Are your subscriptions legit?",
+    "a2": "Yes, all our subscriptions are 100% legitimate. We provide accounts through official reseller programs and partnerships.",
+    "q3": "How long do the subscriptions last?",
+    "a3": "The duration depends on the package you select. We offer monthly, quarterly, and annual subscription options.",
+    "q4": "What if I have an issue with my subscription?",
+    "a4": "Our customer support team is available 24/7 through WhatsApp. We guarantee fast responses and solutions to any issues.",
+    "q5": "Do you offer refunds?",
+    "a5": "Yes, we offer a 7-day money-back guarantee if you're not satisfied with the service or if it doesn't work as described."
   }
 }
