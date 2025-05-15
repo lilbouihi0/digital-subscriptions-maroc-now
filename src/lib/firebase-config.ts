@@ -1,25 +1,14 @@
-
-import { initializeApp, getApp, getApps } from 'firebase/app';
-import { getAuth, RecaptchaVerifier } from 'firebase/auth';
+import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID, // Optional
+  apiKey: "AIzaSyA0xzBpgF6-S3C55w-ETuie5G8jXSIrigk",
+  authDomain: "phone-authentication-21fa7.firebaseapp.com",
+  projectId: "phone-authentication-21fa7",
+  storageBucket: "phone-authentication-21fa7.appspot.com",
+  messagingSenderId: "1071903557819",
+  appId: "1:1071903557819:web:dummyappid", // You can find this in your Firebase settings
 };
 
-// Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
 
-// Setup RecaptchaVerifier globally if needed, or initialize per component
-// For simplicity, we'll initialize it in the hook.
-// It's important to only have one RecaptchaVerifier instance visible at a time.
-// If you use it in multiple places, consider a global setup or careful management.
-
-export { auth, RecaptchaVerifier };
-
+export default app;
