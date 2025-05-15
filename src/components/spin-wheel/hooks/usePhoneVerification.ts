@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
-import { auth, RecaptchaVerifier as FirebaseRecaptchaVerifier } from '@/lib/firebase-config'; // Updated import
-import { signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth'; // Firebase specific imports
+import { auth, RecaptchaVerifier as FirebaseRecaptchaVerifier } from '@/lib/firebase-config';
+import { signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth';
 import { toast } from "@/hooks/use-toast";
 
 // Declare global recaptchaVerifier on window
@@ -11,6 +10,7 @@ declare global {
     confirmationResult?: ConfirmationResult;
   }
 }
+
 interface UsePhoneVerificationProps {
   phoneNumber: string;
   onVerified: () => void;
@@ -142,12 +142,12 @@ export const usePhoneVerification = ({
     
     try {
       const formattedPhone = formatPhoneNumber(phoneNumber);
+      console.log("Sending code to:", formattedPhone); // Add debugging
       const confirmationResult = await signInWithPhoneNumber(auth, formattedPhone, window.recaptchaVerifier);
       window.confirmationResult = confirmationResult; // Store confirmationResult globally or in state
       
       toast({
         title: translations.codeSent,
-        // description: translations.checkWhatsApp, // Firebase sends SMS, not necessarily WhatsApp
         description: `A code has been sent to ${formattedPhone}.`,
       });
       setIsLoading(false);
@@ -232,7 +232,6 @@ export const usePhoneVerification = ({
     otpError,
     handleSendCode,
     handleVerifyOtp,
-    handlePhoneChange // Keep this if PhoneVerification still uses it, otherwise it can be simplified.
+    handlePhoneChange
   };
 };
-
