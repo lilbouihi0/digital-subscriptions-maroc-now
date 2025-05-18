@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+/// src/pages/VerificationPage.tsx
+import { useState } from 'react';
+import { sendCode } from '../api/verification';
+=======
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -6,7 +11,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { useLanguage } from '@/contexts/LanguageContext';
 import { verifyCode } from '../api/verifyCode';
 import { useToast } from '@/hooks/use-toast';
+>>>>>>> 48b790a3da09959630f1b31372eba9beffdc0430
 
+<<<<<<< HEAD
+export default function VerificationPage() {
+  const [phone, setPhone] = useState('');
+  const [status, setStatus] = useState('');
+=======
 const VerificationPage = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [code, setCode] = useState('');
@@ -14,12 +25,26 @@ const VerificationPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { t, dir } = useLanguage();
   const { toast } = useToast();
+>>>>>>> 48b790a3da09959630f1b31372eba9beffdc0430
 
+<<<<<<< HEAD
+  const handleSend = async () => {
+    setStatus('Sending...');
+    const result = await sendCode(phone);
+    if (result.success) {
+      setStatus('Code sent!');
+    } else {
+      setStatus('Error sending code');
+=======
   const handleVerifyCode = async () => {
     if (!phoneNumber || !code) {
       setMessage('Please enter both phone number and verification code.');
       return;
+>>>>>>> 48b790a3da09959630f1b31372eba9beffdc0430
     }
+<<<<<<< HEAD
+  };
+=======
 
     setIsLoading(true);
     try {
@@ -101,5 +126,27 @@ const VerificationPage = () => {
     </div>
   );
 };
+>>>>>>> 48b790a3da09959630f1b31372eba9beffdc0430
 
+<<<<<<< HEAD
+  return (
+    <div className="p-4">
+      <h1 className="text-xl font-bold">Phone Verification</h1>
+      <input
+        type="text"
+        placeholder="Enter phone number"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        className="border p-2 rounded"
+      />
+      <button onClick={handleSend} className="ml-2 bg-blue-500 text-white p-2 rounded">
+        Send Code
+      </button>
+      <p>{status}</p>
+    </div>
+  );
+}
+=======
 export default VerificationPage;
+
+>>>>>>> 48b790a3da09959630f1b31372eba9beffdc0430

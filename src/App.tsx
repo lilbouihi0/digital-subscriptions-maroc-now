@@ -9,7 +9,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
-import VerificationPage from "./pages/VerificationPage";
+import VerificationPage from './pages/VerificationPage';
 
 // Create the QueryClient instance
 const queryClient = new QueryClient();
