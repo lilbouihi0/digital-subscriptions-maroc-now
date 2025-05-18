@@ -51,7 +51,7 @@
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 165 96% 28%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
@@ -104,6 +104,10 @@
   [dir="rtl"] div {
     @apply font-arabic;
   }
+
+  .dark .nav-link {
+    @apply text-gray-300 hover:text-white transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-white after:transition-transform hover:after:scale-x-100;
+  }
 }
 
 @layer components {
@@ -112,7 +116,7 @@
   }
   
   .btn-secondary {
-    @apply bg-white text-navy border border-navy px-6 py-3 rounded-md font-medium transition-all hover:bg-navy hover:text-white;
+    @apply bg-white text-navy border border-navy px-6 py-3 rounded-md font-medium transition-all hover:bg-navy hover:text-white dark:bg-transparent dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-gray-900;
   }
   
   .nav-link {
@@ -124,11 +128,11 @@
   }
   
   .whatsapp-badge {
-    @apply bg-green-500/10 text-green-600 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1;
+    @apply bg-green-500/10 text-green-600 dark:text-green-400 dark:bg-green-500/20 text-xs font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1;
   }
   
   .price-tag {
-    @apply bg-navy/10 text-navy text-sm font-semibold px-3 py-1.5 rounded-full;
+    @apply bg-navy/10 text-navy dark:bg-navy/30 dark:text-blue-300 text-sm font-semibold px-3 py-1.5 rounded-full;
   }
 }
 
@@ -155,4 +159,3 @@
 .ease-cubic-out {
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
-

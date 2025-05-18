@@ -1,5 +1,5 @@
 
-import React, { createContext, useState, useContext, ReactNode } from "react";
+import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { englishTranslations } from "../translations/en";
 import { arabicTranslations } from "../translations/ar";
 import { frenchTranslations } from "../translations/fr";
@@ -19,27 +19,43 @@ const translations = {
   fr: frenchTranslations,
 };
 
+// Get stored language or use Arabic as default
+const getBrowserLanguage = (): Language => {
+  if (typeof window !== 'undefined') {
+    const storedLanguage = localStorage.getItem('language') as Language;
+    if (storedLanguage && ['en', 'ar', 'fr'].includes(storedLanguage)) {
+      return storedLanguage;
+    }
+  }
+  return "ar"; // Arabic is now the default language
+};
+
 export const LanguageContext = createContext<LanguageContextType>({
-  language: "en",
+  language: "ar", // Set Arabic as default in the initial context
   setLanguage: () => {},
   t: (key: string) => "",
-  dir: "ltr",
+  dir: "rtl", // Default to RTL for Arabic
 });
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>("en");
+  const [language, setLanguage] = useState<Language>(getBrowserLanguage());
+
+  // Apply language settings on mount and when language changes
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+    document.body.className = language === "ar" ? "font-arabic" : "";
+    localStorage.setItem('language', language);
+  }, [language]);
 
   const changeLanguage = (lang: Language) => {
     setLanguage(lang);
-    document.documentElement.lang = lang;
-    document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-    document.body.className = lang === "ar" ? "font-arabic" : "";
   };
 
   // Updated translation function that handles nested keys
   const t = (key: string): string => {
     // Get the current language translation object
-    const translationObj = translations[language] || translations["en"];
+    const translationObj = translations[language] || translations["ar"]; // Fallback to Arabic
     
     // Handle nested keys like "products.title"
     const keyParts = key.split('.');
@@ -50,8 +66,8 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
       if (result && typeof result === 'object' && part in result) {
         result = result[part];
       } else {
-        // Fallback to English if missing
-        let fallback = translations["en"];
+        // Fallback to Arabic if missing
+        let fallback = translations["ar"];
         for (const fallbackPart of keyParts) {
           if (fallback && typeof fallback === 'object' && fallbackPart in fallback) {
             fallback = fallback[fallbackPart];
