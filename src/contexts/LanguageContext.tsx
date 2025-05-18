@@ -50,7 +50,14 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     document.documentElement.lang = language;
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
-    document.body.className = language === "ar" ? "font-arabic" : "";
+    
+    // Add appropriate font class for Arabic
+    if (language === "ar") {
+      document.body.classList.add('font-arabic');
+    } else {
+      document.body.classList.remove('font-arabic');
+    }
+    
     localStorage.setItem('language', language);
   }, [language]);
 

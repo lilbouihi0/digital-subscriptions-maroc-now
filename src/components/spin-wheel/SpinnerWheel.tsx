@@ -34,9 +34,9 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
         border-b-[42px] border-b-red-500 
         border-r-[24px] border-r-transparent z-10 drop-shadow-lg" />
         
-      {/* Wheel */}
+      {/* Wheel - added dark:border-indigo-600 for dark mode */}
       <div 
-        className="w-full h-full rounded-full border-8 border-indigo-800 overflow-hidden transition-transform ease-cubic-out"
+        className="w-full h-full rounded-full border-8 border-indigo-800 dark:border-indigo-600 overflow-hidden transition-transform ease-cubic-out"
         style={{ 
           transform: `rotate(${rotation}deg)`,
           transitionDuration: isSpinning ? '5s' : '0s',
@@ -79,15 +79,16 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
         })}
       </div>
       
-      {/* Center circle decoration */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-56 md:h-56 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80"></div>
+      {/* Center circle decoration - enhanced for dark mode */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-56 md:h-56 rounded-full border-4 border-indigo-800/30 dark:border-indigo-600/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 dark:from-indigo-800/80 dark:to-violet-800/80"></div>
       
-      {/* Center button - enlarged */}
+      {/* Center button - enhanced for dark mode */}
       <button 
         onClick={onSpin}
         disabled={spinDisabled}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
           bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500
+          dark:from-rose-700 dark:to-amber-700 dark:hover:from-rose-600 dark:hover:to-amber-600
           text-white font-bold rounded-full shadow-xl z-20 w-28 h-28 md:w-40 md:h-40
           flex flex-col items-center justify-center border-4 border-white/30
           transition-transform hover:scale-105 disabled:opacity-80 disabled:hover:scale-100"

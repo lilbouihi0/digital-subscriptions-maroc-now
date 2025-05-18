@@ -30,8 +30,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       }
     }
     
-    // Default to dark mode instead of light
-    return 'dark';
+    // Default to light mode
+    return 'light';
   };
 
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
