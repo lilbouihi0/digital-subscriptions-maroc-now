@@ -102,5 +102,6 @@ export const frenchTranslations = {
   "spinner.verificationFailed": "Échec de la vérification",
   "spinner.wrongCode": "Le code que vous avez entré est incorrect",
   "spinner.codeCopied": "Code copié",
-  "spinner.pasteInChat": "Vous pouvez le coller dans le message WhatsApp"
+  "spinner.pasteInChat": "Vous pouvez le coller dans le message WhatsApp",
+  "spinner.phoneVerification": "Vérification du Numéro de Téléphone"
 };

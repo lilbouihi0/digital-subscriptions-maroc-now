@@ -44,6 +44,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const savedLanguage = getBrowserLanguage();
     setLanguage(savedLanguage);
+    console.log("Language set to:", savedLanguage);
   }, []);
 
   // Apply language settings when language changes
@@ -59,17 +60,44 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     }
     
     localStorage.setItem('language', language);
+    console.log("Language changed to:", language, "with translations:", Object.keys(translations[language]));
   }, [language]);
 
   const changeLanguage = (lang: Language) => {
+    console.log("Changing language to:", lang);
     setLanguage(lang);
   };
 
-  // Updated translation function that handles nested keys
+  // Debug function to validate translations
+  const validateTranslation = (key: string, languageCode: Language): boolean => {
+    const keyParts = key.split('.');
+    let obj = translations[languageCode];
+    
+    for (const part of keyParts) {
+      if (!obj || typeof obj !== 'object' || !(part in obj)) {
+        return false;
+      }
+      obj = obj[part];
+    }
+    
+    return typeof obj === 'string';
+  };
+
+  // Updated translation function with better error handling and debugging
   const t = (key: string): string => {
     try {
+      // Skip empty keys
+      if (!key || key.trim() === '') {
+        console.warn("Empty key provided to translation function");
+        return '';
+      }
+      
       // Get the current language translation object
-      const translationObj = translations[language] || translations["ar"]; // Fallback to Arabic
+      const translationObj = translations[language];
+      if (!translationObj) {
+        console.error(`No translations found for language: ${language}`);
+        return key;
+      }
       
       // Handle nested keys like "products.title"
       const keyParts = key.split('.');
@@ -80,20 +108,29 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
         if (result && typeof result === 'object' && part in result) {
           result = result[part];
         } else {
-          // Fallback to Arabic if missing
-          let fallback = translations["ar"];
-          for (const fallbackPart of keyParts) {
-            if (fallback && typeof fallback === 'object' && fallbackPart in fallback) {
-              fallback = fallback[fallbackPart];
-            } else {
-              console.log(`Translation key not found: ${key} (in ${language} and fallback ar)`);
-              return key; // Key not found even in fallback
+          // Log missing translation
+          console.warn(`Translation missing for key: ${key} in ${language}`);
+          
+          // Try fallback to English first, then Arabic
+          const fallbackLanguages: Language[] = language !== 'en' ? ['en', 'ar'] : ['ar'];
+          
+          for (const fallbackLang of fallbackLanguages) {
+            if (validateTranslation(key, fallbackLang)) {
+              let fallback = translations[fallbackLang];
+              for (const fallbackPart of keyParts) {
+                fallback = fallback[fallbackPart];
+              }
+              console.info(`Using fallback (${fallbackLang}) for: ${key}`);
+              return typeof fallback === 'string' ? fallback : key;
             }
           }
-          return typeof fallback === 'string' ? fallback : key;
+          
+          // If no translation found in any language, return the key
+          return key;
         }
       }
       
+      // Return the found translation or the key itself
       return typeof result === 'string' ? result : key;
     } catch (error) {
       console.error(`Error in translation function for key: ${key}`, error);

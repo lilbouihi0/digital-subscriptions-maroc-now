@@ -102,5 +102,6 @@ export const arabicTranslations = {
   "spinner.verificationFailed": "فشل التحقق",
   "spinner.wrongCode": "الرمز الذي أدخلته غير صحيح",
   "spinner.codeCopied": "تم نسخ الرمز",
-  "spinner.pasteInChat": "يمكنك لصقه في رسالة واتساب"
+  "spinner.pasteInChat": "يمكنك لصقه في رسالة واتساب",
+  "spinner.phoneVerification": "التحقق من رقم الهاتف"
 };

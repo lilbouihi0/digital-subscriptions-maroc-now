@@ -12,8 +12,13 @@ const VerificationPage = () => {
   const [code, setCode] = useState('');
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { t, dir } = useLanguage();
+  const { t, dir, language } = useLanguage();
   const { toast } = useToast();
+  
+  // Debug language state
+  console.log("Current language:", language);
+  console.log("Direction:", dir);
+  console.log("Translated example:", t('spinner.phoneVerification'));
   
   const handleSendCode = async () => {
     if (!phoneNumber) {
@@ -56,12 +61,14 @@ const VerificationPage = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4" dir={dir}>
       <Card className="w-full max-w-md shadow-lg dark:bg-gray-800 dark:text-white">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">{t('spinner.phoneVerification')}</CardTitle>
-          <CardDescription className="text-center dark:text-gray-300">{t('spinner.enterPhone')}</CardDescription>
+          <CardTitle className="text-2xl font-bold text-center">{t('spinner.phoneVerification') || 'Phone Verification'}</CardTitle>
+          <CardDescription className="text-center dark:text-gray-300">{t('spinner.enterPhone') || 'Enter your phone number'}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <label htmlFor="phone" className="block text-sm font-medium dark:text-gray-300">{t('spinner.enterPhone')}</label>
+            <label htmlFor="phone" className="block text-sm font-medium dark:text-gray-300">
+              {t('spinner.enterPhone') || 'Enter your phone number'}
+            </label>
             <Input
               id="phone"
               type="tel"
@@ -83,7 +90,7 @@ const VerificationPage = () => {
             onClick={handleSendCode}
             disabled={isLoading}
           >
-            {isLoading ? t('spinner.sending') : t('spinner.sendVerificationCode')}
+            {isLoading ? (t('spinner.sending') || 'Sending...') : (t('spinner.sendVerificationCode') || 'Send Verification Code')}
           </Button>
         </CardFooter>
       </Card>
