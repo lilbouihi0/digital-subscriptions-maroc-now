@@ -30,7 +30,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       }
     }
     
-    return 'light';
+    // Default to dark mode instead of light
+    return 'dark';
   };
 
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
@@ -41,8 +42,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     
     if (theme === 'dark') {
       root.classList.add('dark');
+      root.classList.remove('light');
     } else {
       root.classList.remove('dark');
+      root.classList.add('light');
     }
     
     localStorage.setItem('theme', theme);

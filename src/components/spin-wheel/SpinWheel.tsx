@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { useTheme } from "../../contexts/ThemeContext";
 import { toast } from "@/hooks/use-toast";
 import PhoneVerification from './PhoneVerification';
 import SpinnerWheel from './SpinnerWheel';
@@ -13,6 +14,7 @@ import { useSpinServerLogic } from '@/hooks/useSpinServerLogic';
 
 const SpinWheel: React.FC = () => {
   const { t, dir, language } = useLanguage();
+  const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   
   // User session and verification state
@@ -94,6 +96,11 @@ const SpinWheel: React.FC = () => {
     }
   };
 
+  // Determine dialog background based on theme
+  const dialogBackground = theme === 'dark' 
+    ? 'bg-gradient-to-br from-gray-900 to-navy-900 text-white' 
+    : 'bg-gradient-to-br from-indigo-50 to-purple-50';
+
   return (
     <>
       <Button 
@@ -107,12 +114,12 @@ const SpinWheel: React.FC = () => {
       </Button>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-4xl bg-gradient-to-br from-indigo-50 to-purple-50" dir={dir}>
+        <DialogContent className={`max-w-4xl ${dialogBackground}`} dir={dir}>
           <DialogHeader>
-            <DialogTitle className="text-center text-3xl font-bold bg-gradient-to-r from-rose-500 via-purple-500 to-amber-500 bg-clip-text text-transparent">
+            <DialogTitle className={`text-center text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'bg-gradient-to-r from-rose-500 via-purple-500 to-amber-500 bg-clip-text text-transparent'}`}>
               {t("spinner.spinToWin")}
             </DialogTitle>
-            <DialogDescription className="text-center text-gray-600 text-lg">
+            <DialogDescription className={`text-center ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} text-lg`}>
               {t("spinner.spinDescription")}
             </DialogDescription>
           </DialogHeader>
@@ -120,7 +127,7 @@ const SpinWheel: React.FC = () => {
           {isVerified ? (
             <div className="relative flex flex-col items-center justify-center py-4">
               {/* Outer glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 opacity-20 rounded-full blur-xl transform scale-90"></div>
+              <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-r from-indigo-800/20 via-purple-800/20 to-pink-800/20' : 'bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200'} opacity-20 rounded-full blur-xl transform scale-90`}></div>
               
               {/* Spinner Wheel Component */}
               <SpinnerWheel 
@@ -162,7 +169,7 @@ const SpinWheel: React.FC = () => {
             <Button 
               variant="outline" 
               onClick={() => setIsOpen(false)}
-              className="bg-white/70 hover:bg-white"
+              className={theme === 'dark' ? 'bg-gray-800 hover:bg-gray-700 text-white' : 'bg-white/70 hover:bg-white'}
             >
               {t("products.cancel")}
             </Button>

@@ -27,7 +27,7 @@ const getBrowserLanguage = (): Language => {
       return storedLanguage;
     }
   }
-  return "ar"; // Arabic is now the default language
+  return "ar"; // Arabic is the default language
 };
 
 export const LanguageContext = createContext<LanguageContextType>({
@@ -38,9 +38,15 @@ export const LanguageContext = createContext<LanguageContextType>({
 });
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>(getBrowserLanguage());
+  const [language, setLanguage] = useState<Language>("ar"); // Initialize with Arabic
+  
+  // Load saved language on mount
+  useEffect(() => {
+    const savedLanguage = getBrowserLanguage();
+    setLanguage(savedLanguage);
+  }, []);
 
-  // Apply language settings on mount and when language changes
+  // Apply language settings when language changes
   useEffect(() => {
     document.documentElement.lang = language;
     document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
