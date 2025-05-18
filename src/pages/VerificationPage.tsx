@@ -79,7 +79,7 @@ const VerificationPage = () => {
         </CardContent>
         <CardFooter>
           <Button 
-            className="w-full bg-teal hover:bg-teal/90 dark:bg-blue-600 dark:hover:bg-blue-700" 
+            className="w-full bg-teal-500 hover:bg-teal-600 dark:bg-blue-600 dark:hover:bg-blue-700" 
             onClick={handleSendCode}
             disabled={isLoading}
           >

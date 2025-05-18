@@ -67,32 +67,38 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   // Updated translation function that handles nested keys
   const t = (key: string): string => {
-    // Get the current language translation object
-    const translationObj = translations[language] || translations["ar"]; // Fallback to Arabic
-    
-    // Handle nested keys like "products.title"
-    const keyParts = key.split('.');
-    let result: any = translationObj;
-    
-    // Traverse the nested structure
-    for (const part of keyParts) {
-      if (result && typeof result === 'object' && part in result) {
-        result = result[part];
-      } else {
-        // Fallback to Arabic if missing
-        let fallback = translations["ar"];
-        for (const fallbackPart of keyParts) {
-          if (fallback && typeof fallback === 'object' && fallbackPart in fallback) {
-            fallback = fallback[fallbackPart];
-          } else {
-            return key; // Key not found even in fallback
+    try {
+      // Get the current language translation object
+      const translationObj = translations[language] || translations["ar"]; // Fallback to Arabic
+      
+      // Handle nested keys like "products.title"
+      const keyParts = key.split('.');
+      let result: any = translationObj;
+      
+      // Traverse the nested structure
+      for (const part of keyParts) {
+        if (result && typeof result === 'object' && part in result) {
+          result = result[part];
+        } else {
+          // Fallback to Arabic if missing
+          let fallback = translations["ar"];
+          for (const fallbackPart of keyParts) {
+            if (fallback && typeof fallback === 'object' && fallbackPart in fallback) {
+              fallback = fallback[fallbackPart];
+            } else {
+              console.log(`Translation key not found: ${key} (in ${language} and fallback ar)`);
+              return key; // Key not found even in fallback
+            }
           }
+          return typeof fallback === 'string' ? fallback : key;
         }
-        return typeof fallback === 'string' ? fallback : key;
       }
+      
+      return typeof result === 'string' ? result : key;
+    } catch (error) {
+      console.error(`Error in translation function for key: ${key}`, error);
+      return key; // Return the key itself as fallback
     }
-    
-    return typeof result === 'string' ? result : key;
   };
 
   const dir = language === "ar" ? "rtl" : "ltr";
