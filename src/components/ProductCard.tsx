@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -146,7 +146,7 @@ const ProductCard = ({
   return (
     <>
       <Card 
-        className="overflow-hidden card-hover border-0 shadow-card cursor-pointer" 
+        className="overflow-hidden card-hover border-0 shadow-card cursor-pointer dark:border dark:border-gray-700 dark:shadow-lg" 
         dir={dir}
         onClick={handleOpenDialog}
       >
@@ -160,8 +160,8 @@ const ProductCard = ({
         
         <CardContent className="p-6">
           <div className="mb-4">
-            <h3 className="text-xl font-bold mb-1">{name}</h3>
-            <p className="text-gray-600 text-sm">{duration}</p>
+            <h3 className="text-xl font-bold mb-1 dark:text-white">{name}</h3>
+            <p className="text-gray-600 dark:text-gray-300 text-sm">{duration}</p>
           </div>
           
           <div className="flex justify-between items-end mb-4">
@@ -169,14 +169,14 @@ const ProductCard = ({
               <div className="flex items-center gap-2">
                 {discountedPrice && !isExpired ? (
                   <>
-                    <span className="text-2xl font-bold text-navy">{discountedPrice} MAD</span>
-                    <span className="text-sm text-gray-500 line-through">{price} MAD</span>
+                    <span className="text-2xl font-bold text-navy dark:text-blue-300">{discountedPrice} MAD</span>
+                    <span className="text-sm text-gray-500 dark:text-gray-400 line-through">{price} MAD</span>
                   </>
                 ) : (
-                  <span className="text-2xl font-bold text-navy">
+                  <span className="text-2xl font-bold text-navy dark:text-blue-300">
                     {price} MAD
                     {cashBack && !isExpired && (
-                      <span className="ml-2 text-sm text-green-600 flex items-center">
+                      <span className="ml-2 text-sm text-green-600 dark:text-green-400 flex items-center">
                         <CirclePercent size={16} className="mr-1" />
                         +{cashBack} MAD cashback
                       </span>
@@ -184,7 +184,7 @@ const ProductCard = ({
                   </span>
                 )}
                 {!discountedPrice && oldPrice && (
-                  <span className="text-sm text-gray-500 line-through">{oldPrice} MAD</span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400 line-through">{oldPrice} MAD</span>
                 )}
               </div>
               

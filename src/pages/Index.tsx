@@ -1,4 +1,5 @@
 
+import React from 'react';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import FeaturedProducts from '../components/FeaturedProducts';
@@ -17,28 +18,28 @@ const Index = () => {
       name: "Mohammed A.",
       date: "May 5, 2025",
       rating: 5,
-      text: "Extremely fast delivery, received my Netflix account within minutes after payment. Great service!",
+      text: "Twasalt b compte Netflix f 2 d9aye9 b3d l-daf3! Service top, rani ghadi n3awd!",
       productBought: "Netflix Premium"
     },
     {
       name: "Fatima L.",
       date: "May 3, 2025",
       rating: 5,
-      text: "I was skeptical at first, but the customer service was excellent and the Spotify account works perfectly.",
+      text: "S7a9t chwya luwl, bs7 customer service 3awd lia th9a. Spotify khdam mzzyan bzf!",
       productBought: "Spotify Premium"
     },
     {
       name: "Ahmed K.",
       date: "April 29, 2025",
       rating: 4,
-      text: "Very good value for money. The Amazon Prime subscription is working great for months now.",
+      text: "Price zwin bzaf w Amazon Prime kaykhdem bla moshkil mn shhar!",
       productBought: "Amazon Prime"
     },
     {
       name: "Yasmine B.",
       date: "April 25, 2025",
       rating: 5,
-      text: "Fast response on WhatsApp and clear instructions. Will buy again from this site!",
+      text: "Tjawbo m3aya f WhatsApp daba daba, w 3tawni instructions sbab. Service kayb9a fi rass!",
       productBought: "Shahid VIP"
     }
   ];

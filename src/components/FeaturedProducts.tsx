@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import React, { useState } from "react";
 import ProductCard from "./ProductCard";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -93,27 +93,27 @@ const FeaturedProducts = () => {
     : products.filter(product => product.category === selectedTab);
 
   return (
-    <div id="products" className="py-16 bg-gray-50" dir={dir}>
+    <div id="products" className="py-16 bg-gray-50 dark:bg-gray-900" dir={dir}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold font-heading text-navy mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold font-heading text-navy dark:text-white mb-4">
             {t("products.title")}
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             {t("products.subtitle")}
           </p>
         </div>
         
         <Tabs defaultValue="all" className="w-full" value={selectedTab} onValueChange={setSelectedTab}>
           <div className="flex justify-center mb-8">
-            <TabsList className="bg-gray-200 p-1">
-              <TabsTrigger value="all" className="px-6 py-2 data-[state=active]:bg-white rounded-md">
+            <TabsList className="bg-gray-200 dark:bg-gray-800 p-1">
+              <TabsTrigger value="all" className="px-6 py-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 rounded-md">
                 {t("products.all")}
               </TabsTrigger>
-              <TabsTrigger value="streaming" className="px-6 py-2 data-[state=active]:bg-white rounded-md">
+              <TabsTrigger value="streaming" className="px-6 py-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 rounded-md">
                 {t("products.streaming")}
               </TabsTrigger>
-              <TabsTrigger value="music" className="px-6 py-2 data-[state=active]:bg-white rounded-md">
+              <TabsTrigger value="music" className="px-6 py-2 data-[state=active]:bg-white dark:data-[state=active]:bg-gray-700 rounded-md">
                 {t("products.music")}
               </TabsTrigger>
             </TabsList>
