@@ -13,7 +13,11 @@ const Navbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(e.target.value as "en" | "ar" | "fr");
+    const newLang = e.target.value as "en" | "ar" | "fr";
+    if (newLang && ['en', 'ar', 'fr'].includes(newLang)) {
+      setLanguage(newLang);
+      console.log("Language changed in Navbar to:", newLang);
+    }
   };
 
   return (
@@ -123,7 +127,7 @@ const Navbar = () => {
               {t("nav.contact")}
             </a>
             <div className="px-3 py-2">
-              <label htmlFor="mobile-language" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t("products.selectDuration")}</label>
+              <label htmlFor="mobile-language" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Language / اللغة / Langue</label>
               <select 
                 id="mobile-language"
                 className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 py-2 pl-3 pr-10 text-base focus:border-teal focus:outline-none focus:ring-teal border dark:text-gray-300"
