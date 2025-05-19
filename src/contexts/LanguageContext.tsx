@@ -1,5 +1,6 @@
 
-import React, { createContext, useState, useContext, ReactNode, useEffect } from "react";
+import * as React from "react";
+import { createContext, useState, useContext, ReactNode, useEffect } from "react";
 import { englishTranslations } from "../translations/en";
 import { arabicTranslations } from "../translations/ar";
 import { frenchTranslations } from "../translations/fr";
@@ -183,10 +184,10 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   const dir = language === "ar" ? "rtl" : "ltr";
 
-  return (
-    <LanguageContext.Provider value={{ language, setLanguage: changeLanguage, t, dir }}>
-      {children}
-    </LanguageContext.Provider>
+  return React.createElement(
+    LanguageContext.Provider,
+    { value: { language, setLanguage: changeLanguage, t, dir } },
+    children
   );
 };
 
