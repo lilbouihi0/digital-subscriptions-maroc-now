@@ -62,9 +62,6 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
           />
         </div>
         
-        {/* Container for Firebase reCAPTCHA */}
-        <div id="recaptcha-container" className="my-2 flex justify-center"></div>
-
         <Button 
           onClick={onSendCode}
           disabled={isLoading || !phoneNumber || phoneNumber.length < 8}

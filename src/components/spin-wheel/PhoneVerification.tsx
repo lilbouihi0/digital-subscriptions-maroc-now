@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from "../../contexts/LanguageContext";
-import { usePhoneVerification } from './hooks/usePhoneVerification';
+import { useWhatsAppVerification } from './hooks/useWhatsAppVerification';
 import PhoneInput from './PhoneInput';
 import OtpInput from './OtpInput';
 
@@ -53,7 +53,7 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
     handleSendCode,
     handleVerifyOtp,
     handlePhoneChange
-  } = usePhoneVerification({ 
+  } = useWhatsAppVerification({ 
     phoneNumber, 
     onVerified,
     translations 
