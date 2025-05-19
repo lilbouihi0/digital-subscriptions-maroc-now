@@ -112,11 +112,11 @@ const Index = () => {
                 a: t("faq.a5")
               }
             ].map((faq, index) => (
-              <div key={index} className="py-5">
+              <div key={index} className="py-5 px-6 mb-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 transition-all hover:shadow-md">
                 <div className="flex justify-between items-start">
-                  <h3 className="text-lg font-semibold text-navy">{faq.q}</h3>
+                  <h3 className="text-lg font-semibold text-navy dark:text-blue-300">{faq.q}</h3>
                 </div>
-                <p className="mt-3 text-gray-600">{faq.a}</p>
+                <p className="mt-3 text-gray-700 dark:text-gray-300">{faq.a}</p>
               </div>
             ))}
           </div>

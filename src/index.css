@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&family=Almarai:wght@300;400;700&family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -23,7 +23,7 @@
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted-foreground: 215.4 16.3% 56.9%;
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
@@ -55,7 +55,7 @@
     --secondary-foreground: 0 0% 100%;
 
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 0 0% 90%;
+    --muted-foreground: 0 0% 95%;
 
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 0 0% 100%;
@@ -110,7 +110,12 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-teal text-white px-6 py-3 rounded-md font-medium transition-all hover:shadow-lg hover:-translate-y-0.5;
+    @apply bg-teal text-white px-6 py-3 rounded-md font-medium transition-all hover:shadow-lg hover:-translate-y-0.5 dark:hover:shadow-teal/20 dark:hover:glow-teal-sm;
+  }
+  
+  /* Add glow effect for dark mode */
+  .dark .glow-teal-sm {
+    box-shadow: 0 0 15px 2px rgba(5, 150, 105, 0.4);
   }
   
   .btn-secondary {

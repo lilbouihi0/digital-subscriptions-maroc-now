@@ -76,7 +76,7 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        arabic: ["Noto Sans Arabic", "sans-serif"],
+        arabic: ["Cairo", "Tajawal", "Almarai", "Noto Kufi Arabic", "sans-serif"],
         sans: ["Inter", ...fontFamily.sans],
         heading: ["Poppins", ...fontFamily.sans],
       },
