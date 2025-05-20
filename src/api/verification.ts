@@ -15,7 +15,7 @@ export async function sendCode(phoneNumber: string) {
     
     /* 
     // Real API call implementation:
-    const response = await axios.post('http://localhost:3001/api/send-code', {
+    const response = await axios.post(`${process.env.REACT_APP_OTP_SERVER}/send-otp`, {
       phoneNumber
     });
     return response.data;

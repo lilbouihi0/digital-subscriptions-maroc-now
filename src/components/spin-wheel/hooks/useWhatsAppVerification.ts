@@ -58,7 +58,7 @@ export const useWhatsAppVerification = ({
       console.log("Sending code to:", formattedPhone);
       
       // Call backend API to send WhatsApp verification code
-      const response = await fetch('http://localhost:3001/api/send-code', {
+      const response = await fetch(`${process.env.REACT_APP_OTP_SERVER}/send-otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
