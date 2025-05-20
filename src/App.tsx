@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,6 +11,7 @@ import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import VerificationPage from './pages/VerificationPage';
+import PhoneVerification from './pages/PhoneVerification';
 
 // Create the QueryClient instance
 const queryClient = new QueryClient();
@@ -26,6 +28,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/verify" element={<VerificationPage />} />
+              <Route path="/phone-verification" element={<PhoneVerification />} />
               {/* Catch-all route for undefined paths */}
               <Route path="*" element={<NotFound />} />
             </Routes>

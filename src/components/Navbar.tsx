@@ -37,6 +37,7 @@ const Navbar = () => {
               <a href="#products" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">{t("nav.products")}</a>
               <a href="#faq" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">{t("nav.faq")}</a>
               <a href="#contact" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">{t("nav.contact")}</a>
+              <a href="/phone-verification" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">Verify Phone</a>
             </div>
             
             {/* Language switcher */}
@@ -125,6 +126,13 @@ const Navbar = () => {
               onClick={toggleMenu}
             >
               {t("nav.contact")}
+            </a>
+            <a 
+              href="/phone-verification" 
+              className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-teal rounded-md"
+              onClick={toggleMenu}
+            >
+              Verify Phone
             </a>
             <div className="px-3 py-2">
               <label htmlFor="mobile-language" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Language / اللغة / Langue</label>

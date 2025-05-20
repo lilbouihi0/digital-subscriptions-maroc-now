@@ -1,6 +1,9 @@
-# WhatsApp Verification System
+# Verification Systems
 
-This system replaces the Firebase phone verification with a WhatsApp-based verification system using Venom Bot.
+This directory contains two verification systems:
+
+1. WhatsApp Verification System - Uses WhatsApp to send verification codes
+2. Phone OTP Verification System - Uses a simple OTP mechanism for phone verification
 
 ## Setup Instructions
 
@@ -52,3 +55,60 @@ For a production environment, consider these security enhancements:
 - If the WhatsApp client disconnects, restart the server
 - If you encounter authentication issues, delete the `.wwebjs_auth` directory and restart the server to re-authenticate
 - Check the console logs for detailed error messages
+
+## Phone OTP Verification System
+
+### Setup Instructions
+
+1. Install dependencies:
+   ```bash
+   npm install express body-parser cors
+   ```
+
+2. Run the server:
+   ```bash
+   node bot.js
+   ```
+
+   The server will start on port 3000.
+
+### EC2 Security Group Configuration
+
+If you're running this on an EC2 instance, make sure to configure the security group to allow inbound traffic on port 3000:
+
+1. Go to the EC2 console in AWS
+2. Select your instance
+3. Click on the Security tab
+4. Click on the Security Group
+5. Add an inbound rule:
+   - Type: Custom TCP
+   - Port Range: 3000
+   - Source: Your IP address (for security) or 0.0.0.0/0 (for testing only)
+   - Description: Phone Verification API
+
+### Testing the API
+
+You can test the API endpoints using curl or Postman:
+
+#### Send OTP:
+```bash
+curl -X POST http://56.228.34.55:3000/send-otp \
+  -H "Content-Type: application/json" \
+  -d '{"phone": "212600000000"}'
+```
+
+#### Verify OTP:
+```bash
+curl -X POST http://56.228.34.55:3000/verify-otp \
+  -H "Content-Type: application/json" \
+  -d '{"phone": "212600000000", "otp": "123456"}'
+```
+
+### Security Considerations
+
+- In a production environment, you should:
+  - Use HTTPS instead of HTTP
+  - Store OTPs in a database with expiration
+  - Implement rate limiting to prevent abuse
+  - Add proper authentication and authorization
+  - Consider using a service like AWS SNS or Twilio for sending SMS
