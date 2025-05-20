@@ -28,7 +28,7 @@ const PhoneVerification = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_OTP_SERVER}/send-otp`, {
+      const response = await fetch(`${import.meta.env.VITE_OTP_SERVER}/send-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -74,7 +74,7 @@ const PhoneVerification = () => {
 
     setIsLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_OTP_SERVER}/verify-otp`, {
+      const response = await fetch(`${import.meta.env.VITE_OTP_SERVER}/verify-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
