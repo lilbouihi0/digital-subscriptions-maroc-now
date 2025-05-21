@@ -98,6 +98,7 @@ const SpinWheel: React.FC = () => {
 
   // Handle wheel spin
   const onSpin = () => {
+    // If user is not verified, show the phone input form more prominently
     if (!isVerified) {
       // Show message if user tries to spin without entering phone number
       toast({
@@ -105,13 +106,26 @@ const SpinWheel: React.FC = () => {
         description: "Please enter your phone number to spin the wheel",
         variant: "destructive"
       });
+      
+      // Scroll to the phone input if it exists
+      const phoneInput = document.querySelector('.phone-input-container');
+      if (phoneInput) {
+        phoneInput.scrollIntoView({ behavior: 'smooth' });
+      }
       return;
     }
     
+    // Only allow spinning if not already spinning and hasn't spun today
     if (!isSpinning && !hasSpun) {
       handleSpin();
       // Store that user has spun today
       localStorage.setItem('hasSpunToday', 'true');
+    } else if (hasSpun) {
+      toast({
+        title: "Already Spun Today",
+        description: "You've already spun the wheel today. Come back tomorrow!",
+        variant: "default"
+      });
     }
   };
 
@@ -146,7 +160,7 @@ const SpinWheel: React.FC = () => {
           <div className="relative flex flex-col items-center justify-center py-4">
             {/* Simple phone input if not verified yet */}
             {!isVerified ? (
-              <div className="w-full max-w-md mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+              <div className="w-full max-w-md mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg phone-input-container">
                 <div className="text-center mb-4">
                   <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
                     Enter Your Phone Number
@@ -171,6 +185,12 @@ const SpinWheel: React.FC = () => {
                         localStorage.setItem('phoneVerified', 'true');
                         localStorage.setItem('verifiedPhone', phoneNumber);
                         setIsVerified(true);
+                        
+                        // Show success message
+                        toast({
+                          title: "Success!",
+                          description: "Now click the wheel to spin and win!",
+                        });
                       } else {
                         toast({
                           title: "Error",
@@ -179,7 +199,8 @@ const SpinWheel: React.FC = () => {
                         });
                       }
                     }}
-                    className="bg-indigo-600 hover:bg-indigo-700 p-6 text-lg font-bold"
+                    className="bg-rose-600 hover:bg-rose-700 p-6 text-lg font-bold animate-pulse shadow-lg"
+                    style={{ cursor: 'pointer' }}
                   >
                     SPIN THE WHEEL
                   </Button>

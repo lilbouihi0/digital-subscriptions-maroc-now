@@ -53,7 +53,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
           return (
             <div
               key={i}
-              className="absolute w-full h-full"
+              className="absolute w-full h-full overflow-visible"
               style={{
                 transform: `rotate(${segmentAngle}deg)`,
                 transformOrigin: 'center',
@@ -62,17 +62,18 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
               }}
             >
               <div 
-                className="absolute top-[22%] left-[70%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center"
+                className="absolute top-[12%] left-[75%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center"
                 style={{ 
-                  fontSize: prize.label.length > 12 ? '1rem' : prize.label.length > 9 ? '1.1rem' : '1.2rem',
+                  fontSize: '0.9rem',
                   transform: `rotate(${textRotationAdjustment - (360 / prizes.length) / 2}deg)`,
-                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
-                  width: '100px',
+                  textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                  width: '70px',
                   textAlign: 'center',
+                  zIndex: 5,
                 }}
               >
-                <div className="text-3xl mb-1">{prize.icon}</div>
-                <span className="text-center whitespace-pre-wrap">{prize.label}</span>
+                <div className="text-xl mb-1">{prize.icon}</div>
+                <span className="text-center whitespace-pre-wrap leading-tight bg-black/30 p-1 rounded">{prize.label}</span>
               </div>
             </div>
           );
@@ -85,13 +86,13 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       {/* Center button - enhanced for dark mode */}
       <button 
         onClick={onSpin}
-        disabled={spinDisabled}
+        disabled={false} /* Never disable the button */
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
           bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500
           dark:from-rose-700 dark:to-amber-700 dark:hover:from-rose-600 dark:hover:to-amber-600
           text-white font-bold rounded-full shadow-xl z-20 w-28 h-28 md:w-40 md:h-40
           flex flex-col items-center justify-center border-4 border-white/30
-          transition-transform hover:scale-105 disabled:opacity-80 disabled:hover:scale-100"
+          transition-transform hover:scale-105 cursor-pointer animate-pulse"
       >
         {spinText}
       </button>
