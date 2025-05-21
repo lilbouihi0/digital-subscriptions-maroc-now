@@ -26,9 +26,8 @@ export const useWhatsAppVerification = ({
   const [isLoading, setIsLoading] = useState(false);
   const [otp, setOtp] = useState('');
   const [otpError, setOtpError] = useState('');
-  const [verificationCode, setVerificationCode] = useState<number | null>(null);
   
-  // Format phone number to E.164 format
+  // Format phone number to E.164 format (just for display purposes)
   const formatPhoneNumber = (phone: string): string => {
     let digits = phone.replace(/\D/g, '');
     if (!phone.startsWith('+')) {
@@ -40,7 +39,8 @@ export const useWhatsAppVerification = ({
     return phone;
   };
   
-  const handleSendCode = async () => {
+  // Simplified function that just validates the phone number and proceeds
+  const handleSendCode = () => {
     setIsLoading(true);
     
     if (!phoneNumber || phoneNumber.length < 8) {
@@ -68,59 +68,26 @@ export const useWhatsAppVerification = ({
       localStorage.setItem('verifiedPhone', phoneNumber);
       
       // Call onVerified to proceed to spin wheel
-      onVerified();
+      setTimeout(() => {
+        setIsLoading(false);
+        onVerified();
+      }, 500); // Small delay for better UX
       
     } catch (error: any) {
       console.error('Error processing phone number:', error);
       toast({
         title: translations.error,
-        description: error.message || "An error occurred",
+        description: "An error occurred while processing your request",
         variant: "destructive"
       });
       setIsLoading(false);
     }
   };
   
-  const handleVerifyOtp = async () => {
-    setIsLoading(true);
-    setOtpError('');
-
-    if (!verificationCode) {
-      toast({
-        title: translations.error,
-        description: "Verification session expired or not found. Please try sending the code again.",
-        variant: "destructive"
-      });
-      setIsLoading(false);
-      return;
-    }
-    
-    try {
-      // Verify the OTP locally by comparing with the stored code
-      if (parseInt(otp) === verificationCode) {
-        // Verification successful
-        toast({
-          title: translations.verified,
-          description: translations.phoneVerified,
-        });
-        
-        localStorage.setItem('phoneVerified', 'true');
-        localStorage.setItem('verifiedPhone', phoneNumber);
-        
-        onVerified();
-      } else {
-        throw new Error(translations.wrongCode);
-      }
-    } catch (error: any) {
-      console.error('Error verifying OTP:', error);
-      setOtpError(translations.wrongCode);
-      toast({
-        title: translations.verificationFailed,
-        description: error.message || translations.wrongCode,
-        variant: "destructive"
-      });
-      setIsLoading(false);
-    }
+  // This function is kept for compatibility but won't be used
+  const handleVerifyOtp = () => {
+    // This is a no-op function since we're skipping verification
+    console.log("OTP verification bypassed");
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {

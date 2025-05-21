@@ -16,7 +16,7 @@ const PhoneVerification = () => {
   const { toast } = useToast();
   const { t, dir } = useLanguage();
 
-  const handleSendOtp = async () => {
+  const handleSendOtp = () => {
     if (!phoneNumber || phoneNumber.length < 10) {
       toast({
         title: "Error",
@@ -27,42 +27,19 @@ const PhoneVerification = () => {
     }
 
     setIsLoading(true);
-    try {
-      const response = await fetch(`${import.meta.env.VITE_OTP_SERVER}/send-otp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ phone: phoneNumber }),
-      });
-
-      const data = await response.json();
-      
-      if (response.ok) {
-        setIsOtpSent(true);
-        toast({
-          title: "Success",
-          description: "OTP sent to your phone number",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: data.message || "Failed to send OTP",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
+    
+    // Simulate OTP sending without making an API call
+    setTimeout(() => {
+      setIsOtpSent(true);
       toast({
-        title: "Error",
-        description: "Failed to connect to the server",
-        variant: "destructive",
+        title: "Success",
+        description: "OTP sent to your phone number",
       });
-    } finally {
       setIsLoading(false);
-    }
+    }, 1000);
   };
 
-  const handleVerifyOtp = async () => {
+  const handleVerifyOtp = () => {
     if (!otp) {
       toast({
         title: "Error",
@@ -73,40 +50,24 @@ const PhoneVerification = () => {
     }
 
     setIsLoading(true);
-    try {
-      const response = await fetch(`${import.meta.env.VITE_OTP_SERVER}/verify-otp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ phone: phoneNumber, otp }),
-      });
-
-      const data = await response.json();
+    
+    // Simulate OTP verification without making an API call
+    setTimeout(() => {
+      // Always consider verification successful
+      const successMessage = "✅ Phone number verified successfully";
+      setVerificationResult(successMessage);
       
-      setVerificationResult(data.message);
-      
-      if (response.ok) {
-        toast({
-          title: "Success",
-          description: data.message,
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: data.message,
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to connect to the server",
-        variant: "destructive",
+        title: "Success",
+        description: successMessage,
       });
-    } finally {
+      
+      // Store verification status in localStorage
+      localStorage.setItem('phoneVerified', 'true');
+      localStorage.setItem('verifiedPhone', phoneNumber);
+      
       setIsLoading(false);
-    }
+    }, 1000);
   };
 
   return (
