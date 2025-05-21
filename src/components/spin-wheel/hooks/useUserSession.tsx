@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { hasSpunToday } from '@/utils/twilioService';
 
 export const useUserSession = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -16,11 +15,11 @@ export const useUserSession = () => {
     if (phoneVerified) {
       setIsVerified(true);
       setPhoneNumber(savedPhone);
-      
-      // Check if user has spun today from local storage
-      if (hasSpunToday) {
-        setHasSpun(true);
-      }
+    }
+    
+    // Check if user has spun today from local storage
+    if (hasSpunToday) {
+      setHasSpun(true);
     }
   }, []);
   

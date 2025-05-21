@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useTheme } from "../../contexts/ThemeContext";
 import { toast } from "@/hooks/use-toast";
-import PhoneVerification from './PhoneVerification';
 import SpinnerWheel from './SpinnerWheel';
 import PrizeDisplay from './PrizeDisplay';
 import { usePrizeData } from './hooks/usePrizeData';
@@ -126,46 +126,81 @@ const SpinWheel: React.FC = () => {
             </DialogDescription>
           </DialogHeader>
           
-          {isVerified ? (
-            <div className="relative flex flex-col items-center justify-center py-4">
-              {/* Outer glow effect */}
-              <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-r from-indigo-800/20 via-purple-800/20 to-pink-800/20' : 'bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200'} opacity-20 rounded-full blur-xl transform scale-90`}></div>
-              
-              {/* Spinner Wheel Component */}
-              <SpinnerWheel 
-                prizes={prizes}
-                rotation={rotation}
-                isSpinning={isSpinning}
-                onSpin={onSpin}
-                spinDisabled={isSpinning || hasSpun}
-                spinText={getSpinButtonContent()}
-                dir={dir}
-              />
-              
-              {/* Prize display */}
-              {prize && (
-                <PrizeDisplay
-                  prize={prize.name}
-                  prizeType={prize.type}
-                  spinCode={prize.code || ''}
-                  value={prize.value}
-                  expiresAt={prize.expiresAt}
-                  onApplyReward={() => {
-                    if (prize.type === 'discount') {
-                      applyDiscount();
-                    }
-                  }}
-                  onClaimReward={claimFreeAccount}
-                />
-              )}
-            </div>
-          ) : (
-            <PhoneVerification 
-              phoneNumber={phoneNumber}
-              setPhoneNumber={setPhoneNumber}
-              onVerified={() => setIsVerified(true)}
+          <div className="relative flex flex-col items-center justify-center py-4">
+            {/* Simple phone input if not verified yet */}
+            {!isVerified ? (
+              <div className="w-full max-w-md mb-6">
+                <div className="text-center mb-4">
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+                    Enter Your Phone Number
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300">
+                    Enter your phone number to spin the wheel and win prizes!
+                  </p>
+                </div>
+                
+                <div className="flex space-x-2">
+                  <Input
+                    type="tel"
+                    placeholder="+212 600000000"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value.replace(/[^\d\s+]/g, ''))}
+                    className="text-lg"
+                    dir="ltr"
+                  />
+                  <Button 
+                    onClick={() => {
+                      if (phoneNumber && phoneNumber.length >= 8) {
+                        localStorage.setItem('phoneVerified', 'true');
+                        localStorage.setItem('verifiedPhone', phoneNumber);
+                        setIsVerified(true);
+                      } else {
+                        toast({
+                          title: "Error",
+                          description: "Please enter a valid phone number",
+                          variant: "destructive"
+                        });
+                      }
+                    }}
+                    className="bg-indigo-600 hover:bg-indigo-700"
+                  >
+                    Spin Now
+                  </Button>
+                </div>
+              </div>
+            ) : null}
+
+            {/* Outer glow effect */}
+            <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-r from-indigo-800/20 via-purple-800/20 to-pink-800/20' : 'bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200'} opacity-20 rounded-full blur-xl transform scale-90`}></div>
+            
+            {/* Spinner Wheel Component */}
+            <SpinnerWheel 
+              prizes={prizes}
+              rotation={rotation}
+              isSpinning={isSpinning}
+              onSpin={onSpin}
+              spinDisabled={!isVerified || isSpinning || hasSpun}
+              spinText={getSpinButtonContent()}
+              dir={dir}
             />
-          )}
+            
+            {/* Prize display */}
+            {prize && (
+              <PrizeDisplay
+                prize={prize.name}
+                prizeType={prize.type}
+                spinCode={prize.code || ''}
+                value={prize.value}
+                expiresAt={prize.expiresAt}
+                onApplyReward={() => {
+                  if (prize.type === 'discount') {
+                    applyDiscount();
+                  }
+                }}
+                onClaimReward={claimFreeAccount}
+              />
+            )}
+          </div>
           
           <DialogFooter>
             <Button 
