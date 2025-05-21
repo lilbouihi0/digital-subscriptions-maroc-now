@@ -22,19 +22,31 @@ export const useSpinServerLogic = (phoneNumber: string) => {
     return 360 - (segmentCenter + randomOffset);
   };
 
-  // Server-side spin function
+  // Simulated spin function (no server call)
   const handleSpin = async () => {
     if (isSpinning || !phoneNumber) return;
     
     setIsSpinning(true);
     
     try {
-      // Make API call to server for spin result
-      const result = await spinWheel(phoneNumber);
+      // Simulate a spin result without API call
+      // Define some sample prizes
+      const samplePrizes = [
+        { name: "10% Discount", type: "discount", value: "10%", code: "DISC10", prizeIndex: 0, totalSegments: 6 },
+        { name: "20% Discount", type: "discount", value: "20%", code: "DISC20", prizeIndex: 1, totalSegments: 6 },
+        { name: "Free Account", type: "freeAccount", value: "1 Month", code: "FREE1M", prizeIndex: 2, totalSegments: 6 },
+        { name: "5% Discount", type: "discount", value: "5%", code: "DISC05", prizeIndex: 3, totalSegments: 6 },
+        { name: "15% Discount", type: "discount", value: "15%", code: "DISC15", prizeIndex: 4, totalSegments: 6 },
+        { name: "Free Trial", type: "freeAccount", value: "7 Days", code: "FREE7D", prizeIndex: 5, totalSegments: 6 }
+      ];
+      
+      // Randomly select a prize
+      const randomIndex = Math.floor(Math.random() * samplePrizes.length);
+      const result = samplePrizes[randomIndex];
       
       // Set spinning animation
       const prizeIndex = result.prizeIndex;
-      const totalSegments = result.totalSegments || 6;
+      const totalSegments = result.totalSegments;
       
       // Random spin between 5 and 8 full rotations plus the prize angle
       const spinCount = 5 + Math.random() * 3;

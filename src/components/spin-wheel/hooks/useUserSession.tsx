@@ -11,16 +11,15 @@ export const useUserSession = () => {
   useEffect(() => {
     const phoneVerified = localStorage.getItem('phoneVerified') === 'true';
     const savedPhone = localStorage.getItem('verifiedPhone') || '';
+    const hasSpunToday = localStorage.getItem('hasSpunToday') === 'true';
     
     if (phoneVerified) {
       setIsVerified(true);
       setPhoneNumber(savedPhone);
       
-      // Check if user has spun today
-      if (savedPhone) {
-        hasSpunToday(savedPhone)
-          .then(result => setHasSpun(result))
-          .catch(err => console.error('Error checking spin status:', err));
+      // Check if user has spun today from local storage
+      if (hasSpunToday) {
+        setHasSpun(true);
       }
     }
   }, []);

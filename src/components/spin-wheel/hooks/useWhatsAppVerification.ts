@@ -55,37 +55,26 @@ export const useWhatsAppVerification = ({
     
     try {
       const formattedPhone = formatPhoneNumber(phoneNumber);
-      console.log("Sending code to:", formattedPhone);
+      console.log("Phone number entered:", formattedPhone);
       
-      // Call backend API to send WhatsApp verification code
-      const response = await fetch(`${import.meta.env.VITE_OTP_SERVER}/send-otp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phoneNumber: formattedPhone }),
+      // Skip actual verification and consider the user verified immediately
+      toast({
+        title: translations.verified,
+        description: translations.phoneVerified,
       });
       
-      const data = await response.json();
+      // Store phone number in localStorage
+      localStorage.setItem('phoneVerified', 'true');
+      localStorage.setItem('verifiedPhone', phoneNumber);
       
-      if (data.success) {
-        // Store the verification code for later validation
-        setVerificationCode(data.code);
-        
-        toast({
-          title: translations.codeSent,
-          description: `A code has been sent to ${formattedPhone} via WhatsApp.`,
-        });
-        setIsLoading(false);
-        setStep('otp');
-      } else {
-        throw new Error(data.message || 'Failed to send verification code');
-      }
+      // Call onVerified to proceed to spin wheel
+      onVerified();
+      
     } catch (error: any) {
-      console.error('Error sending WhatsApp verification code:', error);
+      console.error('Error processing phone number:', error);
       toast({
         title: translations.error,
-        description: error.message || translations.sendError,
+        description: error.message || "An error occurred",
         variant: "destructive"
       });
       setIsLoading(false);

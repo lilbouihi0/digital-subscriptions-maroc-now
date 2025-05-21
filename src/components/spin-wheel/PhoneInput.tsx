@@ -42,10 +42,10 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
     <>
       <div className="text-center">
         <h3 className="text-xl font-bold text-gray-800 mb-2">
-          {translations.enterPhone}
+          Enter Your Phone Number
         </h3>
         <p className="text-gray-600">
-          {translations.phoneVerificationNeeded}
+          Enter your phone number to spin the wheel and win prizes!
         </p>
       </div>
       
@@ -70,10 +70,10 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
           {isLoading ? (
             <div className="flex items-center justify-center">
               <div className="animate-spin h-4 w-4 border-2 border-white rounded-full border-t-transparent mr-2" />
-              {translations.sending}
+              Processing...
             </div>
           ) : (
-            translations.sendVerificationCode
+            "Spin the Wheel"
           )}
         </Button>
       </div>

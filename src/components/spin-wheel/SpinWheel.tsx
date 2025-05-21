@@ -93,6 +93,8 @@ const SpinWheel: React.FC = () => {
   const onSpin = () => {
     if (isVerified && !isSpinning && !hasSpun) {
       handleSpin();
+      // Store that user has spun today
+      localStorage.setItem('hasSpunToday', 'true');
     }
   };
 

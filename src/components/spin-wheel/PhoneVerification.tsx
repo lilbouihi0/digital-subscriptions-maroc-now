@@ -62,26 +62,13 @@ const PhoneVerification: React.FC<PhoneVerificationProps> = ({
   return (
     <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-sm">
       <div className="w-full max-w-md space-y-6">
-        {step === 'phone' ? (
-          <PhoneInput
-            phoneNumber={phoneNumber}
-            onPhoneChange={(value) => setPhoneNumber(handlePhoneChange({ target: { value } } as React.ChangeEvent<HTMLInputElement>))}
-            onSendCode={handleSendCode}
-            isLoading={isLoading}
-            translations={translations}
-          />
-        ) : (
-          <OtpInput
-            phoneNumber={phoneNumber}
-            otp={otp}
-            setOtp={setOtp}
-            otpError={otpError}
-            onVerify={handleVerifyOtp}
-            onChangePhone={() => setStep('phone')}
-            isLoading={isLoading}
-            translations={translations}
-          />
-        )}
+        <PhoneInput
+          phoneNumber={phoneNumber}
+          onPhoneChange={(value) => setPhoneNumber(handlePhoneChange({ target: { value } } as React.ChangeEvent<HTMLInputElement>))}
+          onSendCode={handleSendCode}
+          isLoading={isLoading}
+          translations={translations}
+        />
       </div>
     </div>
   );
