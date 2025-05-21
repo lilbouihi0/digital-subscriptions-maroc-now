@@ -26,79 +26,78 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   spinText,
   dir,
 }) => {
+  // Simple wheel implementation
   return (
-    <div className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px] mx-auto">
+    <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] mx-auto">
       {/* Pointer Triangle */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-6 w-0 h-0 
-        border-l-[24px] border-l-transparent 
-        border-b-[42px] border-b-red-500 
-        border-r-[24px] border-r-transparent z-10 drop-shadow-lg" />
+        border-l-[20px] border-l-transparent 
+        border-b-[36px] border-b-red-500 
+        border-r-[20px] border-r-transparent z-10 drop-shadow-lg" />
         
-      {/* Wheel - added dark:border-indigo-600 for dark mode */}
+      {/* Wheel */}
       <div 
-        className="w-full h-full rounded-full border-8 border-indigo-800 dark:border-indigo-600 overflow-hidden transition-transform ease-cubic-out"
+        className="w-full h-full rounded-full border-8 border-indigo-800 dark:border-indigo-600 overflow-hidden"
         style={{ 
           transform: `rotate(${rotation}deg)`,
-          transitionDuration: isSpinning ? '5s' : '0s',
-          boxShadow: '0 8px 40px rgba(0,0,0,0.3)',
-          transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' // easeOutCubic
+          transition: isSpinning ? 'transform 5s cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.3)'
         }}
       >
+        {/* Wheel segments */}
         {prizes.map((prize, i) => {
-          // Calculate the rotation angle for this segment (60 degrees per segment)
-          const segmentAngle = i * (360 / prizes.length);
-          // Text rotation adjustment depends on direction
-          const textRotationAdjustment = dir === 'rtl' ? -90 : 90;
+          const segmentAngle = (360 / prizes.length);
+          const rotate = i * segmentAngle;
           
           return (
             <div
               key={i}
-              className="absolute w-full h-full overflow-visible"
+              className="absolute w-1/2 h-1/2 origin-bottom-right"
               style={{
-                transform: `rotate(${segmentAngle}deg)`,
-                transformOrigin: 'center',
-                clipPath: 'polygon(50% 50%, 50% 0, 100% 0, 100% 50%)',
-                backgroundColor: prize.color
+                transform: `rotate(${rotate}deg)`,
+                backgroundColor: prize.color,
+                clipPath: 'polygon(0 0, 100% 0, 0 100%)',
+                transformOrigin: 'bottom right',
+                left: '50%',
+                top: '50%'
               }}
             >
+              {/* Prize label */}
               <div 
-                className="absolute top-[12%] left-[75%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center"
+                className="absolute text-white font-bold text-center"
                 style={{ 
-                  fontSize: '0.9rem',
-                  transform: `rotate(${textRotationAdjustment - (360 / prizes.length) / 2}deg)`,
+                  transform: `rotate(${segmentAngle/2 - 90}deg)`,
+                  transformOrigin: 'left bottom',
+                  bottom: '70%',
+                  left: '30%',
                   textShadow: '0 2px 4px rgba(0,0,0,0.9)',
-                  width: '70px',
-                  textAlign: 'center',
-                  zIndex: 5,
+                  fontSize: '0.8rem',
+                  width: '60px'
                 }}
               >
-                <div className="text-xl mb-1">{prize.icon}</div>
-                <span className="text-center whitespace-pre-wrap leading-tight bg-black/30 p-1 rounded">{prize.label}</span>
+                <div>{prize.icon}</div>
+                <div className="bg-black/40 p-1 rounded mt-1">{prize.label}</div>
               </div>
             </div>
           );
         })}
       </div>
       
-      {/* Center circle decoration - enhanced for dark mode */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-56 md:h-56 rounded-full border-4 border-indigo-800/30 dark:border-indigo-600/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 dark:from-indigo-800/80 dark:to-violet-800/80"></div>
-      
-      {/* Center button - enhanced for dark mode */}
+      {/* Center button */}
       <button 
         onClick={onSpin}
-        disabled={false} /* Never disable the button */
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
           bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500
-          dark:from-rose-700 dark:to-amber-700 dark:hover:from-rose-600 dark:hover:to-amber-600
-          text-white font-bold rounded-full shadow-xl z-20 w-28 h-28 md:w-40 md:h-40
+          text-white font-bold rounded-full shadow-xl z-20 w-28 h-28 md:w-36 md:h-36
           flex flex-col items-center justify-center border-4 border-white/30
           transition-transform hover:scale-105 cursor-pointer animate-pulse"
+        style={{ cursor: 'pointer' }}
       >
         {spinText}
       </button>
       
-      {/* Decorative dots around the center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border-4 border-dashed border-white/20 animate-spin-slow" style={{ animationDuration: '120s' }}></div>
+      {/* Center circle */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 -z-10"></div>
     </div>
   );
 };

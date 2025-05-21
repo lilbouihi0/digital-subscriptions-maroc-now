@@ -70,26 +70,26 @@ const SpinWheel: React.FC = () => {
     if (isSpinning) {
       return <div className="flex flex-col items-center">
         <div className="animate-spin h-8 w-8 border-t-2 border-white rounded-full mb-2" />
-        <span className="text-sm">{t("spinner.spinning")}</span>
+        <span className="text-sm">SPINNING...</span>
       </div>;
     } else if (hasSpun) {
       return (
         <div className="text-sm flex flex-col items-center">
-          <span>{t("spinner.comeBackTomorrow")}</span>
+          <span>COME BACK TOMORROW</span>
           <span className="text-xs mt-1 opacity-80">{timeUntilNextSpin()}</span>
         </div>
       );
     } else if (!isVerified) {
       return (
         <div className="flex flex-col items-center">
-          <span className="text-xl">SPIN NOW</span>
-          <span className="text-xs mt-1 opacity-80">Enter phone number first</span>
+          <span className="text-xl">ENTER PHONE</span>
+          <span className="text-xs mt-1 opacity-80">👆 Above 👆</span>
         </div>
       );
     } else {
       return (
         <div className="flex flex-col items-center">
-          <span className="text-xl">{language === 'ar' ? 'اضغط للدوران 🎁' : "SPIN & WIN"}</span>
+          <span className="text-xl">CLICK TO SPIN</span>
           <span className="text-xs mt-1 opacity-80">🎁 Good Luck! 🎁</span>
         </div>
       );
@@ -98,35 +98,34 @@ const SpinWheel: React.FC = () => {
 
   // Handle wheel spin
   const onSpin = () => {
-    // If user is not verified, show the phone input form more prominently
+    // If user is not verified, prompt them to enter phone number
     if (!isVerified) {
-      // Show message if user tries to spin without entering phone number
       toast({
-        title: "Phone Number Required",
-        description: "Please enter your phone number to spin the wheel",
+        title: "Enter Your Phone Number",
+        description: "Please enter your phone number first to spin the wheel",
         variant: "destructive"
       });
-      
-      // Scroll to the phone input if it exists
-      const phoneInput = document.querySelector('.phone-input-container');
-      if (phoneInput) {
-        phoneInput.scrollIntoView({ behavior: 'smooth' });
-      }
       return;
     }
     
-    // Only allow spinning if not already spinning and hasn't spun today
-    if (!isSpinning && !hasSpun) {
-      handleSpin();
-      // Store that user has spun today
-      localStorage.setItem('hasSpunToday', 'true');
-    } else if (hasSpun) {
+    // Check if already spinning
+    if (isSpinning) {
+      return;
+    }
+    
+    // Check if already spun today
+    if (hasSpun) {
       toast({
         title: "Already Spun Today",
         description: "You've already spun the wheel today. Come back tomorrow!",
         variant: "default"
       });
+      return;
     }
+    
+    // All checks passed, spin the wheel
+    handleSpin();
+    localStorage.setItem('hasSpunToday', 'true');
   };
 
   // Determine dialog background based on theme
@@ -147,7 +146,7 @@ const SpinWheel: React.FC = () => {
       </Button>
       
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className={`max-w-4xl ${dialogBackground}`} dir={dir}>
+        <DialogContent className={`max-w-2xl h-auto overflow-y-auto ${dialogBackground}`} dir={dir}>
           <DialogHeader>
             <DialogTitle className={`text-center text-3xl font-bold ${theme === 'dark' ? 'text-white' : 'bg-gradient-to-r from-rose-500 via-purple-500 to-amber-500 bg-clip-text text-transparent'}`}>
               {t("spinner.spinToWin")}
@@ -157,12 +156,12 @@ const SpinWheel: React.FC = () => {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="relative flex flex-col items-center justify-center py-4">
-            {/* Simple phone input if not verified yet */}
-            {!isVerified ? (
-              <div className="w-full max-w-md mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg phone-input-container">
+          <div className="flex flex-col items-center justify-center py-4 space-y-6">
+            {/* Phone input form */}
+            {!isVerified && (
+              <div className="w-full max-w-md p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 border-rose-500 animate-pulse">
                 <div className="text-center mb-4">
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+                  <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                     Enter Your Phone Number
                   </h3>
                   <p className="text-gray-600 dark:text-gray-300">
@@ -170,7 +169,7 @@ const SpinWheel: React.FC = () => {
                   </p>
                 </div>
                 
-                <div className="flex flex-col space-y-3">
+                <div className="space-y-4">
                   <Input
                     type="tel"
                     placeholder="+212 600000000"
@@ -181,12 +180,11 @@ const SpinWheel: React.FC = () => {
                   />
                   <Button 
                     onClick={() => {
-                      if (phoneNumber && phoneNumber.length >= 3) { // Reduced minimum length for testing
+                      if (phoneNumber && phoneNumber.length >= 1) { // Allow any input for testing
                         localStorage.setItem('phoneVerified', 'true');
                         localStorage.setItem('verifiedPhone', phoneNumber);
                         setIsVerified(true);
                         
-                        // Show success message
                         toast({
                           title: "Success!",
                           description: "Now click the wheel to spin and win!",
@@ -199,44 +197,44 @@ const SpinWheel: React.FC = () => {
                         });
                       }
                     }}
-                    className="bg-rose-600 hover:bg-rose-700 p-6 text-lg font-bold animate-pulse shadow-lg"
-                    style={{ cursor: 'pointer' }}
+                    className="w-full bg-rose-600 hover:bg-rose-700 p-6 text-xl font-bold"
                   >
                     SPIN THE WHEEL
                   </Button>
                 </div>
               </div>
-            ) : null}
-
-            {/* Outer glow effect */}
-            <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-r from-indigo-800/20 via-purple-800/20 to-pink-800/20' : 'bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200'} opacity-20 rounded-full blur-xl transform scale-90`}></div>
+            )}
             
             {/* Spinner Wheel Component */}
-            <SpinnerWheel 
-              prizes={prizes}
-              rotation={rotation}
-              isSpinning={isSpinning}
-              onSpin={onSpin}
-              spinDisabled={isSpinning || hasSpun} // Removed !isVerified to make button always clickable
-              spinText={getSpinButtonContent()}
-              dir={dir}
-            />
+            <div className="relative mt-4">
+              <SpinnerWheel 
+                prizes={prizes}
+                rotation={rotation}
+                isSpinning={isSpinning}
+                onSpin={onSpin}
+                spinDisabled={isSpinning || hasSpun}
+                spinText={getSpinButtonContent()}
+                dir={dir}
+              />
+            </div>
             
             {/* Prize display */}
             {prize && (
-              <PrizeDisplay
-                prize={prize.name}
-                prizeType={prize.type}
-                spinCode={prize.code || ''}
-                value={prize.value}
-                expiresAt={prize.expiresAt}
-                onApplyReward={() => {
-                  if (prize.type === 'discount') {
-                    applyDiscount();
-                  }
-                }}
-                onClaimReward={claimFreeAccount}
-              />
+              <div className="mt-6">
+                <PrizeDisplay
+                  prize={prize.name}
+                  prizeType={prize.type}
+                  spinCode={prize.code || ''}
+                  value={prize.value}
+                  expiresAt={prize.expiresAt}
+                  onApplyReward={() => {
+                    if (prize.type === 'discount') {
+                      applyDiscount();
+                    }
+                  }}
+                  onClaimReward={claimFreeAccount}
+                />
+              </div>
             )}
           </div>
           
