@@ -79,11 +79,18 @@ const SpinWheel: React.FC = () => {
           <span className="text-xs mt-1 opacity-80">{timeUntilNextSpin()}</span>
         </div>
       );
+    } else if (!isVerified) {
+      return (
+        <div className="flex flex-col items-center">
+          <span className="text-xl">SPIN NOW</span>
+          <span className="text-xs mt-1 opacity-80">Enter phone number first</span>
+        </div>
+      );
     } else {
       return (
         <div className="flex flex-col items-center">
-          <span className="text-xl">{language === 'ar' ? 'اضغط للدوران 🎁' : t("spinner.spin")}</span>
-          <span className="text-xs mt-1 opacity-80">🎁</span>
+          <span className="text-xl">{language === 'ar' ? 'اضغط للدوران 🎁' : "SPIN & WIN"}</span>
+          <span className="text-xs mt-1 opacity-80">🎁 Good Luck! 🎁</span>
         </div>
       );
     }
@@ -91,7 +98,17 @@ const SpinWheel: React.FC = () => {
 
   // Handle wheel spin
   const onSpin = () => {
-    if (isVerified && !isSpinning && !hasSpun) {
+    if (!isVerified) {
+      // Show message if user tries to spin without entering phone number
+      toast({
+        title: "Phone Number Required",
+        description: "Please enter your phone number to spin the wheel",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!isSpinning && !hasSpun) {
       handleSpin();
       // Store that user has spun today
       localStorage.setItem('hasSpunToday', 'true');
@@ -129,7 +146,7 @@ const SpinWheel: React.FC = () => {
           <div className="relative flex flex-col items-center justify-center py-4">
             {/* Simple phone input if not verified yet */}
             {!isVerified ? (
-              <div className="w-full max-w-md mb-6">
+              <div className="w-full max-w-md mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
                 <div className="text-center mb-4">
                   <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
                     Enter Your Phone Number
@@ -139,18 +156,18 @@ const SpinWheel: React.FC = () => {
                   </p>
                 </div>
                 
-                <div className="flex space-x-2">
+                <div className="flex flex-col space-y-3">
                   <Input
                     type="tel"
                     placeholder="+212 600000000"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value.replace(/[^\d\s+]/g, ''))}
-                    className="text-lg"
+                    className="text-lg p-6 text-center text-xl border-2 border-indigo-300 focus:border-indigo-500"
                     dir="ltr"
                   />
                   <Button 
                     onClick={() => {
-                      if (phoneNumber && phoneNumber.length >= 8) {
+                      if (phoneNumber && phoneNumber.length >= 3) { // Reduced minimum length for testing
                         localStorage.setItem('phoneVerified', 'true');
                         localStorage.setItem('verifiedPhone', phoneNumber);
                         setIsVerified(true);
@@ -162,9 +179,9 @@ const SpinWheel: React.FC = () => {
                         });
                       }
                     }}
-                    className="bg-indigo-600 hover:bg-indigo-700"
+                    className="bg-indigo-600 hover:bg-indigo-700 p-6 text-lg font-bold"
                   >
-                    Spin Now
+                    SPIN THE WHEEL
                   </Button>
                 </div>
               </div>
@@ -179,7 +196,7 @@ const SpinWheel: React.FC = () => {
               rotation={rotation}
               isSpinning={isSpinning}
               onSpin={onSpin}
-              spinDisabled={!isVerified || isSpinning || hasSpun}
+              spinDisabled={isSpinning || hasSpun} // Removed !isVerified to make button always clickable
               spinText={getSpinButtonContent()}
               dir={dir}
             />
