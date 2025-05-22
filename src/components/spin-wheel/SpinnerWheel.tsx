@@ -83,13 +83,13 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
                   strokeWidth="0.5"
                 />
                 
-                {/* Icon only - no text */}
-                <g transform={`translate(${iconX}, ${iconY})`}>
-                  <circle r="6" fill="rgba(0,0,0,0.3)" />
-                  <foreignObject x="-5" y="-5" width="10" height="10">
+                {/* Icon only - absolutely no text */}
+                <g transform={`translate(${iconX}, ${iconY}) rotate(${midAngle})`}>
+                  <circle r="8" fill="rgba(0,0,0,0.4)" />
+                  <foreignObject x="-6" y="-6" width="12" height="12">
                     <div 
                       className="flex items-center justify-center w-full h-full text-yellow-300"
-                      style={{ transform: 'scale(0.5)' }}
+                      style={{ transform: `rotate(-${midAngle}deg) scale(0.6)` }}
                     >
                       {prize.icon}
                     </div>
