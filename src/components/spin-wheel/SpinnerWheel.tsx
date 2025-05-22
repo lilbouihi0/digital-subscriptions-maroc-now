@@ -69,7 +69,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             // Calculate position for the label
             const midAngle = (startAngle + endAngle) / 2;
             const midRad = (midAngle - 90) * Math.PI / 180;
-            const labelRadius = 30; // Reduced radius to position labels closer to center
+            const labelRadius = 20; // Extremely reduced radius to position labels very close to center
             const labelX = 50 + labelRadius * Math.cos(midRad);
             const labelY = 50 + labelRadius * Math.sin(midRad);
             
@@ -83,23 +83,19 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
                   strokeWidth="0.5"
                 />
                 
-                {/* Label */}
+                {/* Icon only - no text */}
                 <g transform={`translate(${labelX}, ${labelY}) rotate(${midAngle})`}>
-                  <foreignObject x="-20" y="-12" width="40" height="24" style={{ overflow: 'visible' }}>
+                  <foreignObject x="-8" y="-8" width="16" height="16" style={{ overflow: 'hidden' }}>
                     <div 
-                      className="text-white font-bold text-center"
+                      className="text-yellow-300 flex items-center justify-center"
                       style={{ 
                         transform: `rotate(-${midAngle}deg)`,
-                        textShadow: '0 1px 2px rgba(0,0,0,0.9)',
-                        fontSize: '0.65rem',
-                        width: '40px'
+                        width: '16px',
+                        height: '16px'
                       }}
                     >
-                      <div className="flex justify-center" style={{ transform: 'scale(0.8)' }}>
+                      <div style={{ transform: 'scale(0.6)' }}>
                         {prize.icon}
-                      </div>
-                      <div className="bg-black/40 p-0.5 rounded mt-0.5 text-[0.6rem] truncate">
-                        {prize.label}
                       </div>
                     </div>
                   </foreignObject>
