@@ -66,36 +66,14 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             // Create the path for the segment
             const pathData = `M 50 50 L ${x1} ${y1} A 50 50 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
             
-            // Calculate position for a small icon only (no text)
-            const midAngle = (startAngle + endAngle) / 2;
-            const midRad = (midAngle - 90) * Math.PI / 180;
-            const iconRadius = 30;
-            const iconX = 50 + iconRadius * Math.cos(midRad);
-            const iconY = 50 + iconRadius * Math.sin(midRad);
-            
             return (
-              <g key={index}>
-                {/* Segment */}
-                <path 
-                  d={pathData} 
-                  fill={prize.color} 
-                  stroke="#444" 
-                  strokeWidth="0.5"
-                />
-                
-                {/* Icon only - absolutely no text */}
-                <g transform={`translate(${iconX}, ${iconY}) rotate(${midAngle})`}>
-                  <circle r="8" fill="rgba(0,0,0,0.4)" />
-                  <foreignObject x="-6" y="-6" width="12" height="12">
-                    <div 
-                      className="flex items-center justify-center w-full h-full text-yellow-300"
-                      style={{ transform: `rotate(-${midAngle}deg) scale(0.6)` }}
-                    >
-                      {prize.icon}
-                    </div>
-                  </foreignObject>
-                </g>
-              </g>
+              <path 
+                key={index}
+                d={pathData} 
+                fill={prize.color} 
+                stroke="#444" 
+                strokeWidth="0.5"
+              />
             );
           })}
         </svg>
