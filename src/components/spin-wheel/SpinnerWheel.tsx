@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useMemo } from "react";
 
 interface SpinnerWheelProps {
   prizes: {
@@ -26,10 +26,28 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   spinText,
   dir,
 }) => {
+  // Generate conic gradient for wheel segments
+  const wheelBackground = useMemo(() => {
+    let gradientStops = '';
+    let currentAngle = 0;
+    
+    prizes.forEach((prize, index) => {
+      const segmentSize = 360 / prizes.length;
+      gradientStops += `${prize.color} ${currentAngle}deg ${currentAngle + segmentSize}deg`;
+      
+      currentAngle += segmentSize;
+      
+      if (index < prizes.length - 1) {
+        gradientStops += ', ';
+      }
+    });
+    
+    return `conic-gradient(from 0deg, ${gradientStops})`;
+  }, [prizes]);
+
   // Calculate segment angle
   const segmentAngle = 360 / prizes.length;
 
-  // Simple wheel implementation
   return (
     <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] mx-auto">
       {/* Pointer Triangle */}
@@ -40,54 +58,44 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
         
       {/* Wheel */}
       <div 
-        className="w-full h-full rounded-full border-8 border-indigo-800 dark:border-indigo-600 overflow-hidden relative"
+        className="w-full h-full rounded-full border-8 border-indigo-800 dark:border-indigo-600 overflow-hidden"
         style={{ 
           transform: `rotate(${rotation}deg)`,
           transition: isSpinning ? 'transform 5s cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
-          boxShadow: '0 8px 40px rgba(0,0,0,0.3)'
+          boxShadow: '0 8px 40px rgba(0,0,0,0.3)',
+          background: wheelBackground
         }}
       >
-        {/* Wheel segments */}
+        {/* Prize labels */}
         {prizes.map((prize, i) => {
-          const startAngle = i * segmentAngle;
-          const endAngle = (i + 1) * segmentAngle;
-          const midAngle = startAngle + segmentAngle / 2;
+          const angle = i * segmentAngle;
+          const labelAngle = angle + segmentAngle / 2;
           
-          // Calculate label position
-          const labelRadius = 35; // % from center
-          const labelX = 50 + labelRadius * Math.cos((midAngle - 90) * (Math.PI / 180));
-          const labelY = 50 + labelRadius * Math.sin((midAngle - 90) * (Math.PI / 180));
+          // Calculate position for label (75% from center to edge)
+          const radius = 37;
+          const x = 50 + radius * Math.cos((labelAngle - 90) * (Math.PI / 180));
+          const y = 50 + radius * Math.sin((labelAngle - 90) * (Math.PI / 180));
           
           return (
-            <div key={i} className="absolute inset-0">
-              {/* Segment */}
-              <div
-                className="absolute w-full h-full"
-                style={{
-                  clipPath: `path('M 50% 50% L ${50 + 50 * Math.cos(startAngle * Math.PI / 180)}% ${50 - 50 * Math.sin(startAngle * Math.PI / 180)}% A 50% 50% 0 0 0 ${50 + 50 * Math.cos(endAngle * Math.PI / 180)}% ${50 - 50 * Math.sin(endAngle * Math.PI / 180)}% Z')`,
-                  backgroundColor: prize.color,
-                }}
-              />
-              
-              {/* Prize label */}
+            <div 
+              key={i}
+              className="absolute text-white font-bold text-center"
+              style={{
+                left: `${x}%`,
+                top: `${y}%`,
+                transform: `translate(-50%, -50%) rotate(${labelAngle}deg)`,
+                width: '70px',
+                zIndex: 5
+              }}
+            >
               <div 
-                className="absolute text-white font-bold text-center"
-                style={{ 
-                  transform: `translate(-50%, -50%) rotate(${midAngle}deg)`,
-                  left: `${labelX}%`,
-                  top: `${labelY}%`,
-                  textShadow: '0 2px 4px rgba(0,0,0,0.9)',
-                  fontSize: '0.8rem',
-                  width: '60px'
-                }}
+                style={{ transform: `rotate(-${labelAngle}deg)` }}
+                className="flex flex-col items-center"
               >
-                <div className="flex justify-center" style={{ transform: `rotate(-${midAngle}deg)` }}>
+                <div className="text-yellow-300 mb-1">
                   {prize.icon}
                 </div>
-                <div 
-                  className="bg-black/40 p-1 rounded mt-1" 
-                  style={{ transform: `rotate(-${midAngle}deg)` }}
-                >
+                <div className="bg-black/40 p-1 rounded text-xs">
                   {prize.label}
                 </div>
               </div>
@@ -99,18 +107,19 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       {/* Center button */}
       <button 
         onClick={onSpin}
+        disabled={spinDisabled}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
           bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500
           text-white font-bold rounded-full shadow-xl z-20 w-28 h-28 md:w-36 md:h-36
           flex flex-col items-center justify-center border-4 border-white/30
-          transition-transform hover:scale-105 cursor-pointer animate-pulse"
-        style={{ cursor: 'pointer' }}
+          transition-transform hover:scale-105 cursor-pointer animate-pulse
+          disabled:opacity-50 disabled:cursor-not-allowed disabled:animate-none"
       >
         {spinText}
       </button>
       
       {/* Center circle */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 -z-10"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 z-10"></div>
     </div>
   );
 };
