@@ -23,6 +23,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   isSpinning,
   onSpin,
   spinDisabled,
+  spinText = "Click to Spin",
   dir,
 }) => {
   // Define fixed colors for the wheel segments
@@ -57,7 +58,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
         {/* Simple wheel with only colored segments */}
         <svg width="100%" height="100%" viewBox="0 0 100 100">
           {/* Create segments based on number of prizes */}
-          {prizes.map((_, index) => {
+          {prizes.map((prize, index) => {
             const segmentAngle = 360 / prizes.length;
             const startAngle = index * segmentAngle;
             const endAngle = (index + 1) * segmentAngle;
@@ -78,14 +79,42 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             // Create the path for the segment
             const pathData = `M 50 50 L ${x1} ${y1} A 50 50 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
             
+            // Calculate position for text
+            const midAngle = (startAngle + endAngle) / 2;
+            const midRad = (midAngle - 90) * Math.PI / 180;
+            const textDistance = 35; // Distance from center (0-50)
+            const textX = 50 + textDistance * Math.cos(midRad);
+            const textY = 50 + textDistance * Math.sin(midRad);
+            
+            // Calculate text rotation
+            const textRotation = midAngle;
+            const adjustedRotation = textRotation > 90 && textRotation < 270 ? textRotation + 180 : textRotation;
+            
             return (
-              <path 
-                key={index}
-                d={pathData} 
-                fill={wheelColors[index % wheelColors.length]}
-                stroke="#444" 
-                strokeWidth="0.5"
-              />
+              <React.Fragment key={index}>
+                <path 
+                  d={pathData} 
+                  fill={prize.color || wheelColors[index % wheelColors.length]}
+                  stroke="#444" 
+                  strokeWidth="0.5"
+                />
+                <text 
+                  x={textX} 
+                  y={textY} 
+                  fill="white"
+                  fontSize="4"
+                  fontWeight="bold"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  transform={`rotate(${adjustedRotation}, ${textX}, ${textY})`}
+                  style={{ 
+                    textShadow: '0px 0px 2px #000',
+                    pointerEvents: 'none'
+                  }}
+                >
+                  {prize.label}
+                </text>
+              </React.Fragment>
             );
           })}
           
@@ -110,25 +139,28 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
         </svg>
       </div>
       
-      {/* Center button - Icon only, no text */}
+      {/* Center button with text */}
       <button 
         onClick={onSpin}
         disabled={spinDisabled}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
           bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500
           rounded-full shadow-xl z-20 w-24 h-24 md:w-32 md:h-32
-          flex items-center justify-center border-4 border-white/30
+          flex flex-col items-center justify-center border-4 border-white/30
           transition-transform hover:scale-105 cursor-pointer animate-pulse
           disabled:opacity-50 disabled:cursor-not-allowed disabled:animate-none"
       >
-        {/* Simple play icon */}
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" viewBox="0 0 20 20" fill="currentColor">
+        {/* Play icon */}
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white mb-1" viewBox="0 0 20 20" fill="currentColor">
           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
         </svg>
+        
+        {/* Spin text */}
+        <span className="text-white text-xs md:text-sm font-bold">{spinText}</span>
       </button>
       
-      {/* Center circle */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 md:w-40 md:h-40 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 z-10"></div>
+      {/* Center circle - behind the button (lower z-index) */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 md:w-40 md:h-40 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 z-[5]"></div>
     </div>
   );
 };
