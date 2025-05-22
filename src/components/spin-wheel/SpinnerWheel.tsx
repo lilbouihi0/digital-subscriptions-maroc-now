@@ -26,6 +26,19 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   spinText,
   dir,
 }) => {
+  // Create a fixed wheel with 8 segments
+  const fixedSegments = 8;
+  const colors = [
+    "#FF6384", // Pink
+    "#36A2EB", // Blue
+    "#FFCE56", // Yellow
+    "#4BC0C0", // Teal
+    "#9966FF", // Purple
+    "#FF9F40", // Orange
+    "#C9CBCF", // Gray
+    "#7BC043", // Green
+  ];
+
   return (
     <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] mx-auto">
       {/* Pointer Triangle */}
@@ -43,10 +56,11 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
           boxShadow: '0 8px 40px rgba(0,0,0,0.3)'
         }}
       >
-        {/* SVG Wheel - No labels on wheel */}
+        {/* SVG Wheel - Fixed 8 segments with alternating patterns */}
         <svg width="100%" height="100%" viewBox="0 0 100 100">
-          {prizes.map((prize, index) => {
-            const segmentAngle = 360 / prizes.length;
+          {/* Fixed wheel segments */}
+          {Array.from({ length: fixedSegments }).map((_, index) => {
+            const segmentAngle = 360 / fixedSegments;
             const startAngle = index * segmentAngle;
             const endAngle = (index + 1) * segmentAngle;
             
@@ -66,13 +80,36 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             // Create the path for the segment
             const pathData = `M 50 50 L ${x1} ${y1} A 50 50 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
             
+            // Add alternating patterns
+            const isEven = index % 2 === 0;
+            const patternId = isEven ? "pattern1" : "pattern2";
+            
             return (
               <path 
                 key={index}
                 d={pathData} 
-                fill={prize.color} 
+                fill={colors[index % colors.length]}
                 stroke="#444" 
                 strokeWidth="0.5"
+              />
+            );
+          })}
+          
+          {/* Dividing lines for better segment visibility */}
+          {Array.from({ length: fixedSegments }).map((_, index) => {
+            const angle = (index * 360 / fixedSegments - 90) * Math.PI / 180;
+            const x = 50 + 50 * Math.cos(angle);
+            const y = 50 + 50 * Math.sin(angle);
+            
+            return (
+              <line 
+                key={`line-${index}`}
+                x1="50" 
+                y1="50" 
+                x2={x} 
+                y2={y} 
+                stroke="#444" 
+                strokeWidth="1"
               />
             );
           })}
@@ -95,6 +132,19 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       
       {/* Center circle */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 z-10"></div>
+      
+      {/* Prize Legend - Below the wheel */}
+      <div className="mt-8 grid grid-cols-2 gap-2 text-xs max-w-[300px] mx-auto">
+        {prizes.map((prize, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: colors[index % colors.length] }}></div>
+            <div className="flex items-center gap-1">
+              <span>{prize.icon}</span>
+              <span>{prize.label}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
