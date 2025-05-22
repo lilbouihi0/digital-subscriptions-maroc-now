@@ -69,7 +69,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             // Calculate position for the label
             const midAngle = (startAngle + endAngle) / 2;
             const midRad = (midAngle - 90) * Math.PI / 180;
-            const labelRadius = 35;
+            const labelRadius = 30; // Reduced radius to position labels closer to center
             const labelX = 50 + labelRadius * Math.cos(midRad);
             const labelY = 50 + labelRadius * Math.sin(midRad);
             
@@ -85,20 +85,20 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
                 
                 {/* Label */}
                 <g transform={`translate(${labelX}, ${labelY}) rotate(${midAngle})`}>
-                  <foreignObject x="-30" y="-15" width="60" height="30" style={{ overflow: 'visible' }}>
+                  <foreignObject x="-20" y="-12" width="40" height="24" style={{ overflow: 'visible' }}>
                     <div 
                       className="text-white font-bold text-center"
                       style={{ 
                         transform: `rotate(-${midAngle}deg)`,
-                        textShadow: '0 2px 4px rgba(0,0,0,0.9)',
-                        fontSize: '0.8rem',
-                        width: '60px'
+                        textShadow: '0 1px 2px rgba(0,0,0,0.9)',
+                        fontSize: '0.65rem',
+                        width: '40px'
                       }}
                     >
-                      <div className="flex justify-center">
+                      <div className="flex justify-center" style={{ transform: 'scale(0.8)' }}>
                         {prize.icon}
                       </div>
-                      <div className="bg-black/40 p-1 rounded mt-1 text-xs">
+                      <div className="bg-black/40 p-0.5 rounded mt-0.5 text-[0.6rem] truncate">
                         {prize.label}
                       </div>
                     </div>
