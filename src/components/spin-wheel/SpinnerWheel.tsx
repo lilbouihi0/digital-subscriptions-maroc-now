@@ -43,7 +43,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
           boxShadow: '0 8px 40px rgba(0,0,0,0.3)'
         }}
       >
-        {/* SVG Wheel */}
+        {/* SVG Wheel - No labels on wheel */}
         <svg width="100%" height="100%" viewBox="0 0 100 100">
           {prizes.map((prize, index) => {
             const segmentAngle = 360 / prizes.length;
@@ -66,48 +66,14 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             // Create the path for the segment
             const pathData = `M 50 50 L ${x1} ${y1} A 50 50 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
             
-            // Calculate position for the label
-            const midAngle = (startAngle + endAngle) / 2;
-            const midRad = (midAngle - 90) * Math.PI / 180;
-            // Position labels at 50% of the radius for better fit
-            const labelRadius = 25; 
-            const labelX = 50 + labelRadius * Math.cos(midRad);
-            const labelY = 50 + labelRadius * Math.sin(midRad);
-            
             return (
-              <g key={index}>
-                {/* Segment */}
-                <path 
-                  d={pathData} 
-                  fill={prize.color} 
-                  stroke="#444" 
-                  strokeWidth="0.5"
-                />
-                
-                {/* Compact label with icon and minimal text */}
-                <g transform={`translate(${labelX}, ${labelY}) rotate(${midAngle})`}>
-                  <foreignObject x="-15" y="-15" width="30" height="30" style={{ overflow: 'hidden' }}>
-                    <div 
-                      className="text-white text-center flex flex-col items-center"
-                      style={{ 
-                        transform: `rotate(-${midAngle}deg)`,
-                        width: '30px',
-                        height: '30px'
-                      }}
-                    >
-                      <div className="flex justify-center" style={{ transform: 'scale(0.7)' }}>
-                        {prize.icon}
-                      </div>
-                      <div 
-                        className="bg-black/60 p-0.5 rounded text-[0.45rem] leading-tight mt-0.5 w-full overflow-hidden text-ellipsis"
-                        style={{ maxWidth: '30px' }}
-                      >
-                        {prize.label.length > 6 ? prize.label.substring(0, 6) + '..' : prize.label}
-                      </div>
-                    </div>
-                  </foreignObject>
-                </g>
-              </g>
+              <path 
+                key={index}
+                d={pathData} 
+                fill={prize.color} 
+                stroke="#444" 
+                strokeWidth="0.5"
+              />
             );
           })}
         </svg>
@@ -129,6 +95,19 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       
       {/* Center circle */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 z-10"></div>
+      
+      {/* Prize Legend - Below the wheel */}
+      <div className="mt-8 grid grid-cols-2 gap-2 text-xs max-w-[300px] mx-auto">
+        {prizes.map((prize, index) => (
+          <div key={index} className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: prize.color }}></div>
+            <div className="flex items-center gap-1">
+              <span>{prize.icon}</span>
+              <span>{prize.label}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
