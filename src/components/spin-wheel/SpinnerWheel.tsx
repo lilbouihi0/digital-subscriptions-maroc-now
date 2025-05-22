@@ -26,9 +26,6 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   spinText,
   dir,
 }) => {
-  // Calculate the angle for each segment
-  const segmentAngle = 360 / prizes.length;
-  
   return (
     <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] mx-auto">
       {/* Pointer Triangle */}
@@ -46,47 +43,71 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
           boxShadow: '0 8px 40px rgba(0,0,0,0.3)'
         }}
       >
-        {/* Wheel segments */}
-        <div className="w-full h-full relative">
+        {/* SVG Wheel */}
+        <svg width="100%" height="100%" viewBox="0 0 100 100">
           {prizes.map((prize, index) => {
-            // Calculate rotation angle for this segment
-            const rotationAngle = segmentAngle * index;
+            const segmentAngle = 360 / prizes.length;
+            const startAngle = index * segmentAngle;
+            const endAngle = (index + 1) * segmentAngle;
+            
+            // Convert angles to radians for calculations
+            const startRad = (startAngle - 90) * Math.PI / 180;
+            const endRad = (endAngle - 90) * Math.PI / 180;
+            
+            // Calculate arc points
+            const x1 = 50 + 50 * Math.cos(startRad);
+            const y1 = 50 + 50 * Math.sin(startRad);
+            const x2 = 50 + 50 * Math.cos(endRad);
+            const y2 = 50 + 50 * Math.sin(endRad);
+            
+            // Determine if we need a large arc
+            const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
+            
+            // Create the path for the segment
+            const pathData = `M 50 50 L ${x1} ${y1} A 50 50 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
+            
+            // Calculate position for the label
+            const midAngle = (startAngle + endAngle) / 2;
+            const midRad = (midAngle - 90) * Math.PI / 180;
+            const labelRadius = 35;
+            const labelX = 50 + labelRadius * Math.cos(midRad);
+            const labelY = 50 + labelRadius * Math.sin(midRad);
             
             return (
-              <div 
-                key={index}
-                className="absolute top-0 left-0 w-full h-full"
-                style={{
-                  clipPath: `polygon(50% 50%, 50% 0, ${50 + 50 * Math.cos((rotationAngle + segmentAngle) * Math.PI / 180)}% ${50 - 50 * Math.sin((rotationAngle + segmentAngle) * Math.PI / 180)}%)`,
-                  backgroundColor: prize.color,
-                  transform: `rotate(${rotationAngle}deg)`,
-                  transformOrigin: 'center',
-                }}
-              >
-                {/* Prize label */}
-                <div 
-                  className="absolute text-white font-bold text-center"
-                  style={{ 
-                    transform: `rotate(${segmentAngle / 2}deg)`,
-                    top: '20%',
-                    left: '50%',
-                    marginLeft: '-30px',
-                    textShadow: '0 2px 4px rgba(0,0,0,0.9)',
-                    fontSize: '0.8rem',
-                    width: '60px'
-                  }}
-                >
-                  <div className="flex justify-center">
-                    {prize.icon}
-                  </div>
-                  <div className="bg-black/40 p-1 rounded mt-1 text-xs">
-                    {prize.label}
-                  </div>
-                </div>
-              </div>
+              <g key={index}>
+                {/* Segment */}
+                <path 
+                  d={pathData} 
+                  fill={prize.color} 
+                  stroke="#444" 
+                  strokeWidth="0.5"
+                />
+                
+                {/* Label */}
+                <g transform={`translate(${labelX}, ${labelY}) rotate(${midAngle})`}>
+                  <foreignObject x="-30" y="-15" width="60" height="30" style={{ overflow: 'visible' }}>
+                    <div 
+                      className="text-white font-bold text-center"
+                      style={{ 
+                        transform: `rotate(-${midAngle}deg)`,
+                        textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                        fontSize: '0.8rem',
+                        width: '60px'
+                      }}
+                    >
+                      <div className="flex justify-center">
+                        {prize.icon}
+                      </div>
+                      <div className="bg-black/40 p-1 rounded mt-1 text-xs">
+                        {prize.label}
+                      </div>
+                    </div>
+                  </foreignObject>
+                </g>
+              </g>
             );
           })}
-        </div>
+        </svg>
       </div>
       
       {/* Center button */}
