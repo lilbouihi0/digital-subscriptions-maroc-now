@@ -114,16 +114,16 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
               }}
             >
               <div 
-                className="absolute top-[22%] left-[75%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center"
+                className="absolute top-[20%] left-[75%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center"
                 style={{ 
                   transform: `rotate(${45 + (360 / prizes.length) / 2}deg)`,
                   textShadow: '0 2px 4px rgba(0,0,0,0.9)',
-                  maxWidth: '100px',
+                  maxWidth: '80px',
                   textAlign: 'center',
                 }}
               >
-                <div className="text-2xl mb-1">{prize.icon}</div>
-                <div className="bg-black/60 px-2 py-1 rounded-md text-center text-sm md:text-base whitespace-normal line-clamp-2">
+                <div className="text-xl mb-1">{prize.icon}</div>
+                <div className="bg-black/70 px-1.5 py-0.5 rounded-md text-center text-xs md:text-sm whitespace-normal line-clamp-2">
                   {prize.label}
                 </div>
               </div>
@@ -133,7 +133,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       </div>
       
       {/* Center circle decoration */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[65%] h-[65%] rounded-full border-4 border-blue-800/30 bg-gradient-to-br from-blue-900/90 to-indigo-900/90 z-10"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] rounded-full border-4 border-blue-800/30 bg-gradient-to-br from-blue-900/90 to-indigo-900/90 z-10"></div>
       
       {/* Center button */}
       <button 
@@ -141,7 +141,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
         disabled={spinDisabled}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
           bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400
-          text-white font-bold rounded-full shadow-xl z-20 w-28 h-28 md:w-32 md:h-32
+          text-white font-bold rounded-full shadow-xl z-20 w-24 h-24 md:w-28 md:h-28
           flex flex-col items-center justify-center border-4 border-white/30
           transition-transform hover:scale-105 disabled:opacity-80 disabled:hover:scale-100"
       >
