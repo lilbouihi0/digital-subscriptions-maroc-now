@@ -66,14 +66,36 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             // Create the path for the segment
             const pathData = `M 50 50 L ${x1} ${y1} A 50 50 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
             
+            // Calculate position for a small icon only (no text)
+            const midAngle = (startAngle + endAngle) / 2;
+            const midRad = (midAngle - 90) * Math.PI / 180;
+            const iconRadius = 30;
+            const iconX = 50 + iconRadius * Math.cos(midRad);
+            const iconY = 50 + iconRadius * Math.sin(midRad);
+            
             return (
-              <path 
-                key={index}
-                d={pathData} 
-                fill={prize.color} 
-                stroke="#444" 
-                strokeWidth="0.5"
-              />
+              <g key={index}>
+                {/* Segment */}
+                <path 
+                  d={pathData} 
+                  fill={prize.color} 
+                  stroke="#444" 
+                  strokeWidth="0.5"
+                />
+                
+                {/* Icon only - no text */}
+                <g transform={`translate(${iconX}, ${iconY})`}>
+                  <circle r="6" fill="rgba(0,0,0,0.3)" />
+                  <foreignObject x="-5" y="-5" width="10" height="10">
+                    <div 
+                      className="flex items-center justify-center w-full h-full text-yellow-300"
+                      style={{ transform: 'scale(0.5)' }}
+                    >
+                      {prize.icon}
+                    </div>
+                  </foreignObject>
+                </g>
+              </g>
             );
           })}
         </svg>
@@ -95,19 +117,6 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       
       {/* Center circle */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 md:w-48 md:h-48 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80 z-10"></div>
-      
-      {/* Prize Legend - Below the wheel */}
-      <div className="mt-8 grid grid-cols-2 gap-2 text-xs max-w-[300px] mx-auto">
-        {prizes.map((prize, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: prize.color }}></div>
-            <div className="flex items-center gap-1">
-              <span>{prize.icon}</span>
-              <span>{prize.label}</span>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
