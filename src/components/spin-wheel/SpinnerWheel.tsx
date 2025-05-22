@@ -26,6 +26,9 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
   spinText,
   dir,
 }) => {
+  // Calculate segment angle
+  const segmentAngle = 360 / prizes.length;
+
   // Simple wheel implementation
   return (
     <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] mx-auto">
@@ -37,7 +40,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
         
       {/* Wheel */}
       <div 
-        className="w-full h-full rounded-full border-8 border-indigo-800 dark:border-indigo-600 overflow-hidden"
+        className="w-full h-full rounded-full border-8 border-indigo-800 dark:border-indigo-600 overflow-hidden relative"
         style={{ 
           transform: `rotate(${rotation}deg)`,
           transition: isSpinning ? 'transform 5s cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
@@ -46,37 +49,47 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       >
         {/* Wheel segments */}
         {prizes.map((prize, i) => {
-          const segmentAngle = (360 / prizes.length);
-          const rotate = i * segmentAngle;
+          const startAngle = i * segmentAngle;
+          const endAngle = (i + 1) * segmentAngle;
+          const midAngle = startAngle + segmentAngle / 2;
+          
+          // Calculate label position
+          const labelRadius = 35; // % from center
+          const labelX = 50 + labelRadius * Math.cos((midAngle - 90) * (Math.PI / 180));
+          const labelY = 50 + labelRadius * Math.sin((midAngle - 90) * (Math.PI / 180));
           
           return (
-            <div
-              key={i}
-              className="absolute w-1/2 h-1/2 origin-bottom-right"
-              style={{
-                transform: `rotate(${rotate}deg)`,
-                backgroundColor: prize.color,
-                clipPath: 'polygon(0 0, 100% 0, 0 100%)',
-                transformOrigin: 'bottom right',
-                left: '50%',
-                top: '50%'
-              }}
-            >
+            <div key={i} className="absolute inset-0">
+              {/* Segment */}
+              <div
+                className="absolute w-full h-full"
+                style={{
+                  clipPath: `path('M 50% 50% L ${50 + 50 * Math.cos(startAngle * Math.PI / 180)}% ${50 - 50 * Math.sin(startAngle * Math.PI / 180)}% A 50% 50% 0 0 0 ${50 + 50 * Math.cos(endAngle * Math.PI / 180)}% ${50 - 50 * Math.sin(endAngle * Math.PI / 180)}% Z')`,
+                  backgroundColor: prize.color,
+                }}
+              />
+              
               {/* Prize label */}
               <div 
                 className="absolute text-white font-bold text-center"
                 style={{ 
-                  transform: `rotate(${segmentAngle/2 - 90}deg)`,
-                  transformOrigin: 'left bottom',
-                  bottom: '70%',
-                  left: '30%',
+                  transform: `translate(-50%, -50%) rotate(${midAngle}deg)`,
+                  left: `${labelX}%`,
+                  top: `${labelY}%`,
                   textShadow: '0 2px 4px rgba(0,0,0,0.9)',
                   fontSize: '0.8rem',
                   width: '60px'
                 }}
               >
-                <div>{prize.icon}</div>
-                <div className="bg-black/40 p-1 rounded mt-1">{prize.label}</div>
+                <div className="flex justify-center" style={{ transform: `rotate(-${midAngle}deg)` }}>
+                  {prize.icon}
+                </div>
+                <div 
+                  className="bg-black/40 p-1 rounded mt-1" 
+                  style={{ transform: `rotate(-${midAngle}deg)` }}
+                >
+                  {prize.label}
+                </div>
               </div>
             </div>
           );
