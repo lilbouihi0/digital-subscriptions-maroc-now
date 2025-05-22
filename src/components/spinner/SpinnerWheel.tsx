@@ -79,30 +79,27 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
     };
   }, [isSpinning]);
 
-  // The wheel size is increased for better visibility
   return (
-    <div className="relative w-[500px] h-[500px] mx-auto">
+    <div className="relative w-[300px] h-[300px] md:w-[400px] md:h-[400px] mx-auto">
       {/* Pointer Triangle */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-6 w-0 h-0 
-        border-l-[24px] border-l-transparent 
-        border-b-[42px] border-b-red-500 
-        border-r-[24px] border-r-transparent z-10 drop-shadow-lg" />
+        border-l-[20px] border-l-transparent 
+        border-b-[40px] border-b-red-500 
+        border-r-[20px] border-r-transparent z-10 drop-shadow-lg" />
         
       {/* Wheel */}
       <div 
-        className="w-full h-full rounded-full border-8 border-indigo-800 overflow-hidden transition-transform ease-cubic-out"
+        className="w-full h-full rounded-full border-[12px] border-blue-800 overflow-hidden"
         style={{ 
           transform: `rotate(${rotation}deg)`,
-          transitionDuration: isSpinning ? '5s' : '0s',
-          boxShadow: '0 8px 40px rgba(0,0,0,0.3)',
-          transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' // easeOutCubic
+          transition: isSpinning ? 'transform 5s cubic-bezier(0.22, 1, 0.36, 1)' : 'none',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.5)'
         }}
       >
+        {/* Wheel Segments */}
         {prizes.map((prize, i) => {
-          // Calculate the rotation angle for this segment (60 degrees per segment)
+          // Calculate the rotation angle for this segment (60 degrees per segment for 6 segments)
           const segmentAngle = i * (360 / prizes.length);
-          // Text rotation adjustment depends on direction
-          const textRotationAdjustment = dir === 'rtl' ? -90 : 90;
           
           return (
             <div
@@ -112,21 +109,23 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
                 transform: `rotate(${segmentAngle}deg)`,
                 transformOrigin: 'center',
                 clipPath: 'polygon(50% 50%, 50% 0, 100% 0, 100% 50%)',
-                backgroundColor: prize.color
+                backgroundColor: prize.color,
+                borderRight: '1px solid rgba(255,255,255,0.2)'
               }}
             >
               <div 
-                className="absolute top-[22%] left-[70%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center"
+                className="absolute top-[20%] left-[75%] -translate-x-1/2 -translate-y-1/2 text-white font-bold flex flex-col items-center justify-center"
                 style={{ 
-                  fontSize: prize.label.length > 12 ? '1.1rem' : prize.label.length > 9 ? '1.2rem' : '1.4rem',
-                  transform: `rotate(${textRotationAdjustment - (360 / prizes.length) / 2}deg)`,
-                  textShadow: '0 1px 3px rgba(0,0,0,0.7)',
-                  width: '100px',
+                  transform: `rotate(${45 + (360 / prizes.length) / 2}deg)`,
+                  textShadow: '0 2px 4px rgba(0,0,0,0.9)',
+                  maxWidth: '80px',
                   textAlign: 'center',
                 }}
               >
-                <div className="text-3xl mb-1">{prize.icon}</div>
-                <span className="text-center whitespace-pre-wrap">{prize.label}</span>
+                <div className="text-xl mb-1">{prize.icon}</div>
+                <div className="bg-black/70 px-1.5 py-0.5 rounded-md text-center text-xs md:text-sm whitespace-normal line-clamp-2">
+                  {prize.label}
+                </div>
               </div>
             </div>
           );
@@ -134,15 +133,15 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       </div>
       
       {/* Center circle decoration */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full border-4 border-indigo-800/30 bg-gradient-to-br from-indigo-900/80 to-violet-900/80"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] h-[70%] rounded-full border-4 border-blue-800/30 bg-gradient-to-br from-blue-900/90 to-indigo-900/90 z-10"></div>
       
-      {/* Center button - enlarged */}
+      {/* Center button */}
       <button 
         onClick={onSpin}
         disabled={spinDisabled}
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-          bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500
-          text-white font-bold rounded-full shadow-xl z-20 w-40 h-40
+          bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400
+          text-white font-bold rounded-full shadow-xl z-20 w-24 h-24 md:w-28 md:h-28
           flex flex-col items-center justify-center border-4 border-white/30
           transition-transform hover:scale-105 disabled:opacity-80 disabled:hover:scale-100"
       >
@@ -150,7 +149,10 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
       </button>
       
       {/* Decorative dots around the center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border-4 border-dashed border-white/20 animate-spin-slow" style={{ animationDuration: '120s' }}></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[55%] h-[55%] rounded-full border-4 border-dashed border-white/20 animate-spin-slow" style={{ animationDuration: '120s' }}></div>
+
+      {/* Outer ring */}
+      <div className="absolute inset-0 border-[16px] border-blue-800 rounded-full pointer-events-none"></div>
     </div>
   );
 };

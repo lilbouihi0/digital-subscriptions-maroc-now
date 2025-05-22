@@ -69,7 +69,12 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
             // Calculate position for the label
             const midAngle = (startAngle + endAngle) / 2;
             const midRad = (midAngle - 90) * Math.PI / 180;
+<<<<<<< HEAD
             const labelRadius = 20; // Extremely reduced radius to position labels very close to center
+=======
+            // Position labels at 70% of the radius (35 units) for better readability
+            const labelRadius = 35; 
+>>>>>>> ca9819516b8ec34c7228a33c20104b281303a447
             const labelX = 50 + labelRadius * Math.cos(midRad);
             const labelY = 50 + labelRadius * Math.sin(midRad);
             
@@ -85,6 +90,7 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
                 
                 {/* Icon only - no text */}
                 <g transform={`translate(${labelX}, ${labelY}) rotate(${midAngle})`}>
+<<<<<<< HEAD
                   <foreignObject x="-8" y="-8" width="16" height="16" style={{ overflow: 'hidden' }}>
                     <div 
                       className="text-yellow-300 flex items-center justify-center"
@@ -97,6 +103,28 @@ const SpinnerWheel: React.FC<SpinnerWheelProps> = ({
                       <div style={{ transform: 'scale(0.6)' }}>
                         {prize.icon}
                       </div>
+=======
+                  <foreignObject x="-20" y="-20" width="40" height="40" style={{ overflow: 'visible' }}>
+                    <div 
+                      className="text-white font-bold text-center flex flex-col items-center"
+                      style={{ 
+                        transform: `rotate(-${midAngle}deg)`,
+                        textShadow: '0 1px 3px rgba(0,0,0,0.9)',
+                        fontSize: '0.7rem',
+                        width: '100px',
+                        marginLeft: '-30px', // Center the wider text box
+                      }}
+                    >
+                      <div className="flex justify-center mb-1">
+                        {prize.icon}
+                      </div>
+                      <div 
+                        className="bg-black/50 p-1 rounded mx-auto max-w-[80px] whitespace-normal break-words"
+                        style={{ wordWrap: 'break-word' }}
+                      >
+                        {prize.label}
+                      </div>
+>>>>>>> ca9819516b8ec34c7228a33c20104b281303a447
                     </div>
                   </foreignObject>
                 </g>

@@ -1,16 +1,20 @@
 
+import React from 'react';
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+  
   return (
     <footer className="bg-navy text-white">
       {/* Contact Section */}
       <div id="contact" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div>
-            <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
+            <h3 className="text-2xl font-bold mb-6">{t("contact.title") || "Contact Us"}</h3>
             <p className="mb-6">
-              Have questions or need assistance? Reach out to our customer support team and we'll respond as quickly as possible.
+              {t("contact.description") || "Have questions or need assistance? Reach out to our customer support team and we'll respond as quickly as possible."}
             </p>
             
             <div className="space-y-4">
@@ -68,48 +72,48 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-2xl font-bold mb-6">Send us a message</h3>
+            <h3 className="text-2xl font-bold mb-6">{t("contact.form.title") || "Send us a message"}</h3>
             <form className="space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-1">Name</label>
+                  <label htmlFor="name" className="block text-sm font-medium mb-1">{t("contact.form.name") || "Name"}</label>
                   <input
                     type="text"
                     id="name"
                     className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal"
-                    placeholder="Your name"
+                    placeholder={t("contact.form.namePlaceholder") || "Your name"}
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
+                  <label htmlFor="email" className="block text-sm font-medium mb-1">{t("contact.form.email") || "Email"}</label>
                   <input
                     type="email"
                     id="email"
                     className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal"
-                    placeholder="Your email"
+                    placeholder={t("contact.form.emailPlaceholder") || "Your email"}
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-1">Subject</label>
+                <label htmlFor="subject" className="block text-sm font-medium mb-1">{t("contact.form.subject") || "Subject"}</label>
                 <input
                   type="text"
                   id="subject"
                   className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal"
-                  placeholder="Message subject"
+                  placeholder={t("contact.form.subjectPlaceholder") || "Message subject"}
                 />
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-1">Message</label>
+                <label htmlFor="message" className="block text-sm font-medium mb-1">{t("contact.form.message") || "Message"}</label>
                 <textarea
                   id="message"
                   rows={4}
                   className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-teal resize-none"
-                  placeholder="Your message"
+                  placeholder={t("contact.form.messagePlaceholder") || "Your message"}
                 ></textarea>
               </div>
               <Button className="w-full bg-teal hover:bg-teal/90">
-                Send Message
+                {t("contact.form.submit") || "Send Message"}
               </Button>
             </form>
           </div>
@@ -121,10 +125,10 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="md:flex md:items-center md:justify-between">
             <div className="flex justify-center md:justify-start space-x-6 md:order-2">
-              <a href="#" className="text-white/60 hover:text-white">Terms</a>
-              <a href="#" className="text-white/60 hover:text-white">Privacy</a>
-              <a href="#" className="text-white/60 hover:text-white">FAQ</a>
-              <a href="#" className="text-white/60 hover:text-white">Support</a>
+              <a href="#" className="text-white/60 hover:text-white">{t("footer.terms") || "Terms"}</a>
+              <a href="#" className="text-white/60 hover:text-white">{t("footer.privacy") || "Privacy"}</a>
+              <a href="#" className="text-white/60 hover:text-white">{t("footer.faq") || "FAQ"}</a>
+              <a href="#" className="text-white/60 hover:text-white">{t("footer.support") || "Support"}</a>
             </div>
             <div className="mt-8 md:mt-0 md:order-1 text-center md:text-left">
               <p className="text-white/60 text-sm">
