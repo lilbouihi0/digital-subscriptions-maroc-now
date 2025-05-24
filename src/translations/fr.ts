@@ -4,7 +4,9 @@ export const frenchTranslations = {
     home: "Accueil",
     products: "Produits",
     faq: "FAQ",
-    contact: "Contact"
+    contact: "Contact",
+    reviews: "Avis Clients",
+    verify: "Vérification"
   },
   
   hero: {
@@ -51,7 +53,35 @@ export const frenchTranslations = {
   
   footer: {
     rights: "Tous droits réservés",
-    companyName: "DigiSubs"
+    companyName: "DigiSubs",
+    terms: "Conditions",
+    privacy: "Confidentialité",
+    faq: "FAQ",
+    support: "Support"
+  },
+  
+  contact: {
+    title: "Contactez-nous",
+    description: "Vous avez des questions ou besoin d'aide? Contactez notre équipe de support client et nous vous répondrons dans les plus brefs délais.",
+    form: {
+      title: "Envoyez-nous un message",
+      name: "Nom",
+      namePlaceholder: "Votre nom",
+      email: "Email",
+      emailPlaceholder: "Votre email",
+      subject: "Sujet",
+      subjectPlaceholder: "Sujet du message",
+      message: "Message",
+      messagePlaceholder: "Votre message",
+      submit: "Envoyer le message"
+    }
+  },
+
+  verification: {
+    title: "Vérification du Téléphone",
+    subtitle: "Vérifiez votre numéro de téléphone pour continuer à utiliser nos services",
+    success: "Téléphone vérifié avec succès",
+    error: "Échec de la vérification"
   },
 
   spinner: {
@@ -64,6 +94,7 @@ export const frenchTranslations = {
     youWon: "Vous avez gagné",
     contactUs: "Contacter Support",
     tryAgain: "Réessayez",
+    tryAgainDesc: "Vous avez une autre chance de tourner! Cliquez pour réessayer!",
     betterLuck: "Meilleure chance la prochaine fois!",
     claim: "Réclamer via WhatsApp",
     claimMessage: "Bonjour! J'ai gagné une réduction avec votre roue: ",
@@ -73,6 +104,11 @@ export const frenchTranslations = {
     uniqueCode: "Votre code unique",
     tryAgainTomorrow: "Vous pourrez réessayer demain!",
     applyReward: "Appliquer Récompense",
+    applyDiscount: "Appliquer Réduction",
+    applyCashback: "Appliquer Remboursement",
+    claimReward: "Réclamer Récompense",
+    spinAgainTomorrow: "Tournez Demain",
+    continueShopping: "Continuer les Achats",
     cashback10: "🎁 Gagnez 10% Remboursement",
     cashback20: "💰 Gagnez 20% Remboursement",
     freeAccount: "🔥 Compte Gratuit",
@@ -84,6 +120,10 @@ export const frenchTranslations = {
     expired: "Expiré",
     rewardApplied: "Récompense Appliquée",
     rewardAppliedDesc: "Votre réduction ou remboursement a été appliqué à tous les produits",
+    discountApplied: "Réduction Appliquée!",
+    discountAppliedDesc: "Vous avez reçu une réduction de {value} sur votre prochain achat!",
+    cashbackApplied: "Remboursement Appliqué!",
+    cashbackAppliedDesc: "Vous recevrez un remboursement de {value} sur votre prochain achat!",
     oneMoreChance: "Vous avez un tour supplémentaire! Tentez votre chance à nouveau!",
     youHaveExtraSpin: "Vous avez un tour supplémentaire! Cliquez sur le bouton pour l'utiliser",
     enterPhone: "Entrez votre numéro de téléphone",

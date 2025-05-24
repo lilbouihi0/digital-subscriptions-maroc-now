@@ -8,7 +8,7 @@ import { toast } from "@/hooks/use-toast";
 
 interface PrizeDisplayProps {
   prize: string;
-  prizeType: 'discount' | 'cashback' | 'freeAccount';
+  prizeType: 'discount' | 'cashback' | 'freeAccount' | 'tryAgain';
   spinCode?: string;
   value?: string | number;
   expiresAt?: string;
@@ -60,13 +60,15 @@ const PrizeDisplay: React.FC<PrizeDisplayProps> = ({
   const getPrizeIcon = () => {
     switch (prizeType) {
       case 'discount':
-        return <BadgePercent className="h-8 w-8" />;
+        return <BadgePercent className="h-6 w-6" />;
       case 'cashback':
-        return <BadgeDollarSign className="h-8 w-8" />;
+        return <BadgeDollarSign className="h-6 w-6" />;
       case 'freeAccount':
-        return <Gift className="h-8 w-8" />;
+        return <Gift className="h-6 w-6" />;
+      case 'tryAgain':
+        return <Clock className="h-6 w-6" />;
       default:
-        return <Gift className="h-8 w-8" />;
+        return <Gift className="h-6 w-6" />;
     }
   };
   
@@ -74,13 +76,15 @@ const PrizeDisplay: React.FC<PrizeDisplayProps> = ({
   const getActionButtonText = () => {
     switch (prizeType) {
       case 'discount':
-        return t("spinner.applyDiscount");
+        return t("spinner.applyDiscount") || "Apply Discount";
       case 'cashback':
-        return t("spinner.applyCashback");
+        return t("spinner.applyCashback") || "Apply Cashback";
       case 'freeAccount':
-        return t("spinner.claimReward");
+        return t("spinner.claimReward") || "Claim Reward";
+      case 'tryAgain':
+        return t("spinner.spinAgainTomorrow") || "Spin Again Tomorrow";
       default:
-        return t("spinner.applyReward");
+        return t("spinner.applyReward") || "Apply Reward";
     }
   };
   
@@ -96,67 +100,76 @@ const PrizeDisplay: React.FC<PrizeDisplayProps> = ({
         return 'from-emerald-500 to-teal-600';
       case 'freeAccount':
         return 'from-amber-500 to-orange-600';
+      case 'tryAgain':
+        return 'from-gray-500 to-gray-600';
       default:
         return 'from-indigo-500 to-purple-600';
     }
   };
   
   return (
-    <Card className="w-full max-w-md mx-auto mt-6 overflow-hidden border-2 border-indigo-200 bg-white/90 backdrop-blur-sm">
-      <div className={`bg-gradient-to-r ${getBgColor()} p-4 text-white`}>
+    <Card className="w-full max-w-sm mx-auto mt-3 overflow-hidden border-2 border-indigo-200 bg-white/90 backdrop-blur-sm">
+      <div className={`bg-gradient-to-r ${getBgColor()} p-3 sm:p-4 text-white`}>
         <div className="flex items-center space-x-2">
-          <BadgeCheck className="h-6 w-6" />
-          <h3 className="text-xl font-bold">{t("spinner.congratulations")}</h3>
+          <BadgeCheck className="h-5 w-5 sm:h-6 sm:w-6" />
+          <h3 className="text-lg sm:text-xl font-bold">{t("spinner.congratulations")}</h3>
         </div>
       </div>
-      <CardContent className="p-6">
-        <div className="flex flex-col items-center text-center space-y-4">
-          <div className="flex items-center justify-center w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full">
+      <CardContent className="p-3 sm:p-4">
+        <div className="flex flex-col items-center text-center space-y-2">
+          <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-indigo-100 text-indigo-600 rounded-full">
             {getPrizeIcon()}
           </div>
           
-          <h4 className="text-2xl font-bold text-gray-800">{prize}</h4>
+          <h4 className="text-xl sm:text-2xl font-bold text-gray-800">{prize}</h4>
           
           {value && (
-            <p className="text-lg font-semibold text-indigo-600">{value}</p>
+            <p className="text-base sm:text-lg font-semibold text-indigo-600">{value}</p>
           )}
           
           {showCodeSection && (
-            <div className="w-full p-3 bg-gray-50 rounded-md border border-gray-200">
-              <p className="text-sm text-gray-500 mb-1">{t("spinner.uniqueCode")}</p>
+            <div className="w-full p-2 sm:p-3 bg-gray-50 rounded-md border border-gray-200">
+              <p className="text-xs sm:text-sm text-gray-500 mb-1">{t("spinner.uniqueCode")}</p>
               <div className="flex items-center justify-between gap-2">
-                <code className="text-sm font-mono bg-gray-100 p-2 rounded flex-1 overflow-x-auto">{spinCode}</code>
+                <code className="text-xs sm:text-sm font-mono bg-gray-100 p-1 sm:p-2 rounded flex-1 overflow-x-auto">{spinCode}</code>
                 <Button 
                   variant="outline" 
                   size="icon" 
                   onClick={handleCopyCode}
-                  className="flex-shrink-0"
+                  className="flex-shrink-0 h-8 w-8 sm:h-10 sm:w-10"
                 >
-                  <Copy className="h-4 w-4" />
+                  <Copy className="h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
               </div>
             </div>
           )}
           
           <div className="flex items-center space-x-2 text-amber-600">
-            <Clock className="h-4 w-4" />
-            <span className="text-sm">
+            <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span className="text-xs sm:text-sm">
               {t("spinner.offerExpires")}: {formatTimeRemaining()}
             </span>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-3 w-full">
+          <div className="flex flex-col gap-2 sm:gap-3 w-full mt-2">
             {prizeType === 'freeAccount' ? (
               <Button 
                 onClick={onClaimReward}
-                className="flex-1 bg-green-600 hover:bg-green-700"
+                className="w-full bg-green-600 hover:bg-green-700 text-sm sm:text-base py-2 sm:py-3"
               >
                 {t("spinner.claim")}
+              </Button>
+            ) : prizeType === 'tryAgain' ? (
+              <Button 
+                onClick={() => window.location.reload()}
+                className="w-full bg-gray-600 hover:bg-gray-700 text-sm sm:text-base py-2 sm:py-3"
+              >
+                {getActionButtonText()}
               </Button>
             ) : (
               <Button 
                 onClick={onApplyReward}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700"
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-sm sm:text-base py-2 sm:py-3"
               >
                 {getActionButtonText()}
               </Button>
@@ -164,9 +177,9 @@ const PrizeDisplay: React.FC<PrizeDisplayProps> = ({
             
             <Button 
               onClick={() => window.location.href = '/products'}
-              className="flex-1 bg-gray-600 hover:bg-gray-700"
+              className="w-full bg-gray-600 hover:bg-gray-700 text-sm sm:text-base py-2 sm:py-3"
             >
-              {t("spinner.continueShopping")}
+              {t("spinner.continueShopping") || "Continue Shopping"}
             </Button>
           </div>
         </div>

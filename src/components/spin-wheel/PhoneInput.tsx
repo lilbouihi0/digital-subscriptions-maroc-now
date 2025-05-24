@@ -47,6 +47,12 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
         <p className="text-gray-600">
           Enter your phone number to spin the wheel and win prizes!
         </p>
+        <p className="text-sm text-gray-500 mt-1">
+          Format: +212 XXXXXXXXX (must be a valid number)
+        </p>
+        <p className="text-xs text-red-500 mt-1">
+          Please use your real phone number. Test numbers like 123456789 or 666666666 will be rejected.
+        </p>
       </div>
       
       <div className="space-y-4">
@@ -64,7 +70,7 @@ const PhoneInput: React.FC<PhoneInputProps> = ({
         
         <Button 
           onClick={onSendCode}
-          disabled={isLoading || !phoneNumber || phoneNumber.length < 8}
+          disabled={isLoading || !phoneNumber || phoneNumber.replace(/[\s+]/g, '').length < 9}
           className="w-full bg-indigo-600 hover:bg-indigo-700"
         >
           {isLoading ? (

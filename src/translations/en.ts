@@ -3,7 +3,9 @@ export const englishTranslations = {
     home: "Home",
     products: "Products",
     faq: "FAQ",
-    contact: "Contact Us"
+    contact: "Contact Us",
+    reviews: "Reviews",
+    verify: "Verify Phone"
   },
   
   hero: {
@@ -50,9 +52,37 @@ export const englishTranslations = {
   
   footer: {
     rights: "All rights reserved",
-    companyName: "DigiSubs"
+    companyName: "DigiSubs",
+    terms: "Terms",
+    privacy: "Privacy",
+    faq: "FAQ",
+    support: "Support"
+  },
+  
+  contact: {
+    title: "Contact Us",
+    description: "Have questions or need assistance? Reach out to our customer support team and we'll respond as quickly as possible.",
+    form: {
+      title: "Send us a message",
+      name: "Name",
+      namePlaceholder: "Your name",
+      email: "Email",
+      emailPlaceholder: "Your email",
+      subject: "Subject",
+      subjectPlaceholder: "Message subject",
+      message: "Message",
+      messagePlaceholder: "Your message",
+      submit: "Send Message"
+    }
   },
 
+  verification: {
+    title: "Phone Verification",
+    subtitle: "Verify your phone number to continue using our services",
+    success: "Phone verified successfully",
+    error: "Verification failed"
+  },
+  
   spinner: {
     tryYourLuck: "Spin & Win",
     spinToWin: "Spin The Wheel & Win Rewards",
@@ -63,6 +93,7 @@ export const englishTranslations = {
     youWon: "You won",
     contactUs: "Contact Support",
     tryAgain: "Try Again",
+    tryAgainDesc: "You got another chance to spin! Click to try again!",
     betterLuck: "Better luck next time!",
     claim: "Claim via WhatsApp",
     claimMessage: "Hello! I won a discount from your spin wheel: ",
@@ -72,6 +103,11 @@ export const englishTranslations = {
     uniqueCode: "Your unique code",
     tryAgainTomorrow: "You can try again tomorrow!",
     applyReward: "Apply Reward",
+    applyDiscount: "Apply Discount",
+    applyCashback: "Apply Cashback",
+    claimReward: "Claim Reward",
+    spinAgainTomorrow: "Spin Again Tomorrow",
+    continueShopping: "Continue Shopping",
     cashback10: "🎁 Get 10% Cashback",
     cashback20: "💰 Get 20% Cashback",
     freeAccount: "🔥 Get a Free Account",
@@ -83,6 +119,10 @@ export const englishTranslations = {
     expired: "Expired",
     rewardApplied: "Reward Applied",
     rewardAppliedDesc: "Your discount or cashback has been applied to all products",
+    discountApplied: "Discount Applied!",
+    discountAppliedDesc: "You've received a {value} discount on your next purchase!",
+    cashbackApplied: "Cashback Applied!",
+    cashbackAppliedDesc: "You'll receive {value} cashback on your next purchase!",
     oneMoreChance: "You have an extra spin! Try your luck again!",
     youHaveExtraSpin: "You have an extra spin! Click the button to use it",
     enterPhone: "Enter Your Phone Number",

@@ -4,7 +4,9 @@ export const arabicTranslations = {
     home: "الرئيسية",
     products: "المنتجات",
     faq: "الأسئلة الشائعة",
-    contact: "اتصل بنا"
+    contact: "اتصل بنا",
+    reviews: "آراء العملاء",
+    verify: "التحقق من الهاتف"
   },
   
   hero: {
@@ -51,7 +53,35 @@ export const arabicTranslations = {
   
   footer: {
     rights: "جميع الحقوق محفوظة",
-    companyName: "ديجي سبس"
+    companyName: "ديجي سبس",
+    terms: "الشروط والأحكام",
+    privacy: "سياسة الخصوصية",
+    faq: "الأسئلة الشائعة",
+    support: "الدعم"
+  },
+  
+  contact: {
+    title: "اتصل بنا",
+    description: "هل لديك أسئلة أو تحتاج إلى مساعدة؟ تواصل مع فريق دعم العملاء لدينا وسنرد في أسرع وقت ممكن.",
+    form: {
+      title: "أرسل لنا رسالة",
+      name: "الاسم",
+      namePlaceholder: "اسمك",
+      email: "البريد الإلكتروني",
+      emailPlaceholder: "بريدك الإلكتروني",
+      subject: "الموضوع",
+      subjectPlaceholder: "موضوع الرسالة",
+      message: "الرسالة",
+      messagePlaceholder: "رسالتك",
+      submit: "إرسال الرسالة"
+    }
+  },
+
+  verification: {
+    title: "التحقق من رقم الهاتف",
+    subtitle: "تحقق من رقم هاتفك للاستمرار في استخدام خدماتنا",
+    success: "تم التحقق من الهاتف بنجاح",
+    error: "فشل التحقق"
   },
 
   spinner: {
@@ -84,6 +114,10 @@ export const arabicTranslations = {
     expired: "منتهي الصلاحية",
     rewardApplied: "تم تطبيق المكافأة",
     rewardAppliedDesc: "تم تطبيق الخصم أو الاسترداد النقدي على جميع المنتجات",
+    discountApplied: "تم تطبيق الخصم!",
+    discountAppliedDesc: "لقد حصلت على خصم {value} على مشترياتك القادمة!",
+    cashbackApplied: "تم تطبيق الاسترداد النقدي!",
+    cashbackAppliedDesc: "ستحصل على استرداد نقدي بقيمة {value} على مشترياتك القادمة!",
     oneMoreChance: "لديك دورة إضافية! حاول حظك مرة أخرى!",
     youHaveExtraSpin: "لديك دورة إضافية! انقر على الزر لاستخدامها",
     enterPhone: "أدخل رقم هاتفك",
@@ -109,6 +143,8 @@ export const arabicTranslations = {
     wrongCode: "الرمز الذي أدخلته غير صحيح",
     codeCopied: "تم نسخ الرمز",
     pasteInChat: "يمكنك لصقه في رسالة واتساب",
-    phoneVerification: "التحقق من رقم الهاتف"
+    phoneVerification: "التحقق من رقم الهاتف",
+    applyCashback: "تطبيق الاسترداد النقدي",
+    continueShopping: "مواصلة التسوق"
   }
 };

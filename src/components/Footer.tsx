@@ -3,8 +3,22 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "../contexts/LanguageContext";
 
-const Footer = () => {
+interface FooterProps {
+  onNavigate?: (section: string) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
+  
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, section: string) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(section);
+    } else {
+      // Fallback to smooth scrolling if onNavigate is not provided
+      document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   
   return (
     <footer className="bg-navy text-white">
@@ -127,8 +141,20 @@ const Footer = () => {
             <div className="flex justify-center md:justify-start space-x-6 md:order-2">
               <a href="#" className="text-white/60 hover:text-white">{t("footer.terms") || "Terms"}</a>
               <a href="#" className="text-white/60 hover:text-white">{t("footer.privacy") || "Privacy"}</a>
-              <a href="#" className="text-white/60 hover:text-white">{t("footer.faq") || "FAQ"}</a>
-              <a href="#" className="text-white/60 hover:text-white">{t("footer.support") || "Support"}</a>
+              <a 
+                href="#faq" 
+                className="text-white/60 hover:text-white"
+                onClick={(e) => handleNavigation(e, 'faq')}
+              >
+                {t("footer.faq") || "FAQ"}
+              </a>
+              <a 
+                href="#contact" 
+                className="text-white/60 hover:text-white"
+                onClick={(e) => handleNavigation(e, 'contact')}
+              >
+                {t("footer.support") || "Support"}
+              </a>
             </div>
             <div className="mt-8 md:mt-0 md:order-1 text-center md:text-left">
               <p className="text-white/60 text-sm">

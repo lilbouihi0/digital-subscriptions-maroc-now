@@ -5,7 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 
-const Navbar = () => {
+interface NavbarProps {
+  onNavigate?: (section: string) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { language, setLanguage, t, dir } = useLanguage();
   const { theme, toggleTheme } = useTheme();
@@ -20,12 +24,29 @@ const Navbar = () => {
     }
   };
 
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, section: string) => {
+    e.preventDefault();
+    if (onNavigate) {
+      onNavigate(section);
+    } else {
+      // Fallback to smooth scrolling if onNavigate is not provided
+      document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (isMenuOpen) {
+      toggleMenu();
+    }
+  };
+
   return (
     <nav className="bg-white dark:bg-gray-900 sticky top-0 z-50 shadow-sm" dir={dir}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <a href="/" className="flex-shrink-0 flex items-center">
+            <a 
+              href="#home" 
+              className="flex-shrink-0 flex items-center"
+              onClick={(e) => handleNavigation(e, 'home')}
+            >
               <span className="text-navy dark:text-white font-heading font-bold text-2xl">DigiSubs</span>
             </a>
           </div>
@@ -33,11 +54,35 @@ const Navbar = () => {
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center">
             <div className={`flex ${language === 'ar' ? 'space-x-0 gap-8 flex-row-reverse' : 'space-x-8'}`}>
-              <a href="/" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">{t("nav.home")}</a>
-              <a href="#products" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">{t("nav.products")}</a>
-              <a href="#faq" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">{t("nav.faq")}</a>
-              <a href="#contact" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">{t("nav.contact")}</a>
-              <a href="/phone-verification" className="nav-link font-medium dark:text-gray-300 dark:hover:text-white">Verify Phone</a>
+              <a 
+                href="#home" 
+                className="nav-link font-medium dark:text-gray-300 dark:hover:text-white"
+                onClick={(e) => handleNavigation(e, 'home')}
+              >
+                {t("nav.home")}
+              </a>
+              <a 
+                href="#products" 
+                className="nav-link font-medium dark:text-gray-300 dark:hover:text-white"
+                onClick={(e) => handleNavigation(e, 'products')}
+              >
+                {t("nav.products")}
+              </a>
+              <a 
+                href="#faq" 
+                className="nav-link font-medium dark:text-gray-300 dark:hover:text-white"
+                onClick={(e) => handleNavigation(e, 'faq')}
+              >
+                {t("nav.faq")}
+              </a>
+              <a 
+                href="#reviews" 
+                className="nav-link font-medium dark:text-gray-300 dark:hover:text-white"
+                onClick={(e) => handleNavigation(e, 'reviews')}
+              >
+                {t("nav.reviews") || "Reviews"}
+              </a>
+
             </div>
             
             {/* Language switcher */}
@@ -100,40 +145,34 @@ const Navbar = () => {
         <div className="md:hidden bg-white dark:bg-gray-900 pb-4 px-4 animate-fade-in">
           <div className="flex flex-col space-y-4 pt-2 pb-3">
             <a 
-              href="/" 
+              href="#home" 
               className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-teal rounded-md"
-              onClick={toggleMenu}
+              onClick={(e) => handleNavigation(e, 'home')}
             >
               {t("nav.home")}
             </a>
             <a 
               href="#products" 
               className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-teal rounded-md"
-              onClick={toggleMenu}
+              onClick={(e) => handleNavigation(e, 'products')}
             >
               {t("nav.products")}
             </a>
             <a 
               href="#faq" 
               className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-teal rounded-md"
-              onClick={toggleMenu}
+              onClick={(e) => handleNavigation(e, 'faq')}
             >
               {t("nav.faq")}
             </a>
             <a 
-              href="#contact" 
+              href="#reviews" 
               className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-teal rounded-md"
-              onClick={toggleMenu}
+              onClick={(e) => handleNavigation(e, 'reviews')}
             >
-              {t("nav.contact")}
+              {t("nav.reviews") || "Reviews"}
             </a>
-            <a 
-              href="/phone-verification" 
-              className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-teal rounded-md"
-              onClick={toggleMenu}
-            >
-              Verify Phone
-            </a>
+
             <div className="px-3 py-2">
               <label htmlFor="mobile-language" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Language / اللغة / Langue</label>
               <select 
